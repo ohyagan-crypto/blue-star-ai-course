@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>藍星 AI 網紅進階班｜報名簽到系統</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <p class="eyebrow">Blue Star AI Course</p>
+      <h1>藍星 AI 網紅進階班（六月）</h1>
+      <p>不敢面對鏡頭？拍攝、剪輯太消耗時間？透過 AI 幫你成功克服，打造專屬 AI 網紅與商業 IP。</p>
+    </section>
+
+    <nav class="tabs" aria-label="功能選單">
+      <button class="tab active" type="button" data-view="register">課程報名</button>
+      <button class="tab" type="button" data-view="checkin">學員簽到</button>
+      <button class="tab" type="button" data-view="roster">名單統計</button>
+    </nav>
+
+    <section class="view active" id="register">
+      <div class="grid">
+        <article class="panel course">
+          <p class="eyebrow">課程資訊</p>
+          <h2>你會學到</h2>
+          <ul class="benefits">
+            <li>AI 上鏡幫你帶貨、成立商業 IP、講解商業模式。</li>
+            <li>微電影、短劇無須演員上鏡，AI 低成本讓你成為大導演。</li>
+            <li>擺脫複雜剪輯流程，公式化教學，剪映實操化繁為簡。</li>
+          </ul>
+          <div class="course-meta">
+            <div><strong>主講老師</strong><span>小豪老師</span></div>
+            <div><strong>課程時間</strong><span>13:00～16:00</span></div>
+            <div><strong>場地費</strong><span>300 台幣</span></div>
+            <div><strong>課程福利</strong><span>現場抽 15 位送剪映 SVIP</span></div>
+          </div>
+          <div class="session-list" id="sessionList"></div>
+        </article>
+
+        <form class="panel form" id="registerForm">
+          <h2>課程報名表</h2>
+          <label>場次<select name="session" required></select></label>
+          <label>姓名<input name="name" required autocomplete="name" placeholder="請輸入真實姓名"></label>
+          <label>LINE ID<input name="lineId" placeholder="選填"></label>
+          <label>手機號碼<input name="phone" inputmode="tel" placeholder="選填"></label>
+          <label>介紹人<input name="introducer" placeholder="選填"></label>
+          <button type="submit">送出報名</button>
+          <p class="message" id="registerMessage" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="view" id="checkin">
+      <form class="panel form narrow" id="checkinForm">
+        <h2>學員簽到處</h2>
+        <label>PIN<input name="pin" type="password" inputmode="numeric" maxlength="4" placeholder="請輸入 PIN" required></label>
+        <label>場次<select name="session" required></select></label>
+        <label>姓名<input name="name" required placeholder="請輸入學員姓名"></label>
+        <label>備註<input name="note" placeholder="選填"></label>
+        <button type="submit">送出簽到</button>
+        <p class="message" id="checkinMessage" aria-live="polite"></p>
+      </form>
+
+      <section class="panel success" id="successBox" hidden>
+        <div class="ok">✓</div>
+        <h2>報到成功</h2>
+        <p id="successText"></p>
+        <button type="button" id="replayVoice">播放語音</button>
+      </section>
+    </section>
+
+    <section class="view" id="roster">
+      <div class="panel">
+        <div class="roster-head">
+          <h2>報名與簽到名單</h2>
+          <div class="roster-actions">
+            <a class="sheet-link" id="sheetLink" href="#" target="_blank" rel="noopener">開啟 Google Sheet</a>
+            <button type="button" id="refreshRoster">更新</button>
+          </div>
+        </div>
+        <div class="roster" id="rosterList"></div>
+      </div>
+    </section>
+
+    <section class="bottom-stats panel" aria-label="報到統計">
+      <div class="bottom-stats-head">
+        <p class="eyebrow">Check-in Overview</p>
+        <h2>報到統計</h2>
+      </div>
+      <div class="stats" id="stats" aria-live="polite"></div>
+    </section>
+  </main>
+  <script src="./script.js"></script>
+</body>
+</html>
