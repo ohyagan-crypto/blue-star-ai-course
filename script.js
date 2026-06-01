@@ -85,43 +85,51 @@ function isCanceled(reg) {
   return reg.status === "cancelled" || reg.cancelled === true || Boolean(reg.cancelledAt);
 }
 
-async function loadRoster() {
+function renderRosterData(data, fromFallback = false) {
   const stats = document.getElementById("stats");
   const roster = document.getElementById("rosterList");
+  const sheetLink = document.getElementById("sheetLink");
+  if (sheetLink && data.googleSheetUrl) sheetLink.href = data.googleSheetUrl;
 
-  try {
-    const res = await fetch(api("/api/roster"), { cache: "no-store" });
-    const data = await res.json();
-    const sheetLink = document.getElementById("sheetLink");
-    if (sheetLink && data.googleSheetUrl) sheetLink.href = data.googleSheetUrl;
+  stats.innerHTML = sessions.map((session) => {
+    const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
+    const canceled = (data.registrations || []).filter((item) => item.session === session && isCanceled(item));
+    const checks = (data.checkins || []).filter((item) => item.session === session);
+    const checkedIn = checks.filter((check) => regs.some((reg) => reg.name === check.name)).length;
+    return `<div class="stat"><strong>${checkedIn}/${regs.length}</strong><span>${session} 報到/有效報名</span><small>已取消 ${canceled.length} 位</small></div>`;
+  }).join("");
 
-    stats.innerHTML = sessions.map((session) => {
-      const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
-      const canceled = (data.registrations || []).filter((item) => item.session === session && isCanceled(item));
-      const checks = (data.checkins || []).filter((item) => item.session === session);
-      const checkedIn = checks.filter((check) => regs.some((reg) => reg.name === check.name)).length;
-      return `<div class="stat"><strong>${checkedIn}/${regs.length}</strong><span>${session} 報到/有效報名</span><small>已取消 ${canceled.length} 位</small></div>`;
-    }).join("");
-
-    roster.innerHTML = sessions.map((session) => {
-      const regs = (data.registrations || []).filter((item) => item.session === session);
-      const checks = (data.checkins || []).filter((item) => item.session === session);
-      const people = regs.map((reg, index) => {
-        const canceled = isCanceled(reg);
-        const checked = checks.some((item) => item.name === reg.name);
-        const status = canceled ? "已取消" : checked ? "已報到" : "未報到";
-        const type = reg.participantType || reg.type || "未填身分";
-        const note = canceled ? (reg.cancelReason || reg.reason || reg.cancelledAt || "") : (reg.note || reg.createdAt || "");
-        return `<div class="person ${canceled ? "cancelled" : ""}"><strong>${index + 1}. ${reg.name}</strong><span>${status}</span><em>${type}</em><small>${note}</small></div>`;
-      }).join("") || `<div class="person empty">尚無資料</div>`;
-      return `<section class="roster-card"><h3>${session}</h3>${people}</section>`;
-    }).join("");
-  } catch {
-    stats.innerHTML = `<div class="stat wide"><strong>無法連線</strong><span>請確認後端服務是否正常。</span></div>`;
-    roster.innerHTML = `<p class="message err">讀取名單失敗，請確認後端服務是否正常。</p>`;
-  }
+  roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
+    const regs = (data.registrations || []).filter((item) => item.session === session);
+    const checks = (data.checkins || []).filter((item) => item.session === session);
+    const people = regs.map((reg, index) => {
+      const canceled = isCanceled(reg);
+      const checked = checks.some((item) => item.name === reg.name);
+      const status = canceled ? "已取消" : checked ? "已報到" : "未報到";
+      const type = reg.participantType || reg.type || "未填身份";
+      const note = canceled ? (reg.cancelReason || reg.reason || reg.cancelledAt || "") : (reg.note || reg.createdAt || "");
+      return `<div class="person ${canceled ? "cancelled" : ""}"><strong>${index + 1}. ${reg.name}</strong><span>${status}</span><em>${type}</em><small>${note}</small></div>`;
+    }).join("") || `<div class="person empty">尚無資料</div>`;
+    return `<section class="roster-card"><h3>${session}</h3>${people}</section>`;
+  }).join("")}`;
 }
 
+async function loadRoster() {
+  try {
+    const res = await fetch(api("/api/roster"), { cache: "no-store" });
+    if (!res.ok) throw new Error("API unavailable");
+    renderRosterData(await res.json());
+  } catch {
+    try {
+      const fallbackRes = await fetch("./roster-fallback.json", { cache: "no-store" });
+      if (!fallbackRes.ok) throw new Error("Fallback unavailable");
+      renderRosterData(await fallbackRes.json(), true);
+    } catch {
+      document.getElementById("stats").innerHTML = `<div class="stat wide"><strong>名單暫時無法讀取</strong><span>請稍後重新整理頁面。</span></div>`;
+      document.getElementById("rosterList").innerHTML = `<p class="message err">名單讀取失敗，請稍後再試。</p>`;
+    }
+  }
+}
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => setView(tab.dataset.view));
 });
