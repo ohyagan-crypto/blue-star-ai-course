@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>藍星 AI 網紅進階班｜報名簽到系統</title>
+  <meta name="description" content="藍星 AI 網紅進階班報名、取消報名、學員簽到與名單統計系統。">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -11,11 +12,12 @@
     <section class="hero">
       <p class="eyebrow">Blue Star AI Course</p>
       <h1>藍星 AI 網紅進階班（六月）</h1>
-      <p>不敢面對鏡頭？拍攝、剪輯太消耗時間？透過 AI 幫你成功克服，打造專屬 AI 網紅與商業 IP。</p>
+      <p>不敢面對鏡頭？拍攝、剪輯太消耗時間？透過 AI 幫你成功克服，打造你的專屬 AI 網紅與商業 IP。</p>
     </section>
 
     <nav class="tabs" aria-label="功能選單">
       <button class="tab active" type="button" data-view="register">課程報名</button>
+      <button class="tab" type="button" data-view="cancel">取消報名</button>
       <button class="tab" type="button" data-view="checkin">學員簽到</button>
       <button class="tab" type="button" data-view="roster">名單統計</button>
     </nav>
@@ -26,13 +28,13 @@
           <p class="eyebrow">課程資訊</p>
           <h2>你會學到</h2>
           <ul class="benefits">
-            <li>AI 上鏡幫你帶貨、成立商業 IP、講解商業模式。</li>
-            <li>微電影、短劇無須演員上鏡，AI 低成本讓你成為大導演。</li>
-            <li>擺脫複雜剪輯流程，公式化教學，剪映實操化繁為簡。</li>
+            <li>AI 上鏡幫你帶貨、成立商業 IP、講解商業模式，打造你的專屬 AI 網紅。</li>
+            <li>微電影、短劇，無須演員上鏡，AI 低成本讓你成為大導演。</li>
+            <li>擺脫傳統複雜剪輯流程，公式化教學，剪映實操化繁為簡。</li>
           </ul>
           <div class="course-meta">
             <div><strong>主講老師</strong><span>小豪老師</span></div>
-            <div><strong>課程時間</strong><span>13:00～16:00</span></div>
+            <div><strong>課程時間</strong><span>13:00-16:00</span></div>
             <div><strong>場地費</strong><span>300 台幣</span></div>
             <div><strong>課程福利</strong><span>現場抽 15 位送剪映 SVIP</span></div>
           </div>
@@ -42,6 +44,13 @@
         <form class="panel form" id="registerForm">
           <h2>課程報名表</h2>
           <label>場次<select name="session" required></select></label>
+          <label>報名身分
+            <select name="participantType" required>
+              <option value="">請選擇</option>
+              <option value="新人">新人</option>
+              <option value="複訓">複訓</option>
+            </select>
+          </label>
           <label>姓名<input name="name" required autocomplete="name" placeholder="請輸入真實姓名"></label>
           <label>LINE ID<input name="lineId" placeholder="選填"></label>
           <label>手機號碼<input name="phone" inputmode="tel" placeholder="選填"></label>
@@ -50,6 +59,20 @@
           <p class="message" id="registerMessage" aria-live="polite"></p>
         </form>
       </div>
+    </section>
+
+    <section class="view" id="cancel">
+      <form class="panel form narrow" id="cancelForm">
+        <h2>取消報名</h2>
+        <p class="form-hint">請填寫報名時的場次與姓名。若有同名學員，請補 LINE ID 或手機號碼方便核對。</p>
+        <label>場次<select name="session" required></select></label>
+        <label>姓名<input name="name" required placeholder="請輸入報名姓名"></label>
+        <label>LINE ID<input name="lineId" placeholder="選填，用於同名核對"></label>
+        <label>手機號碼<input name="phone" inputmode="tel" placeholder="選填，用於同名核對"></label>
+        <label>取消原因<input name="reason" placeholder="選填"></label>
+        <button type="submit" class="danger">確認取消報名</button>
+        <p class="message" id="cancelMessage" aria-live="polite"></p>
+      </form>
     </section>
 
     <section class="view" id="checkin">

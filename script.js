@@ -5,6 +5,7 @@ const sessionInfo = {
   "6/11 台北場": { title: "6/11（四）台北場", address: "台北市中正區忠孝東路一段150號6樓", transit: "捷運善導寺站5號出口" },
   "6/13 台中場": { title: "6/13（六）台中場", address: "詳細地點待定", transit: "捷運" }
 };
+
 let lastVoice = "";
 let voiceUnlocked = false;
 
@@ -57,11 +58,11 @@ async function postJson(path, data) {
       body: JSON.stringify(data)
     });
   } catch {
-    throw new Error("送出失敗，請確認網路或重新整理頁面");
+    throw new Error("送出失敗，請確認網路或後端服務是否正常。");
   }
 
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.success) throw new Error(body.message || "送出失敗，請稍後再試");
+  if (!res.ok || !body.success) throw new Error(body.message || "送出失敗，請稍後再試。");
   return body;
 }
 
@@ -80,6 +81,10 @@ function speak(text) {
   window.speechSynthesis.speak(utterance);
 }
 
+function isCanceled(reg) {
+  return reg.status === "cancelled" || reg.cancelled === true || Boolean(reg.cancelledAt);
+}
+
 async function loadRoster() {
   const stats = document.getElementById("stats");
   const roster = document.getElementById("rosterList");
@@ -91,22 +96,29 @@ async function loadRoster() {
     if (sheetLink && data.googleSheetUrl) sheetLink.href = data.googleSheetUrl;
 
     stats.innerHTML = sessions.map((session) => {
-      const item = data.counts[session] || { registered: 0, checkedIn: 0 };
-      return `<div class="stat"><strong>${item.checkedIn}/${item.registered}</strong><span>${session} 報到/報名</span></div>`;
+      const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
+      const canceled = (data.registrations || []).filter((item) => item.session === session && isCanceled(item));
+      const checks = (data.checkins || []).filter((item) => item.session === session);
+      const checkedIn = checks.filter((check) => regs.some((reg) => reg.name === check.name)).length;
+      return `<div class="stat"><strong>${checkedIn}/${regs.length}</strong><span>${session} 報到/有效報名</span><small>已取消 ${canceled.length} 位</small></div>`;
     }).join("");
 
     roster.innerHTML = sessions.map((session) => {
-      const regs = data.registrations.filter((item) => item.session === session);
-      const checks = data.checkins.filter((item) => item.session === session);
+      const regs = (data.registrations || []).filter((item) => item.session === session);
+      const checks = (data.checkins || []).filter((item) => item.session === session);
       const people = regs.map((reg, index) => {
+        const canceled = isCanceled(reg);
         const checked = checks.some((item) => item.name === reg.name);
-        return `<div class="person"><strong>${index + 1}. ${reg.name}</strong><span>${checked ? "已報到" : "未報到"}</span><small>${reg.note || reg.createdAt || ""}</small></div>`;
-      }).join("") || `<div class="person">尚無資料</div>`;
+        const status = canceled ? "已取消" : checked ? "已報到" : "未報到";
+        const type = reg.participantType || reg.type || "未填身分";
+        const note = canceled ? (reg.cancelReason || reg.reason || reg.cancelledAt || "") : (reg.note || reg.createdAt || "");
+        return `<div class="person ${canceled ? "cancelled" : ""}"><strong>${index + 1}. ${reg.name}</strong><span>${status}</span><em>${type}</em><small>${note}</small></div>`;
+      }).join("") || `<div class="person empty">尚無資料</div>`;
       return `<section class="roster-card"><h3>${session}</h3>${people}</section>`;
     }).join("");
   } catch {
-    stats.innerHTML = `<div class="stat"><strong>無法連線</strong><span>請重新整理頁面</span></div>`;
-    roster.innerHTML = `<p class="message err">讀取名單失敗，請確認伺服器是否正常。</p>`;
+    stats.innerHTML = `<div class="stat wide"><strong>無法連線</strong><span>請確認後端服務是否正常。</span></div>`;
+    roster.innerHTML = `<p class="message err">讀取名單失敗，請確認後端服務是否正常。</p>`;
   }
 }
 
@@ -132,6 +144,26 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   } finally {
     btn.disabled = false;
     btn.textContent = "送出報名";
+  }
+});
+
+document.getElementById("cancelForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const btn = form.querySelector("button");
+  const msg = document.getElementById("cancelMessage");
+  btn.disabled = true;
+  btn.textContent = "取消中...";
+  try {
+    const data = await postJson("/api/cancel", formData(form));
+    setMessage(msg, true, `${data.name} 已取消 ${data.session} 報名`);
+    form.reset();
+    await loadRoster();
+  } catch (err) {
+    setMessage(msg, false, err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "確認取消報名";
   }
 });
 

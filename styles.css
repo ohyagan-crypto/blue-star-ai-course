@@ -45,7 +45,7 @@ h2 { font-size: 24px; margin-bottom: 14px; }
 p { color: var(--muted); line-height: 1.7; }
 .tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin: 16px 0;
 }
@@ -60,6 +60,7 @@ button {
   padding: 14px 16px;
 }
 button:disabled { opacity: .55; cursor: wait; }
+button.danger { background: linear-gradient(135deg, #b42318, #7a271a); }
 .tab { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.28); }
 .tab.active { background: linear-gradient(135deg, var(--green), #0b6f62); }
 .view { display: none; }
@@ -115,6 +116,10 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
 .message { min-height: 24px; margin: 0; font-weight: 900; }
 .message.ok { color: var(--green); }
 .message.err { color: #d92d20; }
+.form-hint {
+  margin: -4px 0 2px;
+  font-size: 14px;
+}
 .success {
   max-width: 520px;
   margin: 16px auto 0;
@@ -175,9 +180,30 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   color: var(--green);
   font-weight: 900;
 }
+.person em {
+  display: inline-flex;
+  margin-left: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #e8f1ff;
+  color: var(--blue);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
 .person small { display: block; color: var(--muted); margin-top: 3px; }
+.person.cancelled {
+  opacity: .68;
+}
+.person.cancelled strong {
+  text-decoration: line-through;
+}
+.person.cancelled span {
+  color: #b42318;
+}
 .stat strong { display: block; font-size: 28px; color: var(--blue); }
 .stat span { font-size: 13px; color: var(--muted); }
+.stat small { display: block; margin-top: 4px; color: var(--gold); font-weight: 900; }
 .bottom-stats { margin-top: 16px; }
 .bottom-stats-head h2, .bottom-stats-head p { margin-bottom: 0; }
 
@@ -185,7 +211,7 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   .app { width: min(100% - 22px, 1080px); padding-top: 12px; }
   .grid, .course-meta, .roster, .stats { grid-template-columns: 1fr; }
   .panel, .hero { padding: 18px; }
-  .tabs { gap: 6px; }
+  .tabs { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .tab { padding: 12px 8px; }
   h1 { font-size: 34px; }
   .roster-head, .bottom-stats-head { align-items: flex-start; flex-direction: column; }
