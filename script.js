@@ -8,9 +8,20 @@ const sessionInfo = {
 
 let lastVoice = "";
 let voiceUnlocked = false;
+let rosterData = { registrations: [], checkins: [] };
 
 function api(path) {
   return `${API_BASE}${path}`;
+}
+
+function escapeHtml(value) {
+  return String(value || "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
 }
 
 function unlockVoice() {
@@ -27,6 +38,8 @@ function fillSessionSelects() {
   document.querySelectorAll('select[name="session"]').forEach((select) => {
     select.innerHTML = options;
   });
+  const quickSession = document.getElementById("quickSession");
+  if (quickSession) quickSession.innerHTML = sessions.map((session) => `<option value="${session}">${session}</option>`).join("");
 
   document.getElementById("sessionList").innerHTML = sessions.map((session) => {
     const info = sessionInfo[session];
@@ -37,7 +50,7 @@ function fillSessionSelects() {
 function setView(id) {
   document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.view === id));
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === id));
-  if (id === "roster") loadRoster();
+  if (id === "roster" || id === "checkin") loadRoster();
 }
 
 function formData(form) {
@@ -86,6 +99,7 @@ function isCanceled(reg) {
 }
 
 function renderRosterData(data, fromFallback = false) {
+  rosterData = data;
   const stats = document.getElementById("stats");
   const roster = document.getElementById("rosterList");
   const sheetLink = document.getElementById("sheetLink");
@@ -112,6 +126,7 @@ function renderRosterData(data, fromFallback = false) {
     }).join("") || `<div class="person empty">尚無資料</div>`;
     return `<section class="roster-card"><h3>${session}</h3>${people}</section>`;
   }).join("")}`;
+  renderQuickCheckin();
 }
 
 async function loadRoster() {
@@ -129,6 +144,54 @@ async function loadRoster() {
       document.getElementById("rosterList").innerHTML = `<p class="message err">名單讀取失敗，請稍後再試。</p>`;
     }
   }
+}
+
+function getCheckinPin() {
+  const pinInput = document.querySelector('#checkinForm input[name="pin"]');
+  return String(pinInput?.value || localStorage.getItem("blueCourseStaffPin") || "").trim();
+}
+
+function saveCheckinPin() {
+  const pin = getCheckinPin();
+  if (pin) localStorage.setItem("blueCourseStaffPin", pin);
+}
+
+function checkedNames(session) {
+  return new Set((rosterData.checkins || []).filter((item) => item.session === session).map((item) => item.name));
+}
+
+function setQuickMessage(ok, text) {
+  const el = document.getElementById("quickMessage");
+  if (!el) return;
+  el.className = `message ${ok ? "ok" : "err"}`;
+  el.textContent = text;
+}
+
+function renderQuickCheckin() {
+  const list = document.getElementById("quickList");
+  const sessionSelect = document.getElementById("quickSession");
+  if (!list || !sessionSelect) return;
+  const session = sessionSelect.value || sessions[0];
+  const keyword = String(document.getElementById("quickSearch")?.value || "").trim().toLowerCase();
+  const checked = checkedNames(session);
+  const regs = (rosterData.registrations || [])
+    .filter((item) => item.session === session && !isCanceled(item))
+    .filter((item) => !keyword || String(item.name || "").toLowerCase().includes(keyword));
+
+  list.innerHTML = regs.map((reg, index) => {
+    const done = checked.has(reg.name);
+    const name = escapeHtml(reg.name);
+    const type = escapeHtml(reg.participantType || reg.type || "未填身分");
+    return `
+      <article class="staff-row ${done ? "done" : ""}">
+        <div>
+          <strong>${index + 1}. ${name}</strong>
+          <span>${type}${done ? " · 已報到" : " · 未報到"}</span>
+        </div>
+        <button type="button" data-name="${name}" ${done ? "disabled" : ""}>${done ? "已報到" : "報到"}</button>
+      </article>
+    `;
+  }).join("") || `<p class="message err">沒有符合的學員。</p>`;
 }
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => setView(tab.dataset.view));
@@ -185,6 +248,7 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
   btn.disabled = true;
   btn.textContent = "簽到中...";
   try {
+    saveCheckinPin();
     const data = await postJson("/api/checkin", formData(form));
     const text = `${data.name} 報到成功，歡迎參加 ${data.session} 藍星 AI 網紅進階班。`;
     setMessage(msg, true, "報到成功");
@@ -192,6 +256,8 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
     box.hidden = false;
     speak(text);
     form.reset();
+    const pinInput = form.querySelector('input[name="pin"]');
+    if (pinInput) pinInput.value = localStorage.getItem("blueCourseStaffPin") || "";
     await loadRoster();
   } catch (err) {
     box.hidden = true;
@@ -199,6 +265,43 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
   } finally {
     btn.disabled = false;
     btn.textContent = "送出簽到";
+  }
+});
+
+const checkinPinInput = document.querySelector('#checkinForm input[name="pin"]');
+checkinPinInput.value = localStorage.getItem("blueCourseStaffPin") || "";
+checkinPinInput.addEventListener("change", saveCheckinPin);
+document.getElementById("quickSession").addEventListener("change", renderQuickCheckin);
+document.getElementById("quickSearch").addEventListener("input", renderQuickCheckin);
+document.getElementById("quickRefresh").addEventListener("click", () => loadRoster().catch(() => setQuickMessage(false, "名單讀取失敗，請稍後再試。")));
+document.getElementById("quickList").addEventListener("click", async (event) => {
+  const button = event.target.closest("button[data-name]");
+  if (!button) return;
+  const pin = getCheckinPin();
+  if (!pin) {
+    setQuickMessage(false, "請先在上方 PIN 欄輸入一次 PIN。");
+    checkinPinInput.focus();
+    return;
+  }
+  saveCheckinPin();
+  button.disabled = true;
+  button.textContent = "簽到中...";
+  try {
+    const data = await postJson("/api/checkin", {
+      pin,
+      session: document.getElementById("quickSession").value,
+      name: button.dataset.name
+    });
+    const text = `${data.name} 報到成功，歡迎參加 ${data.session} 藍星 AI 網紅進階班。`;
+    setQuickMessage(true, `${data.name} 報到成功。`);
+    document.getElementById("successText").textContent = text;
+    document.getElementById("successBox").hidden = false;
+    speak(text);
+    await loadRoster();
+  } catch (err) {
+    setQuickMessage(false, err.message);
+    button.disabled = false;
+    button.textContent = "報到";
   }
 });
 

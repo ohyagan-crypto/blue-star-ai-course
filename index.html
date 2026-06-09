@@ -92,6 +92,22 @@
         <p id="successText"></p>
         <button type="button" id="replayVoice">播放語音</button>
       </section>
+
+      <section class="panel quick-checkin">
+        <div class="quick-head">
+          <div>
+            <h2>工作人員快速簽到</h2>
+            <p>PIN 輸入一次後，可搜尋姓名並直接點報到。</p>
+          </div>
+          <button type="button" id="quickRefresh">更新名單</button>
+        </div>
+        <div class="quick-controls">
+          <label>快速場次<select id="quickSession"></select></label>
+          <label>快速搜尋<input id="quickSearch" autocomplete="off" placeholder="輸入姓名關鍵字"></label>
+        </div>
+        <p class="message" id="quickMessage" aria-live="polite"></p>
+        <div class="quick-list" id="quickList"></div>
+      </section>
     </section>
 
     <section class="view" id="roster">
@@ -115,6 +131,6 @@
       <div class="stats" id="stats" aria-live="polite"></div>
     </section>
   </main>
-  <script src="./script.js?v=20260609045527"></script>
+  <script src="./script.js?v=20260609133500"></script>
 </body>
 </html>

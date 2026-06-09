@@ -264,6 +264,34 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   min-height: 44px;
   padding: 10px 12px;
 }
+.quick-checkin {
+  max-width: 860px;
+  margin: 16px auto 0;
+}
+.quick-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.quick-head h2,
+.quick-head p {
+  margin-bottom: 0;
+}
+.quick-controls {
+  display: grid;
+  grid-template-columns: 220px minmax(220px, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.quick-list {
+  display: grid;
+  gap: 8px;
+  max-height: 560px;
+  overflow: auto;
+  padding-right: 3px;
+}
 
 @media (max-width: 760px) {
   .app { width: min(100% - 22px, 1080px); padding-top: 12px; }
@@ -280,5 +308,12 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   }
   .staff-row button {
     width: 100%;
+  }
+  .quick-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .quick-controls {
+    grid-template-columns: 1fr;
   }
 }
