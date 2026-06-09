@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>藍星 AI 課程｜工作人員快速簽到</title>
+  <meta name="description" content="藍星 AI 課程工作人員快速簽到頁。">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app staff-app">
+    <section class="hero staff-hero">
+      <h1>工作人員快速簽到</h1>
+      <p>輸入一次 PIN 後，選場次、搜尋姓名，直接點報到。</p>
+      <a class="sheet-link" href="./index.html">回一般簽到頁</a>
+    </section>
+
+    <section class="panel staff-toolbar">
+      <label>場次
+        <select id="staffSession">
+          <option value="6/9 高雄場">6/9 高雄場</option>
+          <option value="6/11 台北場">6/11 台北場</option>
+          <option value="6/13 台中場">6/13 台中場</option>
+        </select>
+      </label>
+      <label>PIN
+        <input id="staffPin" type="password" inputmode="numeric" maxlength="4" placeholder="輸入一次即可">
+      </label>
+      <label>搜尋姓名
+        <input id="staffSearch" autocomplete="off" placeholder="輸入姓名關鍵字">
+      </label>
+      <button id="staffRefresh" type="button">重新整理</button>
+    </section>
+
+    <section class="stats staff-stats" id="staffStats"></section>
+    <p class="message" id="staffMessage" aria-live="polite"></p>
+    <section class="panel staff-list" id="staffList"></section>
+  </main>
+
+  <script src="./staff.js?v=20260609132000"></script>
+</body>
+</html>

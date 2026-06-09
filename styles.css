@@ -206,6 +206,64 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
 .stat small { display: block; margin-top: 4px; color: var(--gold); font-weight: 900; }
 .bottom-stats { margin-top: 16px; }
 .bottom-stats-head h2, .bottom-stats-head p { margin-bottom: 0; }
+.staff-app {
+  max-width: 920px;
+}
+.staff-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+.staff-hero h1 {
+  margin-bottom: 6px;
+}
+.staff-hero p {
+  margin-bottom: 0;
+}
+.staff-toolbar {
+  display: grid;
+  grid-template-columns: 180px 150px minmax(220px, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+  margin: 16px 0;
+}
+.staff-stats {
+  margin-bottom: 12px;
+}
+.staff-list {
+  display: grid;
+  gap: 8px;
+}
+.staff-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 104px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+}
+.staff-row strong,
+.staff-row span {
+  display: block;
+}
+.staff-row span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.staff-row.done {
+  background: #eefaf6;
+}
+.staff-row.done strong {
+  color: var(--green);
+}
+.staff-row button {
+  min-height: 44px;
+  padding: 10px 12px;
+}
 
 @media (max-width: 760px) {
   .app { width: min(100% - 22px, 1080px); padding-top: 12px; }
@@ -215,4 +273,12 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   .tab { padding: 12px 8px; }
   h1 { font-size: 34px; }
   .roster-head, .bottom-stats-head { align-items: flex-start; flex-direction: column; }
+  .staff-hero,
+  .staff-toolbar,
+  .staff-row {
+    grid-template-columns: 1fr;
+  }
+  .staff-row button {
+    width: 100%;
+  }
 }
