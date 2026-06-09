@@ -9,6 +9,7 @@ const sessionInfo = {
 let lastVoice = "";
 let voiceUnlocked = false;
 let rosterData = { registrations: [], checkins: [] };
+let lastCheckin = null;
 
 function api(path) {
   return `${API_BASE}${path}`;
@@ -167,6 +168,20 @@ function setQuickMessage(ok, text) {
   el.textContent = text;
 }
 
+function setLastCheckin(data) {
+  lastCheckin = data ? { name: data.name, session: data.session } : null;
+  const box = document.getElementById("undoCheckinBox");
+  const text = document.getElementById("undoCheckinText");
+  if (!box || !text) return;
+  if (!lastCheckin) {
+    box.hidden = true;
+    text.textContent = "";
+    return;
+  }
+  text.textContent = `上一筆：${lastCheckin.session}／${lastCheckin.name}`;
+  box.hidden = false;
+}
+
 function renderQuickCheckin() {
   const list = document.getElementById("quickList");
   const sessionSelect = document.getElementById("quickSession");
@@ -254,6 +269,7 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
     setMessage(msg, true, "報到成功");
     document.getElementById("successText").textContent = text;
     box.hidden = false;
+    setLastCheckin(data);
     speak(text);
     form.reset();
     const pinInput = form.querySelector('input[name="pin"]');
@@ -296,12 +312,45 @@ document.getElementById("quickList").addEventListener("click", async (event) => 
     setQuickMessage(true, `${data.name} 報到成功。`);
     document.getElementById("successText").textContent = text;
     document.getElementById("successBox").hidden = false;
+    setLastCheckin(data);
     speak(text);
     await loadRoster();
   } catch (err) {
     setQuickMessage(false, err.message);
     button.disabled = false;
     button.textContent = "報到";
+  }
+});
+
+document.getElementById("undoCheckin").addEventListener("click", async () => {
+  if (!lastCheckin) {
+    setQuickMessage(false, "目前沒有可返回的上一筆報到。");
+    return;
+  }
+  const pin = getCheckinPin();
+  if (!pin) {
+    setQuickMessage(false, "請先在上方 PIN 欄輸入一次 PIN。");
+    checkinPinInput.focus();
+    return;
+  }
+  const undoButton = document.getElementById("undoCheckin");
+  undoButton.disabled = true;
+  undoButton.textContent = "返回中...";
+  try {
+    const data = await postJson("/api/checkin/undo", {
+      pin,
+      session: lastCheckin.session,
+      name: lastCheckin.name
+    });
+    setQuickMessage(true, `${data.name} 已返回為未報到。`);
+    document.getElementById("successBox").hidden = true;
+    setLastCheckin(null);
+    await loadRoster();
+  } catch (err) {
+    setQuickMessage(false, err.message);
+  } finally {
+    undoButton.disabled = false;
+    undoButton.textContent = "返回上一筆報到";
   }
 });
 

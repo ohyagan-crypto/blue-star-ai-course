@@ -292,6 +292,25 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   overflow: auto;
   padding-right: 3px;
 }
+.undo-checkin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 6px 0 12px;
+  padding: 12px;
+  border: 1px solid #ffd3c8;
+  border-radius: 8px;
+  background: #fff4f0;
+}
+.undo-checkin span {
+  color: #7a271a;
+  font-weight: 900;
+}
+.undo-checkin button {
+  min-height: 42px;
+  padding: 10px 12px;
+}
 
 @media (max-width: 760px) {
   .app { width: min(100% - 22px, 1080px); padding-top: 12px; }
@@ -315,5 +334,9 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   }
   .quick-controls {
     grid-template-columns: 1fr;
+  }
+  .undo-checkin {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

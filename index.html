@@ -105,6 +105,10 @@
           <label>快速場次<select id="quickSession"></select></label>
           <label>快速搜尋<input id="quickSearch" autocomplete="off" placeholder="輸入姓名關鍵字"></label>
         </div>
+        <div class="undo-checkin" id="undoCheckinBox" hidden>
+          <span id="undoCheckinText">上一筆報到可返回</span>
+          <button type="button" class="danger" id="undoCheckin">返回上一筆報到</button>
+        </div>
         <p class="message" id="quickMessage" aria-live="polite"></p>
         <div class="quick-list" id="quickList"></div>
       </section>
@@ -131,6 +135,6 @@
       <div class="stats" id="stats" aria-live="polite"></div>
     </section>
   </main>
-  <script src="./script.js?v=20260609133500"></script>
+  <script src="./script.js?v=20260609182000"></script>
 </body>
 </html>
