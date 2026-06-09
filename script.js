@@ -1,4 +1,4 @@
-const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://d223d21ae0ebfa53-203-217-101-116.serveousercontent.com";
+﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://d223d21ae0ebfa53-203-217-101-116.serveousercontent.com";
 const sessions = ["6/9 高雄場", "6/11 台北場", "6/13 台中場"];
 const sessionInfo = {
   "6/9 高雄場": { title: "6/9（二）高雄場", address: "詳細地點待定", transit: "捷運" },
@@ -93,6 +93,10 @@ function speak(text) {
   utterance.pitch = 1.05;
   utterance.volume = 1;
   window.speechSynthesis.speak(utterance);
+}
+
+function checkinVoiceText(data) {
+  return `${data.name} 報名成功`;
 }
 
 function isCanceled(reg) {
@@ -265,7 +269,7 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
   try {
     saveCheckinPin();
     const data = await postJson("/api/checkin", formData(form));
-    const text = `${data.name} 報到成功，歡迎參加 ${data.session} 藍星 AI 網紅進階班。`;
+    const text = checkinVoiceText(data);
     setMessage(msg, true, "報到成功");
     document.getElementById("successText").textContent = text;
     box.hidden = false;
@@ -308,7 +312,7 @@ document.getElementById("quickList").addEventListener("click", async (event) => 
       session: document.getElementById("quickSession").value,
       name: button.dataset.name
     });
-    const text = `${data.name} 報到成功，歡迎參加 ${data.session} 藍星 AI 網紅進階班。`;
+    const text = checkinVoiceText(data);
     setQuickMessage(true, `${data.name} 報到成功。`);
     document.getElementById("successText").textContent = text;
     document.getElementById("successBox").hidden = false;
@@ -366,3 +370,4 @@ document.getElementById("refreshRoster").addEventListener("click", loadRoster);
 
 fillSessionSelects();
 loadRoster();
+
