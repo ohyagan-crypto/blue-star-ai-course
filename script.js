@@ -96,7 +96,7 @@ function speak(text) {
 }
 
 function checkinVoiceText(data) {
-  return `${data.name} 報名成功`;
+  return `${data.name} 報到成功`;
 }
 
 function isCanceled(reg) {
