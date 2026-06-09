@@ -354,6 +354,11 @@ document.getElementById("undoCheckin").addEventListener("click", async () => {
   }
 });
 
+document.getElementById("quickReplayVoice").addEventListener("click", () => {
+  if (lastVoice) speak(lastVoice);
+  else setQuickMessage(false, "目前沒有可播放的報到語音。");
+});
+
 document.getElementById("replayVoice").addEventListener("click", () => {
   if (lastVoice) speak(lastVoice);
 });

@@ -107,7 +107,10 @@
         </div>
         <div class="undo-checkin" id="undoCheckinBox" hidden>
           <span id="undoCheckinText">上一筆報到可返回</span>
-          <button type="button" class="danger" id="undoCheckin">返回上一筆報到</button>
+          <div class="undo-actions">
+            <button type="button" id="quickReplayVoice">播放語音</button>
+            <button type="button" class="danger" id="undoCheckin">返回上一筆報到</button>
+          </div>
         </div>
         <p class="message" id="quickMessage" aria-live="polite"></p>
         <div class="quick-list" id="quickList"></div>
@@ -135,6 +138,6 @@
       <div class="stats" id="stats" aria-live="polite"></div>
     </section>
   </main>
-  <script src="./script.js?v=20260609222000"></script>
+  <script src="./script.js?v=20260609223500"></script>
 </body>
 </html>

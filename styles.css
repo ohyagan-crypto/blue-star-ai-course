@@ -311,6 +311,11 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   min-height: 42px;
   padding: 10px 12px;
 }
+.undo-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
 @media (max-width: 760px) {
   .app { width: min(100% - 22px, 1080px); padding-top: 12px; }
@@ -336,6 +341,10 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
     grid-template-columns: 1fr;
   }
   .undo-checkin {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .undo-actions {
     align-items: stretch;
     flex-direction: column;
   }
