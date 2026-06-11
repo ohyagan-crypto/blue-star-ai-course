@@ -1,4 +1,4 @@
-const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://f9b4cb73e6ba92aa-203-217-101-116.serveousercontent.com";
+﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://dull-feet-swim.loca.lt";
 const sessions = ["6/9 高雄場", "6/11 台北場", "6/13 台中場"];
 
 let rosterData = { registrations: [], checkins: [] };
