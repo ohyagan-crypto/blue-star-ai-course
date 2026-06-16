@@ -6,7 +6,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "地點待定", transit: "13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260616162000";
+const SCRIPT_VERSION = "20260616230500";
 
 let lastVoice = "";
 let voiceUnlocked = false;
@@ -176,7 +176,7 @@ function renderRosterData(data, fromFallback = false) {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
     const checks = (data.checkins || []).filter((item) => item.session === session);
     const checkedIn = checks.filter((check) => regs.some((reg) => reg.name === check.name)).length;
-    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${checkedIn}/${regs.length}</strong><span>${session} 報到/有效報名</span><small>點開看名單</small></button>`;
+    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${regs.length}</strong><span>${session} 有效報名</span><small>點開看名單</small></button>`;
   }).join("");
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
