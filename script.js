@@ -1,9 +1,6 @@
 ﻿﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://nickel-leeds-actor-honors.trycloudflare.com";
-const sessions = ["6/9 高雄場", "6/11 台北場", "6/13 台中場", "7月 AI自媒體課程"];
+const sessions = ["7月 AI自媒體課程"];
 const sessionInfo = {
-  "6/9 高雄場": { title: "6/9（二）高雄場", address: "詳細地點待定", transit: "捷運" },
-  "6/11 台北場": { title: "6/11（四）台北場", address: "台北市中正區忠孝東路一段150號6樓", transit: "捷運善導寺站5號出口" },
-  "6/13 台中場": { title: "6/13（六）台中場", address: "詳細地點待定", transit: "捷運" },
   "7月 AI自媒體課程": { title: "七月 AI 自媒體課程", address: "日期與地點待定", transit: "13:00-17:00" }
 };
 

@@ -52,8 +52,6 @@
             </select>
           </label>
           <label>姓名<input name="name" required autocomplete="name" placeholder="請輸入真實姓名"></label>
-          <label>LINE ID<input name="lineId" placeholder="選填"></label>
-          <label>手機號碼<input name="phone" inputmode="tel" placeholder="選填"></label>
           <label>介紹人<input name="introducer" placeholder="選填"></label>
           <button type="submit">送出報名</button>
           <p class="message" id="registerMessage" aria-live="polite"></p>
@@ -64,11 +62,9 @@
     <section class="view" id="cancel">
       <form class="panel form narrow" id="cancelForm">
         <h2>取消報名</h2>
-        <p class="form-hint">請填寫報名時的場次與姓名。若有同名學員，請補 LINE ID 或手機號碼方便核對。</p>
+        <p class="form-hint">請填寫報名時的場次與姓名。</p>
         <label>場次<select name="session" required></select></label>
         <label>姓名<input name="name" required placeholder="請輸入報名姓名"></label>
-        <label>LINE ID<input name="lineId" placeholder="選填，用於同名核對"></label>
-        <label>手機號碼<input name="phone" inputmode="tel" placeholder="選填，用於同名核對"></label>
         <label>取消原因<input name="reason" placeholder="選填"></label>
         <button type="submit" class="danger">確認取消報名</button>
         <p class="message" id="cancelMessage" aria-live="polite"></p>

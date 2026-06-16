@@ -1,5 +1,5 @@
 ﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://nickel-leeds-actor-honors.trycloudflare.com";
-const sessions = ["6/9 高雄場", "6/11 台北場", "6/13 台中場", "7月 AI自媒體課程"];
+const sessions = ["7月 AI自媒體課程"];
 
 let rosterData = { registrations: [], checkins: [] };
 
