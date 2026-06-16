@@ -40,8 +40,6 @@ function fillSessionSelects() {
   document.querySelectorAll('select[name="session"]').forEach((select) => {
     select.innerHTML = options;
   });
-  const quickSession = document.getElementById("quickSession");
-  if (quickSession) quickSession.innerHTML = sessions.map((session) => `<option value="${session}">${session}</option>`).join("");
 
   document.getElementById("sessionList").innerHTML = sessions.map((session) => {
     const info = sessionInfo[session];
@@ -189,10 +187,10 @@ function setLastCheckin(data) {
 
 function renderQuickCheckin() {
   const list = document.getElementById("quickList");
-  const sessionSelect = document.getElementById("quickSession");
+  const sessionSelect = document.querySelector('#checkinForm select[name="session"]');
   if (!list || !sessionSelect) return;
   const session = sessionSelect.value || sessions[0];
-  const keyword = String(document.getElementById("quickSearch")?.value || "").trim().toLowerCase();
+  const keyword = String(document.querySelector('#checkinForm input[name="name"]')?.value || "").trim().toLowerCase();
   const checked = checkedNames(session);
   const regs = (rosterData.registrations || [])
     .filter((item) => item.session === session && !isCanceled(item))
@@ -292,8 +290,8 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
 const checkinPinInput = document.querySelector('#checkinForm input[name="pin"]');
 checkinPinInput.value = localStorage.getItem("blueCourseStaffPin") || "";
 checkinPinInput.addEventListener("change", saveCheckinPin);
-document.getElementById("quickSession").addEventListener("change", renderQuickCheckin);
-document.getElementById("quickSearch").addEventListener("input", renderQuickCheckin);
+document.querySelector('#checkinForm select[name="session"]').addEventListener("change", renderQuickCheckin);
+document.querySelector('#checkinForm input[name="name"]').addEventListener("input", renderQuickCheckin);
 document.getElementById("quickRefresh").addEventListener("click", () => loadRoster().catch(() => setQuickMessage(false, "名單讀取失敗，請稍後再試。")));
 document.getElementById("quickList").addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-name]");
@@ -310,7 +308,7 @@ document.getElementById("quickList").addEventListener("click", async (event) => 
   try {
     const data = await postJson("/api/checkin", {
       pin,
-      session: document.getElementById("quickSession").value,
+      session: document.querySelector('#checkinForm select[name="session"]').value,
       name: button.dataset.name
     });
     const text = checkinVoiceText(data);

@@ -125,6 +125,25 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   margin: 16px auto 0;
   text-align: center;
 }
+.inline-success {
+  max-width: none;
+  margin: 14px 0;
+  padding: 16px;
+  border: 1px solid #b8ead7;
+  border-radius: 8px;
+  background: #f0fff9;
+}
+.inline-success .ok {
+  width: 54px;
+  height: 54px;
+  font-size: 34px;
+}
+.inline-success h2 {
+  margin-bottom: 6px;
+}
+.inline-success p {
+  margin-bottom: 12px;
+}
 .ok {
   width: 74px;
   height: 74px;
@@ -264,9 +283,10 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   min-height: 44px;
   padding: 10px 12px;
 }
-.quick-checkin {
+.quick-checkin,
+.checkin-panel {
   max-width: 860px;
-  margin: 16px auto 0;
+  margin: 0 auto;
 }
 .quick-head {
   display: flex;
@@ -284,6 +304,18 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   grid-template-columns: 220px minmax(220px, 1fr);
   gap: 12px;
   margin-bottom: 12px;
+}
+.checkin-form {
+  grid-template-columns: 150px minmax(180px, 1fr) minmax(220px, 1.3fr);
+  align-items: end;
+  margin-bottom: 12px;
+}
+.checkin-form label:nth-of-type(4),
+.checkin-form .message {
+  grid-column: 1 / -1;
+}
+.checkin-form button {
+  min-height: 50px;
 }
 .quick-list {
   display: grid;
@@ -337,8 +369,13 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
     align-items: stretch;
     flex-direction: column;
   }
-  .quick-controls {
+  .quick-controls,
+  .checkin-form {
     grid-template-columns: 1fr;
+  }
+  .checkin-form label:nth-of-type(4),
+  .checkin-form .message {
+    grid-column: auto;
   }
   .undo-checkin {
     align-items: stretch;

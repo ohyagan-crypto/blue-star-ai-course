@@ -18,7 +18,7 @@
     <nav class="tabs" aria-label="功能選單">
       <button class="tab active" type="button" data-view="register">課程報名</button>
       <button class="tab" type="button" data-view="cancel">取消報名</button>
-      <button class="tab" type="button" data-view="checkin">學員簽到</button>
+      <button class="tab" type="button" data-view="checkin">簽到</button>
       <button class="tab" type="button" data-view="roster">名單統計</button>
     </nav>
 
@@ -72,35 +72,30 @@
     </section>
 
     <section class="view" id="checkin">
-      <form class="panel form narrow" id="checkinForm">
-        <h2>學員簽到處</h2>
-        <label>PIN<input name="pin" type="password" inputmode="numeric" maxlength="4" placeholder="請輸入 PIN" required></label>
-        <label>場次<select name="session" required></select></label>
-        <label>姓名<input name="name" required placeholder="請輸入學員姓名"></label>
-        <label>備註<input name="note" placeholder="選填"></label>
-        <button type="submit">送出簽到</button>
-        <p class="message" id="checkinMessage" aria-live="polite"></p>
-      </form>
-
-      <section class="panel success" id="successBox" hidden>
-        <div class="ok">✓</div>
-        <h2>報到成功</h2>
-        <p id="successText"></p>
-        <button type="button" id="replayVoice">播放語音</button>
-      </section>
-
-      <section class="panel quick-checkin">
+      <section class="panel checkin-panel">
         <div class="quick-head">
           <div>
-            <h2>工作人員快速簽到</h2>
-            <p>PIN 輸入一次後，可搜尋姓名並直接點報到。</p>
+            <h2>簽到處</h2>
+            <p>輸入 PIN、選擇場次後，可手動送出簽到，也可以搜尋姓名直接點報到。</p>
           </div>
           <button type="button" id="quickRefresh">更新名單</button>
         </div>
-        <div class="quick-controls">
-          <label>快速場次<select id="quickSession"></select></label>
-          <label>快速搜尋<input id="quickSearch" autocomplete="off" placeholder="輸入姓名關鍵字"></label>
-        </div>
+        <form class="form checkin-form" id="checkinForm">
+          <label>PIN<input name="pin" type="password" inputmode="numeric" maxlength="4" placeholder="請輸入 PIN" required></label>
+          <label>場次<select name="session" required></select></label>
+          <label>姓名／搜尋<input name="name" required autocomplete="off" placeholder="請輸入或搜尋學員姓名"></label>
+          <label>備註<input name="note" placeholder="選填"></label>
+          <button type="submit">送出簽到</button>
+          <p class="message" id="checkinMessage" aria-live="polite"></p>
+        </form>
+
+        <section class="success inline-success" id="successBox" hidden>
+          <div class="ok">✓</div>
+          <h2>報到成功</h2>
+          <p id="successText"></p>
+          <button type="button" id="replayVoice">播放語音</button>
+        </section>
+
         <div class="undo-checkin" id="undoCheckinBox" hidden>
           <span id="undoCheckinText">上一筆報到可返回</span>
           <div class="undo-actions">
@@ -134,6 +129,6 @@
       <div class="stats" id="stats" aria-live="polite"></div>
     </section>
   </main>
-  <script src="./script.js?v=20260616120500"></script>
+  <script src="./script.js?v=20260616122500"></script>
 </body>
 </html>
