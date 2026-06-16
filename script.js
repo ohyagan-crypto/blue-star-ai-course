@@ -6,6 +6,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "地點待定", transit: "13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "地點待定", transit: "13:00-17:00" }
 };
+const SCRIPT_VERSION = "20260616123500";
 
 let lastVoice = "";
 let voiceUnlocked = false;
@@ -55,6 +56,17 @@ function setView(id) {
 
 function formData(form) {
   return Object.fromEntries(new FormData(form).entries());
+}
+
+function updateIntroducerRequirement(form = document.getElementById("registerForm")) {
+  const type = form?.elements.participantType?.value || "";
+  const input = form?.elements.introducer;
+  const label = document.getElementById("introducerLabel");
+  if (!input || !label) return;
+  const required = type === "新人";
+  input.required = required;
+  input.placeholder = required ? "新人必填，請填寫介紹人" : "複訓選填";
+  label.firstChild.textContent = required ? "介紹人（新人必填）" : "介紹人（複訓選填）";
 }
 
 function setMessage(el, ok, text) {
@@ -215,18 +227,29 @@ document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => setView(tab.dataset.view));
 });
 
+document.querySelector('#registerForm select[name="participantType"]').addEventListener("change", (event) => {
+  updateIntroducerRequirement(event.currentTarget.form);
+});
+
 document.getElementById("registerForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   unlockVoice();
   const form = event.currentTarget;
   const btn = form.querySelector("button");
   const msg = document.getElementById("registerMessage");
+  const payload = formData(form);
+  if (payload.participantType === "新人" && !String(payload.introducer || "").trim()) {
+    setMessage(msg, false, "新人報名請填寫介紹人；複訓可選填。");
+    form.elements.introducer.focus();
+    return;
+  }
   btn.disabled = true;
   btn.textContent = "送出中...";
   try {
-    const data = await postJson("/api/register", formData(form));
+    const data = await postJson("/api/register", payload);
     setMessage(msg, true, `${data.name} 已完成 ${data.session} 報名`);
     form.reset();
+    updateIntroducerRequirement(form);
     await loadRoster();
   } catch (err) {
     setMessage(msg, false, err.message);
@@ -368,5 +391,6 @@ document.getElementById("replayVoice").addEventListener("click", () => {
 document.getElementById("refreshRoster").addEventListener("click", loadRoster);
 
 fillSessionSelects();
+updateIntroducerRequirement();
 loadRoster();
 
