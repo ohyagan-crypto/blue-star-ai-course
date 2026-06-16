@@ -1,7 +1,10 @@
-﻿﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://nickel-leeds-actor-honors.trycloudflare.com";
-const sessions = ["7月 AI自媒體課程"];
+﻿﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://adjust-practitioners-committee-chelsea.trycloudflare.com";
+const sessions = ["7/6 台南場", "7/7 高雄場", "7/9 台北場", "7/11 台中場"];
 const sessionInfo = {
-  "7月 AI自媒體課程": { title: "七月 AI 自媒體課程", address: "日期與地點待定", transit: "13:00-17:00" }
+  "7/6 台南場": { title: "7/6（一）台南場", address: "地點待定", transit: "13:00-17:00" },
+  "7/7 高雄場": { title: "7/7（二）高雄場", address: "地點待定", transit: "13:00-17:00" },
+  "7/9 台北場": { title: "7/9（四）台北場", address: "地點待定", transit: "13:00-17:00" },
+  "7/11 台中場": { title: "7/11（六）台中場", address: "地點待定", transit: "13:00-17:00" }
 };
 
 let lastVoice = "";
@@ -368,3 +371,4 @@ document.getElementById("refreshRoster").addEventListener("click", loadRoster);
 
 fillSessionSelects();
 loadRoster();
+

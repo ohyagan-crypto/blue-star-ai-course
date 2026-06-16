@@ -1,5 +1,5 @@
-﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://nickel-leeds-actor-honors.trycloudflare.com";
-const sessions = ["7月 AI自媒體課程"];
+﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://adjust-practitioners-committee-chelsea.trycloudflare.com";
+const sessions = ["7/6 台南場", "7/7 高雄場", "7/9 台北場", "7/11 台中場"];
 
 let rosterData = { registrations: [], checkins: [] };
 
@@ -132,3 +132,4 @@ document.getElementById("staffList").addEventListener("click", (event) => {
 });
 
 loadRoster().catch((err) => setMessage(false, err.message));
+
