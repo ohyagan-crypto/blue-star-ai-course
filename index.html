@@ -128,9 +128,22 @@
         <p class="eyebrow">Check-in Overview</p>
         <h2>報到統計</h2>
       </div>
+      <p class="stats-hint">點開場次可查看目前已報名名單。</p>
       <div class="stats" id="stats" aria-live="polite"></div>
     </section>
+
+    <div class="modal" id="appModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <section class="modal-card" tabindex="-1">
+        <button class="modal-close" type="button" aria-label="關閉彈窗" data-close-modal>×</button>
+        <div class="ok modal-ok">✓</div>
+        <h2 id="modalTitle">已報名成功</h2>
+        <p id="modalMessage"></p>
+        <div class="modal-body" id="modalBody"></div>
+        <button type="button" class="modal-action" data-close-modal>關閉</button>
+      </section>
+    </div>
   </main>
-  <script src="./script.js?v=20260616130000"></script>
+  <script src="./script.js?v=20260616151000"></script>
 </body>
 </html>

@@ -17,6 +17,7 @@ body {
   color: var(--ink);
   background: linear-gradient(135deg, rgba(11,59,117,.96), rgba(16,34,74,.94));
 }
+body.modal-open { overflow: hidden; }
 .app {
   width: min(1080px, calc(100% - 28px));
   margin: 0 auto;
@@ -223,8 +224,115 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
 .stat strong { display: block; font-size: 28px; color: var(--blue); }
 .stat span { font-size: 13px; color: var(--muted); }
 .stat small { display: block; margin-top: 4px; color: var(--gold); font-weight: 900; }
+.stat-button {
+  width: 100%;
+  text-align: left;
+  background: var(--soft);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.stat-button:hover,
+.stat-button:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(0,143,122,.45);
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  outline: none;
+}
 .bottom-stats { margin-top: 16px; }
 .bottom-stats-head h2, .bottom-stats-head p { margin-bottom: 0; }
+.stats-hint {
+  margin: -4px 0 12px;
+  font-size: 14px;
+}
+.modal[hidden] { display: none; }
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 21, 40, .68);
+  backdrop-filter: blur(6px);
+}
+.modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  max-height: min(84vh, 720px);
+  overflow: auto;
+  padding: 26px;
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.36);
+}
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 999px;
+  background: #eef3f8;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1;
+}
+.modal-ok {
+  width: 64px;
+  height: 64px;
+  font-size: 40px;
+}
+.modal-card h2 {
+  margin-bottom: 8px;
+}
+.modal-card p {
+  margin-bottom: 14px;
+}
+.modal-body {
+  text-align: left;
+}
+.modal-list {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 4px;
+}
+.modal-person {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+}
+.modal-person strong,
+.modal-person span,
+.modal-person small {
+  display: block;
+}
+.modal-person span {
+  margin-top: 4px;
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 900;
+}
+.modal-person small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.modal-empty {
+  text-align: center;
+}
+.modal-action {
+  margin-top: 16px;
+  min-width: 132px;
+}
 .staff-app {
   max-width: 920px;
 }

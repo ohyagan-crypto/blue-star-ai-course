@@ -6,7 +6,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "地點待定", transit: "13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260616130000";
+const SCRIPT_VERSION = "20260616151000";
 
 let lastVoice = "";
 let voiceUnlocked = false;
@@ -74,6 +74,57 @@ function setMessage(el, ok, text) {
   el.textContent = text;
 }
 
+function showModal({ title, message = "", body = "", okIcon = true }) {
+  const modal = document.getElementById("appModal");
+  const card = modal?.querySelector(".modal-card");
+  if (!modal || !card) return;
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalMessage").textContent = message;
+  document.getElementById("modalBody").innerHTML = body;
+  document.querySelector(".modal-ok").hidden = !okIcon;
+  modal.hidden = false;
+  document.body.classList.add("modal-open");
+  card.focus();
+}
+
+function closeModal() {
+  const modal = document.getElementById("appModal");
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.classList.remove("modal-open");
+}
+
+function getActiveRegistrations(session) {
+  return (rosterData.registrations || []).filter((item) => item.session === session && !isCanceled(item));
+}
+
+function getSessionCheckins(session) {
+  return (rosterData.checkins || []).filter((item) => item.session === session);
+}
+
+function renderRegistrationList(session) {
+  const regs = getActiveRegistrations(session);
+  const checked = new Set(getSessionCheckins(session).map((item) => item.name));
+  if (!regs.length) return `<p class="modal-empty">目前這個場次尚無有效報名資料。</p>`;
+  return `
+    <div class="modal-list">
+      ${regs.map((reg, index) => {
+        const name = escapeHtml(reg.name);
+        const type = escapeHtml(reg.participantType || reg.type || "未填身分");
+        const status = checked.has(reg.name) ? "已報到" : "未報到";
+        const note = escapeHtml(reg.createdAt || reg.note || "");
+        return `
+          <article class="modal-person">
+            <strong>${index + 1}. ${name}</strong>
+            <span>${type} · ${status}</span>
+            ${note ? `<small>${note}</small>` : ""}
+          </article>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
 async function postJson(path, data) {
   let res;
   try {
@@ -125,7 +176,7 @@ function renderRosterData(data, fromFallback = false) {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
     const checks = (data.checkins || []).filter((item) => item.session === session);
     const checkedIn = checks.filter((check) => regs.some((reg) => reg.name === check.name)).length;
-    return `<div class="stat"><strong>${checkedIn}/${regs.length}</strong><span>${session} 報到/有效報名</span></div>`;
+    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${checkedIn}/${regs.length}</strong><span>${session} 報到/有效報名</span><small>點開看名單</small></button>`;
   }).join("");
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
@@ -246,6 +297,10 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   try {
     const data = await postJson("/api/register", payload);
     setMessage(msg, true, `${data.name} 已完成 ${data.session} 報名`);
+    showModal({
+      title: "已報名成功",
+      message: `${data.name} 已完成 ${data.session} 報名。`
+    });
     form.reset();
     updateIntroducerRequirement(form);
     await loadRoster();
@@ -387,6 +442,24 @@ document.getElementById("replayVoice").addEventListener("click", () => {
   if (lastVoice) speak(lastVoice);
 });
 document.getElementById("refreshRoster").addEventListener("click", loadRoster);
+document.querySelectorAll("[data-close-modal]").forEach((button) => {
+  button.addEventListener("click", closeModal);
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeModal();
+});
+document.getElementById("stats").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-session]");
+  if (!button) return;
+  const session = button.dataset.session;
+  const count = getActiveRegistrations(session).length;
+  showModal({
+    title: `${session} 已報名名單`,
+    message: `目前有效報名 ${count} 位。`,
+    body: renderRegistrationList(session),
+    okIcon: false
+  });
+});
 
 fillSessionSelects();
 updateIntroducerRequirement();
