@@ -36,12 +36,12 @@ function currentSession() {
 }
 
 function getPin() {
-  return clean(document.getElementById("staffPin").value || localStorage.getItem("blueCourseStaffPin"));
+  return clean(document.getElementById("staffPin").value);
 }
 
-function savePin() {
-  const pin = clean(document.getElementById("staffPin").value);
-  if (pin) localStorage.setItem("blueCourseStaffPin", pin);
+function clearPin() {
+  localStorage.removeItem("blueCourseStaffPin");
+  document.getElementById("staffPin").value = "";
 }
 
 function checkedNames(session) {
@@ -100,7 +100,6 @@ async function checkIn(name, button) {
     return;
   }
 
-  savePin();
   button.disabled = true;
   button.textContent = "簽到中...";
   try {
@@ -112,6 +111,7 @@ async function checkIn(name, button) {
     const body = await res.json().catch(() => ({}));
     if (!res.ok || !body.success) throw new Error(body.message || "簽到失敗，請稍後再試。");
     setMessage(true, `${name} 報到成功。`);
+    clearPin();
     await loadRoster();
   } catch (err) {
     setMessage(false, err.message);
@@ -120,8 +120,7 @@ async function checkIn(name, button) {
   }
 }
 
-document.getElementById("staffPin").value = localStorage.getItem("blueCourseStaffPin") || "";
-document.getElementById("staffPin").addEventListener("change", savePin);
+clearPin();
 document.getElementById("staffSession").addEventListener("change", renderList);
 document.getElementById("staffSearch").addEventListener("input", renderList);
 document.getElementById("staffRefresh").addEventListener("click", () => loadRoster().catch((err) => setMessage(false, err.message)));

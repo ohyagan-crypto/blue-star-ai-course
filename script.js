@@ -213,12 +213,13 @@ async function loadRoster() {
 
 function getCheckinPin() {
   const pinInput = document.querySelector('#checkinForm input[name="pin"]');
-  return String(pinInput?.value || localStorage.getItem("blueCourseStaffPin") || "").trim();
+  return String(pinInput?.value || "").trim();
 }
 
-function saveCheckinPin() {
-  const pin = getCheckinPin();
-  if (pin) localStorage.setItem("blueCourseStaffPin", pin);
+function clearCheckinPin() {
+  localStorage.removeItem("blueCourseStaffPin");
+  const pinInput = document.querySelector('#checkinForm input[name="pin"]');
+  if (pinInput) pinInput.value = "";
 }
 
 function checkedNames(session) {
@@ -342,7 +343,6 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
   btn.disabled = true;
   btn.textContent = "簽到中...";
   try {
-    saveCheckinPin();
     const data = await postJson("/api/checkin", formData(form));
     const text = checkinVoiceText(data);
     setMessage(msg, true, "報到成功");
@@ -351,8 +351,7 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
     setLastCheckin(data);
     speak(text);
     form.reset();
-    const pinInput = form.querySelector('input[name="pin"]');
-    if (pinInput) pinInput.value = localStorage.getItem("blueCourseStaffPin") || "";
+    clearCheckinPin();
     await loadRoster();
   } catch (err) {
     box.hidden = true;
@@ -364,8 +363,7 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
 });
 
 const checkinPinInput = document.querySelector('#checkinForm input[name="pin"]');
-checkinPinInput.value = localStorage.getItem("blueCourseStaffPin") || "";
-checkinPinInput.addEventListener("change", saveCheckinPin);
+clearCheckinPin();
 document.querySelector('#checkinForm select[name="session"]').addEventListener("change", renderQuickCheckin);
 document.querySelector('#checkinForm input[name="name"]').addEventListener("input", renderQuickCheckin);
 document.getElementById("quickRefresh").addEventListener("click", () => loadRoster().catch(() => setQuickMessage(false, "名單讀取失敗，請稍後再試。")));
@@ -374,11 +372,10 @@ document.getElementById("quickList").addEventListener("click", async (event) => 
   if (!button) return;
   const pin = getCheckinPin();
   if (!pin) {
-    setQuickMessage(false, "請先在上方 PIN 欄輸入一次 PIN。");
+    setQuickMessage(false, "請先在上方 PIN 欄輸入 PIN。");
     checkinPinInput.focus();
     return;
   }
-  saveCheckinPin();
   button.disabled = true;
   button.textContent = "簽到中...";
   try {
@@ -393,6 +390,7 @@ document.getElementById("quickList").addEventListener("click", async (event) => 
     document.getElementById("successBox").hidden = false;
     setLastCheckin(data);
     speak(text);
+    clearCheckinPin();
     await loadRoster();
   } catch (err) {
     setQuickMessage(false, err.message);
@@ -408,7 +406,7 @@ document.getElementById("undoCheckin").addEventListener("click", async () => {
   }
   const pin = getCheckinPin();
   if (!pin) {
-    setQuickMessage(false, "請先在上方 PIN 欄輸入一次 PIN。");
+    setQuickMessage(false, "請先在上方 PIN 欄輸入 PIN。");
     checkinPinInput.focus();
     return;
   }
@@ -424,6 +422,7 @@ document.getElementById("undoCheckin").addEventListener("click", async () => {
     setQuickMessage(true, `${data.name} 已返回為未報到。`);
     document.getElementById("successBox").hidden = true;
     setLastCheckin(null);
+    clearCheckinPin();
     await loadRoster();
   } catch (err) {
     setQuickMessage(false, err.message);
