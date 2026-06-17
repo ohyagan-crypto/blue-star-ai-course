@@ -3,147 +3,87 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>藍星 AI 自媒體基礎班（七月）｜報名簽到系統</title>
-  <meta name="description" content="藍星 AI 自媒體基礎班七月場次報名、取消報名、學員簽到與名單統計系統。">
-  <link rel="stylesheet" href="./styles.css">
+  <title>藍新科技課程點餐單</title>
+  <meta name="description" content="藍新科技課程點餐單，整理 AI 自媒體、剪映實戰、NCN 周三課程等課程項目，可加入選課清單並產生摘要。">
+  <link rel="stylesheet" href="./styles.css?v=20260617205500">
 </head>
 <body>
-  <main class="app">
-    <section class="hero">
-      <p class="eyebrow">Blue Star AI Course</p>
-      <h1>藍星 AI 自媒體基礎班（七月）</h1>
-      <p>AI 課程大升級，最強 AI 智能體「藍星龍蝦」震撼登場。</p>
-    </section>
-
-    <nav class="tabs" aria-label="功能選單">
-      <button class="tab active" type="button" data-view="register">課程報名</button>
-      <button class="tab" type="button" data-view="cancel">取消報名</button>
-      <button class="tab" type="button" data-view="checkin">簽到</button>
-      <button class="tab" type="button" data-view="roster">名單統計</button>
-    </nav>
-
-    <section class="view active" id="register">
-      <div class="grid">
-        <article class="panel course">
-          <p class="eyebrow">課程資訊</p>
-          <h2>AI 課程大升級</h2>
-          <ul class="benefits">
-            <li>運用自媒體做個人 IP，建立人設品牌，打造個人 IP 大軍。</li>
-            <li>打造私人 AI 代理人成為你的 AI 員工，協助自媒體、報表、PPT、剪輯，提升工作效率。</li>
-            <li>AI 輔助賣產品與行銷，學會用 AI 規劃產品賣點，提升成交率。</li>
-            <li>智能體快速製作網站後台，快速建立個人品牌頁、產品頁、電商平台。</li>
-            <li>智能體操作即夢製作 AI 網紅，自動打造 AI 網紅形象，幫你上鏡帶貨賣產品。</li>
-          </ul>
-          <div class="course-meta">
-            <div><strong>主講老師</strong><span>庫里老師、小豪老師</span></div>
-            <div><strong>課程時間</strong><span>13:00-17:00</span></div>
-            <div><strong>課程費用</strong><span>新人限時 1,000 台幣；複訓 100 台幣場地費</span></div>
-            <div><strong>課程福利</strong><span>新人參與、邀請 3 位新人，即贈藍星 AI 聚合平台 15 日（內含付費版 ChatGPT、Gemini、Claude、Seedance 等 AI 工具），價值 2,000 台幣。</span></div>
-          </div>
-          <div class="session-list" id="sessionList"></div>
-        </article>
-
-        <form class="panel form" id="registerForm">
-          <h2>課程報名表</h2>
-          <label>場次<select name="session" required></select></label>
-          <label>報名身分
-            <select name="participantType" required>
-              <option value="">請選擇</option>
-              <option value="新人">新人</option>
-              <option value="複訓">複訓</option>
-            </select>
-          </label>
-          <label>姓名<input name="name" required autocomplete="name" placeholder="請輸入真實姓名"></label>
-          <label id="introducerLabel">介紹人<input name="introducer" placeholder="新人必填，複訓選填"></label>
-          <button type="submit">送出報名</button>
-          <p class="message" id="registerMessage" aria-live="polite"></p>
-        </form>
+  <main class="app order-app">
+    <section class="hero order-hero">
+      <div>
+        <p class="eyebrow">Lanxin Course Menu</p>
+        <h1>藍新科技課程點餐單</h1>
+        <p>把你給過的課程整理成菜單，學員可以像點餐一樣選課，最後產生選課摘要。</p>
       </div>
+      <aside class="hero-badge">
+        <span>目前課程</span>
+        <strong>3</strong>
+        <small>可直接選課</small>
+      </aside>
     </section>
 
-    <section class="view" id="cancel">
-      <form class="panel form narrow" id="cancelForm">
-        <h2>取消報名</h2>
-        <p class="form-hint">請填寫報名時的場次與姓名。</p>
-        <label>場次<select name="session" required></select></label>
-        <label>姓名<input name="name" required placeholder="請輸入報名姓名"></label>
-        <label>取消原因<input name="reason" placeholder="選填"></label>
-        <button type="submit" class="danger">確認取消報名</button>
-        <p class="message" id="cancelMessage" aria-live="polite"></p>
-      </form>
-    </section>
-
-    <section class="view" id="checkin">
-      <section class="panel checkin-panel">
-        <div class="quick-head">
+    <section class="order-layout">
+      <section class="panel menu-panel">
+        <div class="menu-top">
           <div>
-            <h2>簽到處</h2>
-            <p>每次輸入 PIN、選擇場次後，可手動送出簽到，也可以搜尋姓名直接點報到。</p>
+            <p class="eyebrow">課程菜單</p>
+            <h2>選擇想報名的課程</h2>
           </div>
-          <button type="button" id="quickRefresh">更新名單</button>
+          <div class="menu-tools">
+            <input id="searchInput" type="search" placeholder="搜尋課程、主題或地點" autocomplete="off">
+            <select id="categorySelect" aria-label="課程分類">
+              <option value="全部">全部課程</option>
+              <option value="AI 自媒體">AI 自媒體</option>
+              <option value="影音剪輯">影音剪輯</option>
+              <option value="NCN">NCN</option>
+            </select>
+          </div>
         </div>
-        <form class="form checkin-form" id="checkinForm">
-          <label>PIN<input name="pin" type="password" inputmode="numeric" maxlength="4" placeholder="請輸入 PIN" required></label>
-          <label>場次<select name="session" required></select></label>
-          <label>姓名／搜尋<input name="name" required autocomplete="off" placeholder="請輸入或搜尋學員姓名"></label>
-          <label>備註<input name="note" placeholder="選填"></label>
-          <button type="submit">送出簽到</button>
-          <p class="message" id="checkinMessage" aria-live="polite"></p>
+        <div class="course-menu" id="courseMenu"></div>
+      </section>
+
+      <aside class="panel cart-panel">
+        <div class="cart-head">
+          <div>
+            <p class="eyebrow">選課清單</p>
+            <h2>已選課程</h2>
+          </div>
+          <button type="button" class="clear-button" id="clearCart">清空</button>
+        </div>
+        <div class="cart-list empty" id="cartList">尚未加入課程</div>
+
+        <form class="order-form" id="orderForm">
+          <label>姓名
+            <input name="name" placeholder="請輸入姓名">
+          </label>
+          <label>聯絡方式
+            <input name="contact" placeholder="Line、電話或備註">
+          </label>
+          <label>備註
+            <textarea name="note" rows="4" placeholder="例如：想報台中場、幫朋友一起報名"></textarea>
+          </label>
+          <div class="order-total">
+            <span>課程數</span>
+            <strong id="totalCount">0</strong>
+          </div>
+          <button type="submit">產生選課摘要</button>
         </form>
+      </aside>
+    </section>
 
-        <section class="success inline-success" id="successBox" hidden>
-          <div class="ok">✓</div>
-          <h2>報到成功</h2>
-          <p id="successText"></p>
-          <button type="button" id="replayVoice">播放語音</button>
-        </section>
-
-        <div class="undo-checkin" id="undoCheckinBox" hidden>
-          <span id="undoCheckinText">上一筆報到可返回</span>
-          <div class="undo-actions">
-            <button type="button" id="quickReplayVoice">播放語音</button>
-            <button type="button" class="danger" id="undoCheckin">返回上一筆報到</button>
-          </div>
+    <dialog id="summaryDialog">
+      <section class="summary-dialog">
+        <p class="eyebrow">選課摘要</p>
+        <h2>藍新科技課程點餐單</h2>
+        <pre id="summaryText"></pre>
+        <div class="summary-actions">
+          <button type="button" id="copySummary">複製摘要</button>
+          <button type="button" class="clear-button" id="closeSummary">關閉</button>
         </div>
-        <p class="message" id="quickMessage" aria-live="polite"></p>
-        <div class="quick-list" id="quickList"></div>
       </section>
-    </section>
-
-    <section class="view" id="roster">
-      <div class="panel">
-        <div class="roster-head">
-          <h2>報名與簽到名單</h2>
-          <div class="roster-actions">
-            <a class="sheet-link" id="sheetLink" href="#" target="_blank" rel="noopener">開啟 Google Sheet</a>
-            <button type="button" id="refreshRoster">更新</button>
-          </div>
-        </div>
-        <div class="roster" id="rosterList"></div>
-      </div>
-    </section>
-
-    <section class="bottom-stats panel" aria-label="報到統計">
-      <div class="bottom-stats-head">
-        <p class="eyebrow">Check-in Overview</p>
-        <h2>報到統計</h2>
-      </div>
-      <p class="stats-hint">點開場次可查看目前已報名名單。</p>
-      <div class="stats" id="stats" aria-live="polite"></div>
-    </section>
-
-    <div class="modal" id="appModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
-      <div class="modal-backdrop" data-close-modal></div>
-      <section class="modal-card" tabindex="-1">
-        <button class="modal-close" type="button" aria-label="關閉彈窗" data-close-modal>×</button>
-        <div class="ok modal-ok">✓</div>
-        <h2 id="modalTitle">已報名成功</h2>
-        <p id="modalMessage"></p>
-        <div class="modal-body" id="modalBody"></div>
-        <button type="button" class="modal-action" data-close-modal>關閉</button>
-      </section>
-    </div>
+    </dialog>
   </main>
-  <script src="./script.js?v=20260617182000"></script>
+
+  <script src="./script.js?v=20260617205500"></script>
 </body>
 </html>
