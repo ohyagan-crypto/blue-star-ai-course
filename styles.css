@@ -33,24 +33,6 @@ body.modal-open { overflow: hidden; }
   padding: 26px;
   border-top: 5px solid var(--gold);
 }
-.hero-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 340px);
-  align-items: center;
-  gap: 22px;
-}
-.hero-actions { margin-top: 18px; }
-.hero-lead {
-  color: var(--blue);
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1.55;
-  margin-bottom: 8px;
-}
-.hero-intro {
-  max-width: 720px;
-  margin-bottom: 0;
-}
 .eyebrow {
   color: var(--gold);
   font-size: 12px;
@@ -68,7 +50,6 @@ p { color: var(--muted); line-height: 1.7; }
   gap: 10px;
   margin: 16px 0;
 }
-.tabs.compact-tabs { grid-template-columns: repeat(3, 1fr); }
 button {
   border: 0;
   border-radius: 8px;
@@ -102,11 +83,6 @@ button.danger { background: linear-gradient(135deg, #b42318, #7a271a); }
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
-}
-.course-note {
-  margin: 18px 0 0;
-  color: var(--blue);
-  font-weight: 900;
 }
 .course-meta div, .session-list div, .stat, .roster-card {
   border: 1px solid var(--line);
@@ -379,7 +355,6 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   gap: 12px;
   margin: 16px 0;
 }
-.staff-toolbar.no-pin { grid-template-columns: 220px minmax(240px, 1fr) auto; }
 .staff-stats {
   margin-bottom: 12px;
 }
@@ -397,7 +372,6 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   border-radius: 8px;
   background: var(--soft);
 }
-.staff-row.no-action { grid-template-columns: 1fr; }
 .staff-row strong,
 .staff-row span {
   display: block;
@@ -488,7 +462,6 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   .grid, .course-meta, .roster, .stats { grid-template-columns: 1fr; }
   .panel, .hero { padding: 18px; }
   .tabs { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-  .hero-split { grid-template-columns: 1fr; }
   .tab { padding: 12px 8px; }
   h1 { font-size: 34px; }
   .roster-head, .bottom-stats-head { align-items: flex-start; flex-direction: column; }
