@@ -3,22 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>藍星 AI 自媒體基礎班（七月）｜報名簽到系統</title>
-  <meta name="description" content="藍星 AI 自媒體基礎班七月場次報名、取消報名、學員簽到與名單統計系統。">
+  <title>藍星公司｜周三剪映實戰班報名系統</title>
+  <meta name="description" content="藍星公司周三剪映實戰班報名、取消報名與名單統計系統。">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <main class="app">
     <section class="hero">
-      <p class="eyebrow">Blue Star AI Course</p>
-      <h1>藍星 AI 自媒體基礎班（七月）</h1>
-      <p>AI 課程大升級，最強 AI 智能體「藍星龍蝦」震撼登場。</p>
+      <div>
+        <p class="eyebrow">Blue Star Wednesday Course</p>
+        <h1>藍星公司周三剪映實戰班</h1>
+        <p class="hero-lead">學會剪映＋數字人克隆，打造抖音百萬觀看短視頻！</p>
+        <p>這堂課不講理論，直接教你實戰：怎麼剪、怎麼做、怎麼讓影片更有流量。</p>
+        <div class="hero-actions">
+          <button type="button" data-jump-register>立即報名</button>
+        </div>
+      </div>
     </section>
 
-    <nav class="tabs" aria-label="功能選單">
+    <nav class="tabs compact-tabs" aria-label="功能選單">
       <button class="tab active" type="button" data-view="register">課程報名</button>
       <button class="tab" type="button" data-view="cancel">取消報名</button>
-      <button class="tab" type="button" data-view="checkin">簽到</button>
       <button class="tab" type="button" data-view="roster">名單統計</button>
     </nav>
 
@@ -26,20 +31,23 @@
       <div class="grid">
         <article class="panel course">
           <p class="eyebrow">課程資訊</p>
-          <h2>AI 課程大升級</h2>
+          <h2>剪映＋數字人克隆實戰課</h2>
           <ul class="benefits">
-            <li>運用自媒體做個人 IP，建立人設品牌，打造個人 IP 大軍。</li>
-            <li>打造私人 AI 代理人成為你的 AI 員工，協助自媒體、報表、PPT、剪輯，提升工作效率。</li>
-            <li>AI 輔助賣產品與行銷，學會用 AI 規劃產品賣點，提升成交率。</li>
-            <li>智能體快速製作網站後台，快速建立個人品牌頁、產品頁、電商平台。</li>
-            <li>智能體操作即夢製作 AI 網紅，自動打造 AI 網紅形象，幫你上鏡帶貨賣產品。</li>
+            <li>剪映實戰剪輯</li>
+            <li>數字人克隆教學</li>
+            <li>抖音爆款短視頻技巧</li>
+            <li>AI 自媒體內容製作</li>
+            <li>最新智能體技術分享</li>
           </ul>
           <div class="course-meta">
-            <div><strong>主講老師</strong><span>庫里老師、小豪老師</span></div>
-            <div><strong>課程時間</strong><span>13:00-17:00</span></div>
-            <div><strong>課程費用</strong><span>新人限時 1,000 台幣；複訓 100 台幣場地費</span></div>
-            <div><strong>課程福利</strong><span>新人參與、邀請 3 位新人，即贈藍星 AI 聚合平台 15 日（內含付費版 ChatGPT、Gemini、Claude、Seedance 等 AI 工具），價值 2,000 台幣。</span></div>
+            <div><strong>課程主題</strong><span>剪映實戰＋數字人克隆</span></div>
+            <div><strong>場次日期</strong><span>6/24、7/1</span></div>
+            <div><strong>課程時間</strong><span>週三 14:00～16:00（大課週不辦課程）</span></div>
+            <div><strong>上課地點</strong><span>藍星台中公司</span></div>
+            <div><strong>報名名額</strong><span>人數限制 30 位，請盡快報名</span></div>
+            <div><strong>學員優惠</strong><span>藍星同學完全免費</span></div>
           </div>
+          <p class="course-note">想做抖音、想做自媒體，這堂一定不能錯過。</p>
           <div class="session-list" id="sessionList"></div>
         </article>
 
@@ -73,47 +81,10 @@
       </form>
     </section>
 
-    <section class="view" id="checkin">
-      <section class="panel checkin-panel">
-        <div class="quick-head">
-          <div>
-            <h2>簽到處</h2>
-            <p>每次輸入 PIN、選擇場次後，可手動送出簽到，也可以搜尋姓名直接點報到。</p>
-          </div>
-          <button type="button" id="quickRefresh">更新名單</button>
-        </div>
-        <form class="form checkin-form" id="checkinForm">
-          <label>PIN<input name="pin" type="password" inputmode="numeric" maxlength="4" placeholder="請輸入 PIN" required></label>
-          <label>場次<select name="session" required></select></label>
-          <label>姓名／搜尋<input name="name" required autocomplete="off" placeholder="請輸入或搜尋學員姓名"></label>
-          <label>備註<input name="note" placeholder="選填"></label>
-          <button type="submit">送出簽到</button>
-          <p class="message" id="checkinMessage" aria-live="polite"></p>
-        </form>
-
-        <section class="success inline-success" id="successBox" hidden>
-          <div class="ok">✓</div>
-          <h2>報到成功</h2>
-          <p id="successText"></p>
-          <button type="button" id="replayVoice">播放語音</button>
-        </section>
-
-        <div class="undo-checkin" id="undoCheckinBox" hidden>
-          <span id="undoCheckinText">上一筆報到可返回</span>
-          <div class="undo-actions">
-            <button type="button" id="quickReplayVoice">播放語音</button>
-            <button type="button" class="danger" id="undoCheckin">返回上一筆報到</button>
-          </div>
-        </div>
-        <p class="message" id="quickMessage" aria-live="polite"></p>
-        <div class="quick-list" id="quickList"></div>
-      </section>
-    </section>
-
     <section class="view" id="roster">
       <div class="panel">
         <div class="roster-head">
-          <h2>報名與簽到名單</h2>
+          <h2>報名名單</h2>
           <div class="roster-actions">
             <a class="sheet-link" id="sheetLink" href="#" target="_blank" rel="noopener">開啟 Google Sheet</a>
             <button type="button" id="refreshRoster">更新</button>
@@ -123,12 +94,12 @@
       </div>
     </section>
 
-    <section class="bottom-stats panel" aria-label="報到統計">
+    <section class="bottom-stats panel" aria-label="報名統計">
       <div class="bottom-stats-head">
-        <p class="eyebrow">Check-in Overview</p>
-        <h2>報到統計</h2>
+        <p class="eyebrow">Registration Overview</p>
+        <h2>報名統計</h2>
       </div>
-      <p class="stats-hint">點開場次可查看目前已報名名單。</p>
+      <p class="stats-hint">點開場次可查看目前有效報名名單。</p>
       <div class="stats" id="stats" aria-live="polite"></div>
     </section>
 
@@ -144,6 +115,6 @@
       </section>
     </div>
   </main>
-  <script src="./script.js?v=20260618105600"></script>
+  <script src="./script.js?v=20260618110500"></script>
 </body>
 </html>
