@@ -323,6 +323,10 @@ document.getElementById("cancelForm").addEventListener("submit", async (event) =
   try {
     const data = await postJson("/api/cancel", formData(form));
     setMessage(msg, true, `${data.name} 已取消 ${data.session} 報名`);
+    showModal({
+      title: "已取消報名",
+      message: `${data.name} 已取消 ${data.session} 報名。`
+    });
     form.reset();
     await loadRoster();
   } catch (err) {
