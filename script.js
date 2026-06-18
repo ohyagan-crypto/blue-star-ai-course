@@ -1,4 +1,4 @@
-﻿﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://adjust-practitioners-committee-chelsea.trycloudflare.com";
+﻿﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://humanities-retirement-pentium-slope.trycloudflare.com";
 const sessions = ["7/6 台南場", "7/7 高雄場", "7/9 台北場", "7/11 台中場"];
 const sessionInfo = {
   "7/6 台南場": { title: "7/6（一）台南場", address: "台南市中西區南美里民生路一段167號3F", transit: "13:00-17:00" },
