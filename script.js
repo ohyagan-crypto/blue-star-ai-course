@@ -94,7 +94,7 @@ function renderRegistrationList(session) {
     <div class="modal-list">
       ${regs.map((reg, index) => {
         const name = escapeHtml(reg.name);
-        const type = escapeHtml(reg.participantType || reg.type || "未填身分");
+        const type = escapeHtml(reg.participantType || reg.type || "未填身份");
         const note = escapeHtml(reg.createdAt || reg.note || "");
         return `
           <article class="modal-person">
@@ -140,7 +140,7 @@ function renderRosterData(data, fromFallback = false) {
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
     const people = regs.map((reg, index) => {
-      const type = reg.participantType || reg.type || "未填身分";
+      const type = reg.participantType || reg.type || "未填身份";
       const note = reg.note || reg.createdAt || "";
       return `<div class="person"><strong>${index + 1}. ${escapeHtml(reg.name)}</strong><span>已報名</span><em>${escapeHtml(type)}</em><small>${escapeHtml(note)}</small></div>`;
     }).join("") || `<div class="person empty">尚無資料</div>`;

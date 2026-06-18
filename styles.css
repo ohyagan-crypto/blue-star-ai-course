@@ -47,15 +47,6 @@ body.modal-open { overflow: hidden; }
   line-height: 1.55;
   margin-bottom: 8px;
 }
-.course-poster {
-  width: 100%;
-  max-height: 520px;
-  object-fit: cover;
-  object-position: top center;
-  border: 1px solid rgba(184,135,47,.4);
-  border-radius: 8px;
-  box-shadow: 0 18px 42px rgba(0,0,0,.26);
-}
 .eyebrow {
   color: var(--gold);
   font-size: 12px;
@@ -494,7 +485,6 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   .panel, .hero { padding: 18px; }
   .tabs { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .hero-split { grid-template-columns: 1fr; }
-  .course-poster { max-height: 430px; }
   .tab { padding: 12px 8px; }
   h1 { font-size: 34px; }
   .roster-head, .bottom-stats-head { align-items: flex-start; flex-direction: column; }

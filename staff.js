@@ -57,21 +57,31 @@ function renderList() {
       <article class="staff-row no-action">
         <div>
           <strong>${index + 1}. ${name}</strong>
-          <span>${escapeHtml(type || "未填身分")} · 已報名</span>
+          <span>${escapeHtml(type || "未填身份")} · 已報名</span>
         </div>
       </article>
     `;
   }).join("") || `<p class="message err">沒有符合的學員。</p>`;
 }
 
-async function loadRoster() {
-  setMessage(true, "讀取名單中...");
-  const res = await fetch(api("/api/roster"), { cache: "no-store" });
-  if (!res.ok) throw new Error("名單讀取失敗，請稍後再試。");
-  rosterData = await res.json();
+function renderRosterData(data, fromFallback = false) {
+  rosterData = data;
   renderStats();
   renderList();
-  setMessage(true, "名單已更新。");
+  setMessage(true, fromFallback ? "目前顯示備援名單。" : "名單已更新。");
+}
+
+async function loadRoster() {
+  setMessage(true, "讀取名單中...");
+  try {
+    const res = await fetch(api("/api/roster"), { cache: "no-store" });
+    if (!res.ok) throw new Error("API unavailable");
+    renderRosterData(await res.json());
+  } catch {
+    const fallbackRes = await fetch("./roster-fallback.json", { cache: "no-store" });
+    if (!fallbackRes.ok) throw new Error("名單讀取失敗，請稍後再試。");
+    renderRosterData(await fallbackRes.json(), true);
+  }
 }
 
 document.getElementById("staffSession").addEventListener("change", renderList);
