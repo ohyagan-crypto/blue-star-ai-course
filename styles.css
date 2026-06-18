@@ -47,6 +47,10 @@ body.modal-open { overflow: hidden; }
   line-height: 1.55;
   margin-bottom: 8px;
 }
+.hero-intro {
+  max-width: 720px;
+  margin-bottom: 0;
+}
 .eyebrow {
   color: var(--gold);
   font-size: 12px;
