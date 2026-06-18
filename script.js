@@ -1,11 +1,17 @@
-const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://humanities-retirement-pentium-slope.trycloudflare.com";
-const sessions = ["6/24 剪映實戰班", "7/1 剪映實戰班"];
+﻿﻿const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://adjust-practitioners-committee-chelsea.trycloudflare.com";
+const sessions = ["7/6 台南場", "7/7 高雄場", "7/9 台北場", "7/11 台中場"];
 const sessionInfo = {
-  "6/24 剪映實戰班": { title: "6/24（三）剪映實戰班", address: "地點待公布", transit: "13:00-17:00｜不用簽到" },
-  "7/1 剪映實戰班": { title: "7/1（三）剪映實戰班", address: "地點待公布", transit: "13:00-17:00｜不用簽到" }
+  "7/6 台南場": { title: "7/6（一）台南場", address: "台南市中西區南美里民生路一段167號3F", transit: "13:00-17:00" },
+  "7/7 高雄場": { title: "7/7（二）高雄場", address: "高雄市前鎮區中山二路2號12樓之7", transit: "捷運獅甲站3號出口｜13:00-17:00" },
+  "7/9 台北場": { title: "7/9（四）台北場", address: "地點待定", transit: "13:00-17:00" },
+  "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
+const SCRIPT_VERSION = "20260616230500";
 
+let lastVoice = "";
+let voiceUnlocked = false;
 let rosterData = { registrations: [], checkins: [] };
+let lastCheckin = null;
 
 function api(path) {
   return `${API_BASE}${path}`;
@@ -19,6 +25,15 @@ function escapeHtml(value) {
     '"': "&quot;",
     "'": "&#39;"
   }[char]));
+}
+
+function unlockVoice() {
+  if (!window.speechSynthesis || voiceUnlocked) return;
+  const utterance = new SpeechSynthesisUtterance(" ");
+  utterance.lang = "zh-TW";
+  utterance.volume = 0;
+  window.speechSynthesis.speak(utterance);
+  voiceUnlocked = true;
 }
 
 function fillSessionSelects() {
@@ -36,7 +51,7 @@ function fillSessionSelects() {
 function setView(id) {
   document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.view === id));
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === id));
-  if (id === "roster") loadRoster();
+  if (id === "roster" || id === "checkin") loadRoster();
 }
 
 function formData(form) {
@@ -79,27 +94,29 @@ function closeModal() {
   document.body.classList.remove("modal-open");
 }
 
-function isCanceled(reg) {
-  return reg.status === "cancelled" || reg.cancelled === true || Boolean(reg.cancelledAt);
-}
-
 function getActiveRegistrations(session) {
   return (rosterData.registrations || []).filter((item) => item.session === session && !isCanceled(item));
 }
 
+function getSessionCheckins(session) {
+  return (rosterData.checkins || []).filter((item) => item.session === session);
+}
+
 function renderRegistrationList(session) {
   const regs = getActiveRegistrations(session);
+  const checked = new Set(getSessionCheckins(session).map((item) => item.name));
   if (!regs.length) return `<p class="modal-empty">目前這個場次尚無有效報名資料。</p>`;
   return `
     <div class="modal-list">
       ${regs.map((reg, index) => {
         const name = escapeHtml(reg.name);
         const type = escapeHtml(reg.participantType || reg.type || "未填身分");
+        const status = checked.has(reg.name) ? "已報到" : "未報到";
         const note = escapeHtml(reg.createdAt || reg.note || "");
         return `
           <article class="modal-person">
             <strong>${index + 1}. ${name}</strong>
-            <span>${type}</span>
+            <span>${type} · ${status}</span>
             ${note ? `<small>${note}</small>` : ""}
           </article>
         `;
@@ -125,6 +142,29 @@ async function postJson(path, data) {
   return body;
 }
 
+function speak(text) {
+  lastVoice = text;
+  if (!window.speechSynthesis) {
+    alert(text);
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "zh-TW";
+  utterance.rate = 0.92;
+  utterance.pitch = 1.05;
+  utterance.volume = 1;
+  window.speechSynthesis.speak(utterance);
+}
+
+function checkinVoiceText(data) {
+  return `${data.name} 報到成功`;
+}
+
+function isCanceled(reg) {
+  return reg.status === "cancelled" || reg.cancelled === true || Boolean(reg.cancelledAt);
+}
+
 function renderRosterData(data, fromFallback = false) {
   rosterData = data;
   const stats = document.getElementById("stats");
@@ -134,18 +174,24 @@ function renderRosterData(data, fromFallback = false) {
 
   stats.innerHTML = sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
+    const checks = (data.checkins || []).filter((item) => item.session === session);
+    const checkedIn = checks.filter((check) => regs.some((reg) => reg.name === check.name)).length;
     return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${regs.length}</strong><span>${session} 有效報名</span><small>點開看名單</small></button>`;
   }).join("");
 
-  roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
+  roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
+    const checks = (data.checkins || []).filter((item) => item.session === session);
     const people = regs.map((reg, index) => {
-      const type = reg.participantType || reg.type || "未填身分";
+      const checked = checks.some((item) => item.name === reg.name);
+      const status = checked ? "已報到" : "未報到";
+      const type = reg.participantType || reg.type || "未填身份";
       const note = reg.note || reg.createdAt || "";
-      return `<div class="person"><strong>${index + 1}. ${escapeHtml(reg.name)}</strong><span>已報名</span><em>${escapeHtml(type)}</em><small>${escapeHtml(note)}</small></div>`;
+      return `<div class="person"><strong>${index + 1}. ${reg.name}</strong><span>${status}</span><em>${type}</em><small>${note}</small></div>`;
     }).join("") || `<div class="person empty">尚無資料</div>`;
     return `<section class="roster-card"><h3>${session}</h3>${people}</section>`;
   }).join("")}`;
+  renderQuickCheckin();
 }
 
 async function loadRoster() {
@@ -165,13 +211,70 @@ async function loadRoster() {
   }
 }
 
+function getCheckinPin() {
+  const pinInput = document.querySelector('#checkinForm input[name="pin"]');
+  return String(pinInput?.value || "").trim();
+}
+
+function clearCheckinPin() {
+  localStorage.removeItem("blueCourseStaffPin");
+  const pinInput = document.querySelector('#checkinForm input[name="pin"]');
+  if (pinInput) pinInput.value = "";
+}
+
+function checkedNames(session) {
+  return new Set((rosterData.checkins || []).filter((item) => item.session === session).map((item) => item.name));
+}
+
+function setQuickMessage(ok, text) {
+  const el = document.getElementById("quickMessage");
+  if (!el) return;
+  el.className = `message ${ok ? "ok" : "err"}`;
+  el.textContent = text;
+}
+
+function setLastCheckin(data) {
+  lastCheckin = data ? { name: data.name, session: data.session } : null;
+  const box = document.getElementById("undoCheckinBox");
+  const text = document.getElementById("undoCheckinText");
+  if (!box || !text) return;
+  if (!lastCheckin) {
+    box.hidden = true;
+    text.textContent = "";
+    return;
+  }
+  text.textContent = `上一筆：${lastCheckin.session}／${lastCheckin.name}`;
+  box.hidden = false;
+}
+
+function renderQuickCheckin() {
+  const list = document.getElementById("quickList");
+  const sessionSelect = document.querySelector('#checkinForm select[name="session"]');
+  if (!list || !sessionSelect) return;
+  const session = sessionSelect.value || sessions[0];
+  const keyword = String(document.querySelector('#checkinForm input[name="name"]')?.value || "").trim().toLowerCase();
+  const checked = checkedNames(session);
+  const regs = (rosterData.registrations || [])
+    .filter((item) => item.session === session && !isCanceled(item))
+    .filter((item) => !keyword || String(item.name || "").toLowerCase().includes(keyword));
+
+  list.innerHTML = regs.map((reg, index) => {
+    const done = checked.has(reg.name);
+    const name = escapeHtml(reg.name);
+    const type = escapeHtml(reg.participantType || reg.type || "未填身分");
+    return `
+      <article class="staff-row ${done ? "done" : ""}">
+        <div>
+          <strong>${index + 1}. ${name}</strong>
+          <span>${type}${done ? " · 已報到" : " · 未報到"}</span>
+        </div>
+        <button type="button" data-name="${name}" ${done ? "disabled" : ""}>${done ? "已報到" : "報到"}</button>
+      </article>
+    `;
+  }).join("") || `<p class="message err">沒有符合的學員。</p>`;
+}
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => setView(tab.dataset.view));
-});
-
-document.querySelector("[data-jump-register]")?.addEventListener("click", () => {
-  setView("register");
-  document.getElementById("registerForm")?.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 document.querySelector('#registerForm select[name="participantType"]').addEventListener("change", (event) => {
@@ -180,6 +283,7 @@ document.querySelector('#registerForm select[name="participantType"]').addEventL
 
 document.getElementById("registerForm").addEventListener("submit", async (event) => {
   event.preventDefault();
+  unlockVoice();
   const form = event.currentTarget;
   const btn = form.querySelector("button");
   const msg = document.getElementById("registerMessage");
@@ -229,6 +333,113 @@ document.getElementById("cancelForm").addEventListener("submit", async (event) =
   }
 });
 
+document.getElementById("checkinForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  unlockVoice();
+  const form = event.currentTarget;
+  const btn = form.querySelector("button");
+  const msg = document.getElementById("checkinMessage");
+  const box = document.getElementById("successBox");
+  btn.disabled = true;
+  btn.textContent = "簽到中...";
+  try {
+    const data = await postJson("/api/checkin", formData(form));
+    const text = checkinVoiceText(data);
+    setMessage(msg, true, "報到成功");
+    document.getElementById("successText").textContent = text;
+    box.hidden = false;
+    setLastCheckin(data);
+    speak(text);
+    form.reset();
+    clearCheckinPin();
+    await loadRoster();
+  } catch (err) {
+    box.hidden = true;
+    setMessage(msg, false, err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "送出簽到";
+  }
+});
+
+const checkinPinInput = document.querySelector('#checkinForm input[name="pin"]');
+clearCheckinPin();
+document.querySelector('#checkinForm select[name="session"]').addEventListener("change", renderQuickCheckin);
+document.querySelector('#checkinForm input[name="name"]').addEventListener("input", renderQuickCheckin);
+document.getElementById("quickRefresh").addEventListener("click", () => loadRoster().catch(() => setQuickMessage(false, "名單讀取失敗，請稍後再試。")));
+document.getElementById("quickList").addEventListener("click", async (event) => {
+  const button = event.target.closest("button[data-name]");
+  if (!button) return;
+  const pin = getCheckinPin();
+  if (!pin) {
+    setQuickMessage(false, "請先在上方 PIN 欄輸入 PIN。");
+    checkinPinInput.focus();
+    return;
+  }
+  button.disabled = true;
+  button.textContent = "簽到中...";
+  try {
+    const data = await postJson("/api/checkin", {
+      pin,
+      session: document.querySelector('#checkinForm select[name="session"]').value,
+      name: button.dataset.name
+    });
+    const text = checkinVoiceText(data);
+    setQuickMessage(true, `${data.name} 報到成功。`);
+    document.getElementById("successText").textContent = text;
+    document.getElementById("successBox").hidden = false;
+    setLastCheckin(data);
+    speak(text);
+    clearCheckinPin();
+    await loadRoster();
+  } catch (err) {
+    setQuickMessage(false, err.message);
+    button.disabled = false;
+    button.textContent = "報到";
+  }
+});
+
+document.getElementById("undoCheckin").addEventListener("click", async () => {
+  if (!lastCheckin) {
+    setQuickMessage(false, "目前沒有可返回的上一筆報到。");
+    return;
+  }
+  const pin = getCheckinPin();
+  if (!pin) {
+    setQuickMessage(false, "請先在上方 PIN 欄輸入 PIN。");
+    checkinPinInput.focus();
+    return;
+  }
+  const undoButton = document.getElementById("undoCheckin");
+  undoButton.disabled = true;
+  undoButton.textContent = "返回中...";
+  try {
+    const data = await postJson("/api/checkin/undo", {
+      pin,
+      session: lastCheckin.session,
+      name: lastCheckin.name
+    });
+    setQuickMessage(true, `${data.name} 已返回為未報到。`);
+    document.getElementById("successBox").hidden = true;
+    setLastCheckin(null);
+    clearCheckinPin();
+    await loadRoster();
+  } catch (err) {
+    setQuickMessage(false, err.message);
+  } finally {
+    undoButton.disabled = false;
+    undoButton.textContent = "返回上一筆報到";
+  }
+});
+
+document.getElementById("quickReplayVoice").addEventListener("click", () => {
+  if (lastVoice) speak(lastVoice);
+  else setQuickMessage(false, "目前沒有可播放的報到語音。");
+});
+
+document.getElementById("replayVoice").addEventListener("click", () => {
+  if (lastVoice) speak(lastVoice);
+});
 document.getElementById("refreshRoster").addEventListener("click", loadRoster);
 document.querySelectorAll("[data-close-modal]").forEach((button) => {
   button.addEventListener("click", closeModal);
@@ -252,3 +463,4 @@ document.getElementById("stats").addEventListener("click", (event) => {
 fillSessionSelects();
 updateIntroducerRequirement();
 loadRoster();
+

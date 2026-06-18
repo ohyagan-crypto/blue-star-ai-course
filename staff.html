@@ -3,26 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>黑金剪映實戰班｜工作人員名單頁</title>
-  <meta name="description" content="黑金剪映實戰班工作人員名單查看頁。">
+  <title>藍星 AI 自媒體基礎班｜工作人員快速簽到</title>
+  <meta name="description" content="藍星 AI 自媒體基礎班工作人員快速簽到頁。">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <main class="app staff-app">
     <section class="hero staff-hero">
-      <div>
-        <h1>工作人員名單頁</h1>
-        <p>黑金剪映實戰班不用簽到，此頁只提供報名名單查看與搜尋。</p>
-      </div>
-      <a class="sheet-link" href="./index.html">回報名頁</a>
+      <h1>工作人員快速簽到</h1>
+      <p>每次報到都需輸入 PIN，選場次、搜尋姓名後再點報到。</p>
+      <a class="sheet-link" href="./index.html">回一般簽到頁</a>
     </section>
 
-    <section class="panel staff-toolbar no-pin">
+    <section class="panel staff-toolbar">
       <label>場次
         <select id="staffSession">
-          <option value="6/24 剪映實戰班">6/24 剪映實戰班</option>
-          <option value="7/1 剪映實戰班">7/1 剪映實戰班</option>
+          <option value="7/6 台南場">7/6 台南場</option>
+          <option value="7/7 高雄場">7/7 高雄場</option>
+          <option value="7/9 台北場">7/9 台北場</option>
+          <option value="7/11 台中場">7/11 台中場</option>
         </select>
+      </label>
+      <label>PIN
+        <input id="staffPin" type="password" inputmode="numeric" maxlength="4" placeholder="每次報到請輸入 PIN">
       </label>
       <label>搜尋姓名
         <input id="staffSearch" autocomplete="off" placeholder="輸入姓名關鍵字">
@@ -35,6 +38,6 @@
     <section class="panel staff-list" id="staffList"></section>
   </main>
 
-  <script src="./staff.js?v=20260617224300"></script>
+  <script src="./staff.js?v=20260617171421"></script>
 </body>
 </html>
