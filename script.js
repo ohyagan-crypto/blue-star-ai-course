@@ -1,12 +1,18 @@
 const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://humanities-retirement-pentium-slope.trycloudflare.com";
 const sessions = ["7/6 台南場","7/7 高雄場","7/9 台北場","7/11 台中場"];
+const sessionCapacities = {
+  "7/6 台南場": 70,
+  "7/7 高雄場": 140,
+  "7/9 台北場": 140,
+  "7/11 台中場": 150
+};
 const sessionInfo = {
   "7/6 台南場": { title: "7/6（一）台南場", address: "台南市中西區南美里民生路一段167號3F", transit: "13:00-17:00" },
   "7/7 高雄場": { title: "7/7（二）高雄場", address: "高雄市前鎮區中山二路2號12樓之7", transit: "捷運獅甲站3號出口｜13:00-17:00" },
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260624172328";
+const SCRIPT_VERSION = "20260624223600";
 
 let lastVoice = "";
 let voiceUnlocked = false;
@@ -165,6 +171,16 @@ function isCanceled(reg) {
   return reg.status === "cancelled" || reg.cancelled === true || Boolean(reg.cancelledAt);
 }
 
+function getSessionCapacity(session) {
+  return Number(rosterData?.capacityBySession?.[session] || sessionCapacities[session] || 0);
+}
+
+function getRemainingSeats(session, regs) {
+  const capacity = getSessionCapacity(session);
+  if (!capacity) return null;
+  return Math.max(0, capacity - regs.length);
+}
+
 function renderRosterData(data, fromFallback = false) {
   rosterData = data;
   const stats = document.getElementById("stats");
@@ -176,7 +192,11 @@ function renderRosterData(data, fromFallback = false) {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
     const checks = (data.checkins || []).filter((item) => item.session === session);
     const checkedIn = checks.filter((check) => regs.some((reg) => reg.name === check.name)).length;
-    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${regs.length}</strong><span>${session} 有效報名</span><small>點開看名單</small></button>`;
+    const capacity = getSessionCapacity(session);
+    const remaining = getRemainingSeats(session, regs);
+    const seatText = capacity ? `${regs.length} / ${capacity}` : regs.length;
+    const hintText = remaining === 0 ? "已額滿，點開看名單" : remaining === null ? "點開看名單" : `剩餘 ${remaining} 位，點開看名單`;
+    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${seatText}</strong><span>${session} 有效報名</span><small>${hintText}</small></button>`;
   }).join("");
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
@@ -456,9 +476,11 @@ document.getElementById("stats").addEventListener("click", (event) => {
   if (!button) return;
   const session = button.dataset.session;
   const count = getActiveRegistrations(session).length;
+  const capacity = getSessionCapacity(session);
+  const remaining = Math.max(0, capacity - count);
   showModal({
     title: `${session} 已報名名單`,
-    message: `目前有效報名 ${count} 位。`,
+    message: capacity ? `目前有效報名 ${count} / ${capacity} 位，剩餘 ${remaining} 位。` : `目前有效報名 ${count} 位。`,
     body: renderRegistrationList(session),
     okIcon: false
   });
