@@ -1,4 +1,4 @@
-const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://d37423d3376444b6-203-217-101-116.serveousercontent.com";
+const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://fdcac7886aa9f2c1-203-217-101-116.serveousercontent.com";
 const sessions = ["7/6 台南場","7/7 高雄場","7/9 台北場","7/11 台中場"];
 const sessionCapacities = {
   "7/6 台南場": 70,
@@ -12,7 +12,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260704022713";
+const SCRIPT_VERSION = "20260704024151";
 
 let lastVoice = "";
 let voiceUnlocked = false;
