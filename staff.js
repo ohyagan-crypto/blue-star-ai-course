@@ -1,4 +1,4 @@
-const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://humanities-retirement-pentium-slope.trycloudflare.com";
+const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://d88f97281064b57a-203-217-101-116.serveousercontent.com";
 const sessions = ["7/6 台南場","7/7 高雄場","7/9 台北場","7/11 台中場"];
 
 let rosterData = { registrations: [], checkins: [] };
