@@ -1,10 +1,53 @@
-const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://ca94b3b401feeb2b-203-217-101-116.serveousercontent.com";
+const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://ca94b3b401feeb2b-203-217-101-116.serveousercontent.com";
+let activeApiBase = DEFAULT_API_BASE;
+let apiBases = [DEFAULT_API_BASE];
 const sessions = ["7/6 台南場","7/7 高雄場","7/9 台北場","7/11 台中場"];
 
 let rosterData = { registrations: [], checkins: [] };
 
-function api(path) {
-  return `${API_BASE}${path}`;
+function normalizeApiBase(value) {
+  return String(value || "").trim().replace(/\/+$/, "");
+}
+
+async function loadApiConfig() {
+  if (location.hostname.endsWith("loca.lt")) return;
+  try {
+    const res = await fetch(`./api-config.json?v=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("api config unavailable");
+    const config = await res.json();
+    const candidates = [
+      config.publicBase,
+      ...(Array.isArray(config.publicBases) ? config.publicBases : []),
+      DEFAULT_API_BASE
+    ].map(normalizeApiBase).filter(Boolean);
+    apiBases = [...new Set(candidates)];
+    activeApiBase = apiBases[0] || DEFAULT_API_BASE;
+  } catch {
+    apiBases = [DEFAULT_API_BASE];
+    activeApiBase = DEFAULT_API_BASE;
+  }
+}
+
+const apiConfigReady = loadApiConfig();
+
+function api(path, base = activeApiBase) {
+  return `${base}${path}`;
+}
+
+async function fetchWithApiFallback(path, options = {}) {
+  await apiConfigReady;
+  let lastError = null;
+  for (const base of apiBases) {
+    try {
+      const res = await fetch(api(path, base), options);
+      activeApiBase = base;
+      if (res.ok || (res.status >= 400 && res.status < 500)) return res;
+      lastError = new Error(`API ${res.status}`);
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error("API unavailable");
 }
 
 function clean(value) {
@@ -84,7 +127,7 @@ function renderList() {
 
 async function loadRoster() {
   setMessage(true, "讀取名單中...");
-  const res = await fetch(api("/api/roster"), { cache: "no-store" });
+  const res = await fetchWithApiFallback("/api/roster", { cache: "no-store" });
   if (!res.ok) throw new Error("名單讀取失敗，請稍後再試。");
   rosterData = await res.json();
   renderStats();
@@ -103,7 +146,7 @@ async function checkIn(name, button) {
   button.disabled = true;
   button.textContent = "簽到中...";
   try {
-    const res = await fetch(api("/api/checkin"), {
+    const res = await fetchWithApiFallback("/api/checkin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pin, session: currentSession(), name })

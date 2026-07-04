@@ -1,10 +1,12 @@
-const API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://ca94b3b401feeb2b-203-217-101-116.serveousercontent.com";
+const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://ca94b3b401feeb2b-203-217-101-116.serveousercontent.com";
+let activeApiBase = DEFAULT_API_BASE;
+let apiBases = [DEFAULT_API_BASE];
 const sessions = ["7/6 台南場","7/7 高雄場","7/9 台北場","7/11 台中場"];
 const sessionCapacities = {
-  "7/6 台南場": 70,
-  "7/7 高雄場": 140,
-  "7/9 台北場": 140,
-  "7/11 台中場": 150
+  "7/6 台南場": 0,
+  "7/7 高雄場": 0,
+  "7/9 台北場": 0,
+  "7/11 台中場": 0
 };
 const sessionInfo = {
   "7/6 台南場": { title: "7/6（一）台南場", address: "台南市中西區南美里民生路一段167號3F", transit: "13:00-17:00" },
@@ -12,15 +14,56 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260704225053";
+const SCRIPT_VERSION = "20260705000713";
 
 let lastVoice = "";
 let voiceUnlocked = false;
 let rosterData = { registrations: [], checkins: [] };
 let lastCheckin = null;
 
-function api(path) {
-  return `${API_BASE}${path}`;
+function normalizeApiBase(value) {
+  return String(value || "").trim().replace(/\/+$/, "");
+}
+
+async function loadApiConfig() {
+  if (location.hostname.endsWith("loca.lt")) return;
+  try {
+    const res = await fetch(`./api-config.json?v=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("api config unavailable");
+    const config = await res.json();
+    const candidates = [
+      config.publicBase,
+      ...(Array.isArray(config.publicBases) ? config.publicBases : []),
+      DEFAULT_API_BASE
+    ].map(normalizeApiBase).filter(Boolean);
+    apiBases = [...new Set(candidates)];
+    activeApiBase = apiBases[0] || DEFAULT_API_BASE;
+  } catch {
+    apiBases = [DEFAULT_API_BASE];
+    activeApiBase = DEFAULT_API_BASE;
+  }
+}
+
+const apiConfigReady = loadApiConfig();
+
+function api(path, base = activeApiBase) {
+  return `${base}${path}`;
+}
+
+async function fetchWithApiFallback(path, options = {}) {
+  await apiConfigReady;
+  let lastError = null;
+  for (const base of apiBases) {
+    try {
+      const res = await fetch(api(path, base), options);
+      activeApiBase = base;
+      if (res.ok || (res.status >= 400 && res.status < 500)) return res;
+      lastError = new Error(`API ${res.status}`);
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error("API unavailable");
 }
 
 function escapeHtml(value) {
@@ -134,7 +177,7 @@ function renderRegistrationList(session) {
 async function postJson(path, data) {
   let res;
   try {
-    res = await fetch(api(path), {
+    res = await fetchWithApiFallback(path, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -216,7 +259,7 @@ function renderRosterData(data, fromFallback = false) {
 
 async function loadRoster() {
   try {
-    const res = await fetch(api("/api/roster"), { cache: "no-store" });
+    const res = await fetchWithApiFallback("/api/roster", { cache: "no-store" });
     if (!res.ok) throw new Error("API unavailable");
     renderRosterData(await res.json());
   } catch {
