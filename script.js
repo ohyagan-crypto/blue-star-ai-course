@@ -5,8 +5,8 @@ const sessions = ["7/6 台南場","7/7 高雄場","7/9 台北場","7/11 台中�
 const sessionCapacities = {
   "7/6 台南場": 0,
   "7/7 高雄場": 0,
-  "7/9 台北場": 0,
-  "7/11 台中場": 0
+  "7/9 台北場": 140,
+  "7/11 台中場": 150
 };
 const sessionInfo = {
   "7/6 台南場": { title: "7/6（一）台南場", address: "台南市中西區南美里民生路一段167號3F", transit: "13:00-17:00" },
@@ -14,7 +14,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260705132147";
+const SCRIPT_VERSION = "20260705204500";
 
 let lastVoice = "";
 let voiceUnlocked = false;
