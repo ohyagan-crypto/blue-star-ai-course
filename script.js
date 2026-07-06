@@ -14,7 +14,8 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260705205734";
+const SCRIPT_VERSION = "20260706124000";
+const PIN_STORAGE_KEY = "blueCourseStaffPin";
 
 let lastVoice = "";
 let voiceUnlocked = false;
@@ -279,10 +280,28 @@ function getCheckinPin() {
   return String(pinInput?.value || "").trim();
 }
 
-function clearCheckinPin() {
-  localStorage.removeItem("blueCourseStaffPin");
+function loadSavedCheckinPin() {
+  try {
+    return String(localStorage.getItem(PIN_STORAGE_KEY) || "").trim();
+  } catch {
+    return "";
+  }
+}
+
+function rememberCheckinPin(pin = getCheckinPin()) {
+  const value = String(pin || "").trim();
+  if (!value) return;
+  try {
+    localStorage.setItem(PIN_STORAGE_KEY, value);
+  } catch {
+    // Browser storage may be unavailable in private or restricted modes.
+  }
+}
+
+function restoreCheckinPin() {
+  const savedPin = loadSavedCheckinPin();
   const pinInput = document.querySelector('#checkinForm input[name="pin"]');
-  if (pinInput) pinInput.value = "";
+  if (pinInput && savedPin) pinInput.value = savedPin;
 }
 
 function checkedNames(session) {
@@ -410,15 +429,17 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
   btn.disabled = true;
   btn.textContent = "簽到中...";
   try {
-    const data = await postJson("/api/checkin", formData(form));
+    const payload = formData(form);
+    const data = await postJson("/api/checkin", payload);
     const text = checkinVoiceText(data);
     setMessage(msg, true, "報到成功");
     document.getElementById("successText").textContent = text;
     box.hidden = false;
     setLastCheckin(data);
     speak(text);
+    rememberCheckinPin(payload.pin);
     form.reset();
-    clearCheckinPin();
+    restoreCheckinPin();
     await loadRoster();
   } catch (err) {
     box.hidden = true;
@@ -430,7 +451,7 @@ document.getElementById("checkinForm").addEventListener("submit", async (event) 
 });
 
 const checkinPinInput = document.querySelector('#checkinForm input[name="pin"]');
-clearCheckinPin();
+restoreCheckinPin();
 document.querySelector('#checkinForm select[name="session"]').addEventListener("change", renderQuickCheckin);
 document.querySelector('#checkinForm input[name="name"]').addEventListener("input", renderQuickCheckin);
 document.getElementById("quickRefresh").addEventListener("click", () => loadRoster().catch(() => setQuickMessage(false, "名單讀取失敗，請稍後再試。")));
@@ -457,7 +478,7 @@ document.getElementById("quickList").addEventListener("click", async (event) => 
     document.getElementById("successBox").hidden = false;
     setLastCheckin(data);
     speak(text);
-    clearCheckinPin();
+    rememberCheckinPin(pin);
     await loadRoster();
   } catch (err) {
     setQuickMessage(false, err.message);
@@ -489,7 +510,7 @@ document.getElementById("undoCheckin").addEventListener("click", async () => {
     setQuickMessage(true, `${data.name} 已返回為未報到。`);
     document.getElementById("successBox").hidden = true;
     setLastCheckin(null);
-    clearCheckinPin();
+    rememberCheckinPin(pin);
     await loadRoster();
   } catch (err) {
     setQuickMessage(false, err.message);

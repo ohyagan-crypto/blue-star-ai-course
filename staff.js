@@ -1,4 +1,5 @@
 const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://7a64a291f6f27df1-203-217-101-116.serveousercontent.com";
+const PIN_STORAGE_KEY = "blueCourseStaffPin";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
 const sessions = ["7/6 台南場","7/7 高雄場","7/9 台北場","7/11 台中場"];
@@ -82,9 +83,27 @@ function getPin() {
   return clean(document.getElementById("staffPin").value);
 }
 
-function clearPin() {
-  localStorage.removeItem("blueCourseStaffPin");
-  document.getElementById("staffPin").value = "";
+function loadSavedPin() {
+  try {
+    return clean(localStorage.getItem(PIN_STORAGE_KEY));
+  } catch {
+    return "";
+  }
+}
+
+function rememberPin(pin = getPin()) {
+  const value = clean(pin);
+  if (!value) return;
+  try {
+    localStorage.setItem(PIN_STORAGE_KEY, value);
+  } catch {
+    // Browser storage may be unavailable in private or restricted modes.
+  }
+}
+
+function restoreSavedPin() {
+  const savedPin = loadSavedPin();
+  if (savedPin) document.getElementById("staffPin").value = savedPin;
 }
 
 function checkedNames(session) {
@@ -154,7 +173,7 @@ async function checkIn(name, button) {
     const body = await res.json().catch(() => ({}));
     if (!res.ok || !body.success) throw new Error(body.message || "簽到失敗，請稍後再試。");
     setMessage(true, `${name} 報到成功。`);
-    clearPin();
+    rememberPin(pin);
     await loadRoster();
   } catch (err) {
     setMessage(false, err.message);
@@ -163,7 +182,7 @@ async function checkIn(name, button) {
   }
 }
 
-clearPin();
+restoreSavedPin();
 document.getElementById("staffSession").addEventListener("change", renderList);
 document.getElementById("staffSearch").addEventListener("input", renderList);
 document.getElementById("staffRefresh").addEventListener("click", () => loadRoster().catch((err) => setMessage(false, err.message)));

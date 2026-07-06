@@ -78,12 +78,12 @@
         <div class="quick-head">
           <div>
             <h2>簽到處</h2>
-            <p>每次輸入 PIN、選擇場次後，可手動送出簽到，也可以搜尋姓名直接點報到。</p>
+            <p>第一次成功輸入 PIN 後，這台裝置會自動記住，之後可直接選場次與姓名報到。</p>
           </div>
           <button type="button" id="quickRefresh">更新名單</button>
         </div>
         <form class="form checkin-form" id="checkinForm">
-          <label>PIN<input name="pin" type="password" inputmode="numeric" maxlength="4" placeholder="請輸入 PIN" required></label>
+          <label>PIN<input name="pin" type="password" inputmode="numeric" maxlength="4" placeholder="第一次請輸入 PIN" required></label>
           <label>場次<select name="session" required></select></label>
           <label>姓名／搜尋<input name="name" required autocomplete="off" placeholder="請輸入或搜尋學員姓名"></label>
           <label>備註<input name="note" placeholder="選填"></label>
@@ -144,6 +144,6 @@
       </section>
     </div>
   </main>
-  <script src="./script.js?v=20260705205734"></script>
+  <script src="./script.js?v=20260706124000"></script>
 </body>
 </html>
