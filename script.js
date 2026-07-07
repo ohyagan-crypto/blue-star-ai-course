@@ -14,7 +14,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260707180733";
+const SCRIPT_VERSION = "20260707192004";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 
 let lastVoice = "";
@@ -232,6 +232,33 @@ function getCheckedInCount(data, session, regs) {
   return regs.filter((reg) => checked.has(reg.name)).length;
 }
 
+function normalizeParticipantType(reg) {
+  const type = String(reg?.participantType || reg?.type || "").trim();
+  if (type.includes("新人")) return "新人";
+  if (type.includes("複訓") || type.includes("復訓")) return "複訓";
+  return "未填";
+}
+
+function getCheckedInBreakdown(data, session, regs) {
+  const checked = new Set((data.checkins || [])
+    .filter((item) => item.session === session)
+    .map((item) => item.name));
+  return regs.reduce((summary, reg) => {
+    if (!checked.has(reg.name)) return summary;
+    const type = normalizeParticipantType(reg);
+    summary.total += 1;
+    if (type === "新人") summary.newbie += 1;
+    else if (type === "複訓") summary.returning += 1;
+    else summary.unknown += 1;
+    return summary;
+  }, { total: 0, newbie: 0, returning: 0, unknown: 0 });
+}
+
+function formatCheckinBreakdown(breakdown) {
+  const unknownText = breakdown.unknown ? `｜未填 ${breakdown.unknown} 人` : "";
+  return `簽到 新人 ${breakdown.newbie} 人｜複訓 ${breakdown.returning} 人${unknownText}｜合計 ${breakdown.total} 人`;
+}
+
 function getSessionCity(session) {
   return String(session || "").replace(/^\d+\/\d+\s*/, "").replace(/場$/, "");
 }
@@ -243,24 +270,36 @@ function renderRosterData(data, fromFallback = false) {
   const sheetLink = document.getElementById("sheetLink");
   if (sheetLink && data.googleSheetUrl) sheetLink.href = data.googleSheetUrl;
 
-  const checkinStats = sessions.map((session) => {
+  const sessionStats = sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
-    const checkedIn = getCheckedInCount(data, session, regs);
-    const notCheckedIn = Math.max(0, regs.length - checkedIn);
-    const city = getSessionCity(session);
-    const hintText = regs.length === 0 ? "尚無有效報名" : `已報到 ${checkedIn} 人，未報到 ${notCheckedIn} 人`;
-    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報到名單"><strong>${checkedIn} 人</strong><span>${city}已報到</span><small>${session}｜${hintText}｜有效報名 ${regs.length} 人</small></button>`;
+    const capacity = getSessionCapacity(session);
+    const remaining = getRemainingSeats(session, regs);
+    const seatText = capacity ? `${regs.length} / ${capacity}` : `${regs.length} 人`;
+    const hintText = remaining === 0 ? "已額滿" : remaining === null ? "點開看名單" : `剩餘 ${remaining} 位`;
+    const breakdown = getCheckedInBreakdown(data, session, regs);
+    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${seatText}</strong><span>${session} 有效報名</span><small>${hintText}｜${formatCheckinBreakdown(breakdown)}</small></button>`;
   });
   const sessionSummaries = sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
-    const checkedIn = getCheckedInCount(data, session, regs);
-    return { city: getSessionCity(session), checkedIn, registered: regs.length };
+    return {
+      city: getSessionCity(session),
+      breakdown: getCheckedInBreakdown(data, session, regs),
+      registered: regs.length,
+      capacity: getSessionCapacity(session)
+    };
   });
   const totalRegistered = sessionSummaries.reduce((sum, item) => sum + item.registered, 0);
-  const totalCheckedIn = sessionSummaries.reduce((sum, item) => sum + item.checkedIn, 0);
-  const totalNotCheckedIn = Math.max(0, totalRegistered - totalCheckedIn);
-  const citySummary = sessionSummaries.map((item) => `${item.city} ${item.checkedIn} 人`).join("｜");
-  stats.innerHTML = `${checkinStats.join("")}<div class="stat stat-total"><strong>${totalCheckedIn} 人</strong><span>全部場次已報到總計</span><small>${citySummary}｜未報到 ${totalNotCheckedIn} 人｜有效報名 ${totalRegistered} 人</small></div>`;
+  const totalCapacity = sessionSummaries.reduce((sum, item) => sum + item.capacity, 0);
+  const totalBreakdown = sessionSummaries.reduce((sum, item) => {
+    sum.total += item.breakdown.total;
+    sum.newbie += item.breakdown.newbie;
+    sum.returning += item.breakdown.returning;
+    sum.unknown += item.breakdown.unknown;
+    return sum;
+  }, { total: 0, newbie: 0, returning: 0, unknown: 0 });
+  const totalSeatText = totalCapacity ? `${totalRegistered} / ${totalCapacity}` : `${totalRegistered} 人`;
+  const remainingText = totalCapacity ? `｜剩餘 ${Math.max(0, totalCapacity - totalRegistered)} 位` : "";
+  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small>${formatCheckinBreakdown(totalBreakdown)}｜有效報名 ${totalSeatText}${remainingText}</small></div>`;
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
