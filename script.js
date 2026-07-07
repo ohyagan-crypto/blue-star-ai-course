@@ -14,7 +14,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260707200234";
+const SCRIPT_VERSION = "20260707201000";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -292,10 +292,21 @@ function saveCheckinStatsExpanded() {
 function syncCheckinStatsToggle() {
   const section = document.querySelector(".bottom-stats");
   const button = document.getElementById("toggleCheckinStats");
-  if (!section || !button) return;
+  if (!section) return;
   section.classList.toggle("checkin-stats-collapsed", !checkinStatsExpanded);
-  button.textContent = checkinStatsExpanded ? "收合簽到人數" : "展開簽到人數";
+  if (!button) return;
+  const action = button.querySelector(".stat-total-action");
+  const actionText = checkinStatsExpanded ? "點一下收合明細" : "點一下展開明細";
   button.setAttribute("aria-expanded", String(checkinStatsExpanded));
+  button.setAttribute("aria-label", actionText);
+  button.title = actionText;
+  if (action) action.textContent = actionText;
+}
+
+function toggleCheckinStats() {
+  checkinStatsExpanded = !checkinStatsExpanded;
+  saveCheckinStatsExpanded();
+  syncCheckinStatsToggle();
 }
 
 function renderRosterData(data, fromFallback = false) {
@@ -334,7 +345,8 @@ function renderRosterData(data, fromFallback = false) {
   }, { total: 0, newbie: 0, returning: 0, unknown: 0 });
   const totalSeatText = totalCapacity ? `${totalRegistered} / ${totalCapacity}` : `${totalRegistered} 人`;
   const remainingText = totalCapacity ? `｜剩餘 ${Math.max(0, totalCapacity - totalRegistered)} 位` : "";
-  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total"><strong class="checkin-breakdown">${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small class="checkin-breakdown">${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small></div>`;
+  const totalToggleText = checkinStatsExpanded ? "點一下收合明細" : "點一下展開明細";
+  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total stat-total-toggle" id="toggleCheckinStats" role="button" tabindex="0" aria-controls="stats" aria-expanded="${String(checkinStatsExpanded)}" aria-label="${totalToggleText}" title="${totalToggleText}"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small class="checkin-breakdown">${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small><span class="stat-total-action">${totalToggleText}</span></div>`;
   syncCheckinStatsToggle();
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
@@ -549,11 +561,6 @@ restoreCheckinPin();
 document.querySelector('#checkinForm select[name="session"]').addEventListener("change", renderQuickCheckin);
 document.querySelector('#checkinForm input[name="name"]').addEventListener("input", renderQuickCheckin);
 document.getElementById("quickRefresh").addEventListener("click", () => loadRoster().catch(() => setQuickMessage(false, "名單讀取失敗，請稍後再試。")));
-document.getElementById("toggleCheckinStats")?.addEventListener("click", () => {
-  checkinStatsExpanded = !checkinStatsExpanded;
-  saveCheckinStatsExpanded();
-  syncCheckinStatsToggle();
-});
 document.getElementById("quickList").addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-name]");
   if (!button) return;
@@ -635,7 +642,13 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeModal();
 });
 document.getElementById("stats").addEventListener("click", (event) => {
-  const button = event.target.closest("[data-session]");
+  const target = event.target instanceof Element ? event.target : event.target.parentElement;
+  const toggleButton = target?.closest("#toggleCheckinStats");
+  if (toggleButton) {
+    toggleCheckinStats();
+    return;
+  }
+  const button = target?.closest("[data-session]");
   if (!button) return;
   const session = button.dataset.session;
   const count = getActiveRegistrations(session).length;
@@ -647,6 +660,13 @@ document.getElementById("stats").addEventListener("click", (event) => {
     body: renderRegistrationList(session),
     okIcon: false
   });
+});
+document.getElementById("stats").addEventListener("keydown", (event) => {
+  const target = event.target instanceof Element ? event.target : event.target.parentElement;
+  const toggleButton = target?.closest("#toggleCheckinStats");
+  if (!toggleButton || (event.key !== "Enter" && event.key !== " ")) return;
+  event.preventDefault();
+  toggleCheckinStats();
 });
 
 fillSessionSelects();

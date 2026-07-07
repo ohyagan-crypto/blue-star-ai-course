@@ -245,6 +245,29 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   border-color: rgba(0,143,122,.38);
 }
 .stat-total strong { color: var(--green); }
+.stat-total-toggle {
+  width: 100%;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.stat-total-toggle:hover,
+.stat-total-toggle:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(0,143,122,.56);
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  outline: none;
+}
+.stat-total-toggle .stat-total-action {
+  display: inline-flex;
+  margin-top: 8px;
+  color: var(--green);
+  font-weight: 900;
+}
+.checkin-stats-collapsed .stat-total-toggle .stat-total-action {
+  color: var(--gold);
+}
 .toggle-checkin-stats {
   min-height: 42px;
   padding: 10px 12px;
