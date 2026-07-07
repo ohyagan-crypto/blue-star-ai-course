@@ -245,6 +245,19 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   border-color: rgba(0,143,122,.38);
 }
 .stat-total strong { color: var(--green); }
+.toggle-checkin-stats {
+  min-height: 42px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--green);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.checkin-stats-collapsed .checkin-breakdown {
+  display: none;
+}
 .city-checkin-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -487,6 +500,7 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   .app { width: min(100% - 22px, 1080px); padding-top: 12px; }
   .grid, .course-meta, .roster, .stats { grid-template-columns: 1fr; }
   .city-checkin-grid { grid-template-columns: 1fr; }
+  .toggle-checkin-stats { width: 100%; }
   .panel, .hero { padding: 18px; }
   .tabs { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .tab { padding: 12px 8px; }

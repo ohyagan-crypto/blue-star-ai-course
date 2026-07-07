@@ -14,13 +14,15 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260707195233";
+const SCRIPT_VERSION = "20260707195344";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
+const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
 let lastVoice = "";
 let voiceUnlocked = false;
 let rosterData = { registrations: [], checkins: [] };
 let lastCheckin = null;
+let checkinStatsExpanded = loadCheckinStatsExpanded();
 
 function normalizeApiBase(value) {
   return String(value || "").trim().replace(/\/+$/, "");
@@ -260,7 +262,7 @@ function formatCheckinBreakdown(breakdown) {
 }
 
 function formatCityCheckinBreakdowns(sessionSummaries) {
-  return `<div class="city-checkin-grid" aria-label="各城市簽到人數">${sessionSummaries.map((item) => {
+  return `<div class="city-checkin-grid checkin-breakdown" aria-label="各城市簽到人數">${sessionSummaries.map((item) => {
     const breakdown = item.breakdown;
     const unknownText = breakdown.unknown ? `｜未填 ${breakdown.unknown} 人` : "";
     return `<span class="city-checkin-item"><strong>${escapeHtml(item.city)}</strong><small>新人 ${breakdown.newbie} 人｜複訓 ${breakdown.returning} 人${unknownText}｜合計 ${breakdown.total} 人</small></span>`;
@@ -269,6 +271,31 @@ function formatCityCheckinBreakdowns(sessionSummaries) {
 
 function getSessionCity(session) {
   return String(session || "").replace(/^\d+\/\d+\s*/, "").replace(/場$/, "");
+}
+
+function loadCheckinStatsExpanded() {
+  try {
+    return localStorage.getItem(CHECKIN_STATS_COLLAPSED_KEY) !== "1";
+  } catch {
+    return true;
+  }
+}
+
+function saveCheckinStatsExpanded() {
+  try {
+    localStorage.setItem(CHECKIN_STATS_COLLAPSED_KEY, checkinStatsExpanded ? "0" : "1");
+  } catch {
+    // Browser storage may be unavailable in private or restricted modes.
+  }
+}
+
+function syncCheckinStatsToggle() {
+  const section = document.querySelector(".bottom-stats");
+  const button = document.getElementById("toggleCheckinStats");
+  if (!section || !button) return;
+  section.classList.toggle("checkin-stats-collapsed", !checkinStatsExpanded);
+  button.textContent = checkinStatsExpanded ? "收合簽到人數" : "展開簽到人數";
+  button.setAttribute("aria-expanded", String(checkinStatsExpanded));
 }
 
 function renderRosterData(data, fromFallback = false) {
@@ -285,7 +312,7 @@ function renderRosterData(data, fromFallback = false) {
     const seatText = capacity ? `${regs.length} / ${capacity}` : `${regs.length} 人`;
     const hintText = remaining === 0 ? "已額滿" : remaining === null ? "點開看名單" : `剩餘 ${remaining} 位`;
     const breakdown = getCheckedInBreakdown(data, session, regs);
-    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${seatText}</strong><span>${session} 有效報名</span><small>${hintText}｜${formatCheckinBreakdown(breakdown)}</small></button>`;
+    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${seatText}</strong><span>${session} 有效報名</span><small>${hintText}<span class="checkin-breakdown">｜${formatCheckinBreakdown(breakdown)}</span></small></button>`;
   });
   const sessionSummaries = sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
@@ -307,7 +334,8 @@ function renderRosterData(data, fromFallback = false) {
   }, { total: 0, newbie: 0, returning: 0, unknown: 0 });
   const totalSeatText = totalCapacity ? `${totalRegistered} / ${totalCapacity}` : `${totalRegistered} 人`;
   const remainingText = totalCapacity ? `｜剩餘 ${Math.max(0, totalCapacity - totalRegistered)} 位` : "";
-  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small>${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small></div>`;
+  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total"><strong class="checkin-breakdown">${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small class="checkin-breakdown">${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small></div>`;
+  syncCheckinStatsToggle();
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
@@ -521,6 +549,11 @@ restoreCheckinPin();
 document.querySelector('#checkinForm select[name="session"]').addEventListener("change", renderQuickCheckin);
 document.querySelector('#checkinForm input[name="name"]').addEventListener("input", renderQuickCheckin);
 document.getElementById("quickRefresh").addEventListener("click", () => loadRoster().catch(() => setQuickMessage(false, "名單讀取失敗，請稍後再試。")));
+document.getElementById("toggleCheckinStats")?.addEventListener("click", () => {
+  checkinStatsExpanded = !checkinStatsExpanded;
+  saveCheckinStatsExpanded();
+  syncCheckinStatsToggle();
+});
 document.getElementById("quickList").addEventListener("click", async (event) => {
   const button = event.target.closest("button[data-name]");
   if (!button) return;
