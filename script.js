@@ -14,7 +14,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260707192004";
+const SCRIPT_VERSION = "20260707194249";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 
 let lastVoice = "";
@@ -259,6 +259,14 @@ function formatCheckinBreakdown(breakdown) {
   return `簽到 新人 ${breakdown.newbie} 人｜複訓 ${breakdown.returning} 人${unknownText}｜合計 ${breakdown.total} 人`;
 }
 
+function formatCityCheckinBreakdowns(sessionSummaries) {
+  return `<div class="city-checkin-grid" aria-label="各城市簽到人數">${sessionSummaries.map((item) => {
+    const breakdown = item.breakdown;
+    const unknownText = breakdown.unknown ? `｜未填 ${breakdown.unknown} 人` : "";
+    return `<span class="city-checkin-item"><strong>${escapeHtml(item.city)}</strong><small>新人 ${breakdown.newbie} 人｜複訓 ${breakdown.returning} 人${unknownText}｜合計 ${breakdown.total} 人</small></span>`;
+  }).join("")}</div>`;
+}
+
 function getSessionCity(session) {
   return String(session || "").replace(/^\d+\/\d+\s*/, "").replace(/場$/, "");
 }
@@ -299,7 +307,7 @@ function renderRosterData(data, fromFallback = false) {
   }, { total: 0, newbie: 0, returning: 0, unknown: 0 });
   const totalSeatText = totalCapacity ? `${totalRegistered} / ${totalCapacity}` : `${totalRegistered} 人`;
   const remainingText = totalCapacity ? `｜剩餘 ${Math.max(0, totalCapacity - totalRegistered)} 位` : "";
-  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small>${formatCheckinBreakdown(totalBreakdown)}｜有效報名 ${totalSeatText}${remainingText}</small></div>`;
+  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small>${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small></div>`;
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));

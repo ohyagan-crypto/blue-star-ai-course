@@ -245,6 +245,26 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   border-color: rgba(0,143,122,.38);
 }
 .stat-total strong { color: var(--green); }
+.city-checkin-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.city-checkin-item {
+  display: block;
+  padding: 10px;
+  border: 1px solid rgba(0,143,122,.18);
+  border-radius: 8px;
+  background: rgba(255,255,255,.7);
+}
+.city-checkin-item strong {
+  font-size: 16px;
+  color: var(--ink);
+}
+.city-checkin-item small {
+  color: var(--gold);
+}
 .bottom-stats { margin-top: 16px; }
 .bottom-stats-head h2, .bottom-stats-head p { margin-bottom: 0; }
 .stats-hint {
@@ -466,6 +486,7 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
 @media (max-width: 760px) {
   .app { width: min(100% - 22px, 1080px); padding-top: 12px; }
   .grid, .course-meta, .roster, .stats { grid-template-columns: 1fr; }
+  .city-checkin-grid { grid-template-columns: 1fr; }
   .panel, .hero { padding: 18px; }
   .tabs { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .tab { padding: 12px 8px; }
