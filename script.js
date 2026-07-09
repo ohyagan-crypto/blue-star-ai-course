@@ -14,7 +14,7 @@ const sessionInfo = {
   "7/9 台北場": { title: "7/9（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
   "7/11 台中場": { title: "7/11（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260709132736";
+const SCRIPT_VERSION = "20260709134712";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -228,10 +228,7 @@ function getRemainingSeats(session, regs) {
 }
 
 function getCheckedInCount(data, session, regs) {
-  const checked = new Set((data.checkins || [])
-    .filter((item) => item.session === session)
-    .map((item) => item.name));
-  return regs.filter((reg) => checked.has(reg.name)).length;
+  return (data.checkins || []).filter((item) => item.session === session).length;
 }
 
 function normalizeParticipantType(reg) {
@@ -242,12 +239,10 @@ function normalizeParticipantType(reg) {
 }
 
 function getCheckedInBreakdown(data, session, regs) {
-  const checked = new Set((data.checkins || [])
-    .filter((item) => item.session === session)
-    .map((item) => item.name));
-  return regs.reduce((summary, reg) => {
-    if (!checked.has(reg.name)) return summary;
-    const type = normalizeParticipantType(reg);
+  const checks = (data.checkins || []).filter((item) => item.session === session);
+  const activeRegByName = new Map(regs.map((reg) => [reg.name, reg]));
+  return checks.reduce((summary, check) => {
+    const type = normalizeParticipantType(activeRegByName.get(check.name));
     summary.total += 1;
     if (type === "新人") summary.newbie += 1;
     else if (type === "複訓") summary.returning += 1;
