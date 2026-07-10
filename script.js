@@ -1,20 +1,20 @@
 const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://c7c9652b3fea7abc-203-217-101-116.serveousercontent.com";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
-const sessions = ["8/3 台南場","8/4 高雄場","8/6 台北場","8/8 台中場"];
+const sessions = ["8/10 台南場","8/11 高雄場","8/13 台北場","8/15 台中場"];
 const sessionCapacities = {
-  "8/3 台南場": 70,
-  "8/4 高雄場": 140,
-  "8/6 台北場": 140,
-  "8/8 台中場": 150
+  "8/10 台南場": 70,
+  "8/11 高雄場": 140,
+  "8/13 台北場": 140,
+  "8/15 台中場": 150
 };
 const sessionInfo = {
-  "8/3 台南場": { title: "8/3（一）台南場", address: "台南市中西區南美里民生路一段167號3F", transit: "13:00-17:00" },
-  "8/4 高雄場": { title: "8/4（二）高雄場", address: "高雄市前鎮區中山二路2號12樓之7", transit: "捷運獅甲站3號出口｜13:00-17:00" },
-  "8/6 台北場": { title: "8/6（四）台北場", address: "台北市中正區館前路36號8樓", transit: "捷運台北車站 M6 出口｜13:00-17:00" },
-  "8/8 台中場": { title: "8/8（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
+  "8/10 台南場": { title: "8/10（一）台南場", address: "待定", transit: "13:00-17:00" },
+  "8/11 高雄場": { title: "8/11（二）高雄場", address: "待定", transit: "捷運待定｜13:00-17:00" },
+  "8/13 台北場": { title: "8/13（四）台北場", address: "待定", transit: "捷運待定｜13:00-17:00" },
+  "8/15 台中場": { title: "8/15（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260710234220";
+const SCRIPT_VERSION = "20260711002000";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 

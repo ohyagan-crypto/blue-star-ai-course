@@ -2,7 +2,7 @@ const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
-const sessions = ["8/3 台南場","8/4 高雄場","8/6 台北場","8/8 台中場"];
+const sessions = ["8/10 台南場","8/11 高雄場","8/13 台北場","8/15 台中場"];
 
 let rosterData = { registrations: [], checkins: [] };
 
