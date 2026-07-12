@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://4dffe4e280f0b1ec-203-217-101-116.serveousercontent.com";
+const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://8ad372ecd4df55ec-203-217-101-116.serveousercontent.com";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
 const sessions = ["8/10 台南場","8/11 高雄場","8/13 台北場","8/15 台中場"];
@@ -14,7 +14,7 @@ const sessionInfo = {
   "8/13 台北場": { title: "8/13（四）台北場", address: "待定", transit: "捷運：待定｜13:00-17:00" },
   "8/15 台中場": { title: "8/15（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運：南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260712071325";
+const SCRIPT_VERSION = "20260713071327";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
