@@ -4,15 +4,15 @@ let apiBases = [DEFAULT_API_BASE];
 const sessions = ["8/10 台南場","8/11 高雄場","8/13 台北場","8/15 台中場"];
 const sessionCapacities = {
   "8/10 台南場": 70,
-  "8/11 高雄場": 140,
-  "8/13 台北場": 140,
-  "8/15 台中場": 150
+  "8/11 高雄場": 100,
+  "8/13 台北場": 100,
+  "8/15 台中場": 160
 };
 const sessionInfo = {
   "8/10 台南場": { title: "8/10（一）台南場", address: "待定", transit: "時間：13:00-17:00" },
   "8/11 高雄場": { title: "8/11（二）高雄場", address: "待定", transit: "捷運：待定｜13:00-17:00" },
   "8/13 台北場": { title: "8/13（四）台北場", address: "待定", transit: "捷運：待定｜13:00-17:00" },
-  "8/15 台中場": { title: "8/15（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運：南屯站｜13:00-17:00" }
+  "8/15 台中場": { title: "8/15（六）台中場", address: "", transit: "捷運：南屯站｜13:00-17:00" }
 };
 const SCRIPT_VERSION = "20260714140927";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
@@ -96,7 +96,8 @@ function fillSessionSelects() {
 
   document.getElementById("sessionList").innerHTML = sessions.map((session) => {
     const info = sessionInfo[session];
-    return `<div><strong>${info.title}</strong><span>${info.address}</span><small>${info.transit}</small></div>`;
+    const address = info.address ? `<span>${info.address}</span>` : "";
+    return `<div><strong>${info.title}</strong>${address}<small>${info.transit}</small></div>`;
   }).join("");
 }
 
