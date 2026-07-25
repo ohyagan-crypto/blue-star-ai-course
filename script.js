@@ -14,7 +14,7 @@ const sessionInfo = {
   "8/13 台北場": { title: "8/13（四）台北場", address: "待定", transit: "捷運：待定｜13:00-17:00" },
   "8/15 台中場": { title: "8/15（六）台中場", address: "", transit: "捷運：南屯站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260726052004";
+const SCRIPT_VERSION = "20260726060511";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
