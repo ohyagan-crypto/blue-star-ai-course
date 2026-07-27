@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://acc50966c7a1782a-203-217-101-116.serveousercontent.com";
+const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://919f74705fe2ab89-203-217-101-116.serveousercontent.com";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
