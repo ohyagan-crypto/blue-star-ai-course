@@ -14,7 +14,7 @@ const sessionInfo = {
   "8/13 台北場": { title: "8/13（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "站前地下街 Z10 出口｜13:00-17:00" },
   "8/15 台中場": { title: "8/15（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "時間：13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260806181149";
+const SCRIPT_VERSION = "20260806181514";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
