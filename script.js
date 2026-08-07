@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://neural-alloy-bolt-concord.trycloudflare.com";
+const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://survive-char-src-they.trycloudflare.com";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
 const sessions = ["8/10 台南場","8/11 高雄場","8/13 台北場","8/15 台中場"];
