@@ -5,7 +5,7 @@ const sessions = ["8/10 台南場","8/11 高雄場","8/13 台北場","8/15 台�
 const sessionCapacities = {
   "8/10 台南場": 70,
   "8/11 高雄場": 115,
-  "8/13 台北場": 110,
+  "8/13 台北場": 130,
   "8/15 台中場": 160
 };
 const closedRegistrationSessions = new Set();
