@@ -8,7 +8,7 @@ const sessionCapacities = {
   "8/13 台北場": 110,
   "8/15 台中場": 160
 };
-const closedRegistrationSessions = new Set(["8/13 台北場"]);
+const closedRegistrationSessions = new Set();
 const sessionInfo = {
   "8/10 台南場": { title: "8/10（一）台南場", address: "台南市東區中華東路三段139號6樓，會議室601", transit: "時間：13:00-17:00" },
   "8/11 高雄場": { title: "8/11（二）高雄場", address: "高雄市前鎮區中山二路2號12樓之7", transit: "捷運：獅甲站 3 號出口｜13:00-17:00" },
