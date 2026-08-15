@@ -1212,13 +1212,16 @@
                           {
                               "id":  "mrn6xmcy1mwu",
                               "createdAt":  "2026/7/16 15:31:41",
-                              "status":  "active",
+                              "status":  "cancelled",
                               "session":  "8/15 台中場",
                               "name":  "廖羿竤",
                               "lineId":  "",
                               "phone":  "",
                               "introducer":  "",
-                              "participantType":  "複訓"
+                              "participantType":  "複訓",
+                              "cancelled":  true,
+                              "cancelledAt":  "2026-08-14T09:09:30.872Z",
+                              "cancelReason":  ""
                           },
                           {
                               "id":  "mrn72ozc05er",
@@ -2270,13 +2273,16 @@
                           {
                               "id":  "mrp4do2p3frt",
                               "createdAt":  "2026/7/17 23:55:43",
-                              "status":  "active",
+                              "status":  "cancelled",
                               "session":  "8/15 台中場",
                               "name":  "莊孟羚",
                               "lineId":  "",
                               "phone":  "",
                               "introducer":  "",
-                              "participantType":  "複訓"
+                              "participantType":  "複訓",
+                              "cancelled":  true,
+                              "cancelledAt":  "2026-08-14T08:59:34.349Z",
+                              "cancelReason":  "家裡臨時有事"
                           },
                           {
                               "id":  "mrpphfdslim3",
@@ -3347,13 +3353,16 @@
                           {
                               "id":  "mruyzmnhesxh",
                               "createdAt":  "2026/7/22 02:11:27",
-                              "status":  "active",
+                              "status":  "cancelled",
                               "session":  "8/15 台中場",
                               "name":  "許佳芬",
                               "lineId":  "",
                               "phone":  "",
                               "introducer":  "愛尼",
-                              "participantType":  "新人"
+                              "participantType":  "新人",
+                              "cancelled":  true,
+                              "cancelledAt":  "2026-08-15T03:43:16.861Z",
+                              "cancelReason":  "流感冒"
                           },
                           {
                               "id":  "mrvdhonxw9mn",
@@ -4851,6 +4860,50 @@
                               "introducer":  "陳慧瑜",
                               "participantType":  "新人",
                               "recoveredFrom":  "Google Sheet"
+                          },
+                          {
+                              "id":  "aug-msr8cjrr",
+                              "createdAt":  "2026-08-13T08:02:04.695Z",
+                              "status":  "active",
+                              "session":  "8/13 台北場",
+                              "name":  "彭靜尹",
+                              "lineId":  "",
+                              "phone":  "",
+                              "introducer":  "謝渃汮",
+                              "participantType":  "新人"
+                          },
+                          {
+                              "id":  "aug-mssq55ig",
+                              "createdAt":  "2026-08-14T09:07:58.888Z",
+                              "status":  "active",
+                              "session":  "8/15 台中場",
+                              "name":  "1",
+                              "lineId":  "",
+                              "phone":  "",
+                              "introducer":  "",
+                              "participantType":  "複訓"
+                          },
+                          {
+                              "id":  "aug-mssq8378",
+                              "createdAt":  "2026-08-14T09:10:15.860Z",
+                              "status":  "active",
+                              "session":  "8/15 台中場",
+                              "name":  "鈕知馨",
+                              "lineId":  "",
+                              "phone":  "",
+                              "introducer":  "廖羿竤",
+                              "participantType":  "新人"
+                          },
+                          {
+                              "id":  "aug-mstuwpj9",
+                              "createdAt":  "2026-08-15T04:09:09.189Z",
+                              "status":  "active",
+                              "session":  "8/15 台中場",
+                              "name":  "11",
+                              "lineId":  "",
+                              "phone":  "",
+                              "introducer":  "",
+                              "participantType":  "複訓"
                           }
                       ],
     "checkins":  [
@@ -7416,6 +7469,1476 @@
                                            "sheet":  "高雄場",
                                            "syncedAt":  "2026-08-13T07:48:01.667Z"
                                        }
+                     },
+                     {
+                         "id":  "da4d673a-b28a-4cb7-b6d0-59cba31b3290",
+                         "createdAt":  "2026-08-13T08:02:21.369Z",
+                         "status":  "checked-in",
+                         "session":  "8/13 台北場",
+                         "name":  "彭靜尹",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台北場",
+                                           "row":  117,
+                                           "syncedAt":  "2026-08-13T08:02:27.373Z"
+                                       }
+                     },
+                     {
+                         "id":  "072f81f0-8ac4-45e3-8cb2-aed20949f8f3",
+                         "createdAt":  "2026-08-15T04:25:49.390Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "黃聖硯",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  44,
+                                           "syncedAt":  "2026-08-15T04:25:52.881Z"
+                                       }
+                     },
+                     {
+                         "id":  "30357f11-c796-4851-9a12-4c26a95c1e27",
+                         "createdAt":  "2026-08-15T04:26:01.522Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "鄒昱廷",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  38,
+                                           "syncedAt":  "2026-08-15T04:26:03.841Z"
+                                       }
+                     },
+                     {
+                         "id":  "c62a201d-c0d3-4f51-893a-9ed47d60fc57",
+                         "createdAt":  "2026-08-15T04:26:12.062Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "李永鋒",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  15,
+                                           "syncedAt":  "2026-08-15T04:26:14.079Z"
+                                       }
+                     },
+                     {
+                         "id":  "7ae78c4a-d383-43ab-8c1b-f734b39e4363",
+                         "createdAt":  "2026-08-15T04:26:23.841Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "陳采薰",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  29,
+                                           "syncedAt":  "2026-08-15T04:26:26.504Z"
+                                       }
+                     },
+                     {
+                         "id":  "c880c632-5ab5-4563-97a6-02943671fd2b",
+                         "createdAt":  "2026-08-15T04:27:29.973Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "賴上傑",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  126,
+                                           "syncedAt":  "2026-08-15T04:27:32.634Z"
+                                       }
+                     },
+                     {
+                         "id":  "0aa5f69b-5550-4149-970d-28f14500c1f0",
+                         "createdAt":  "2026-08-15T04:28:02.632Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "顏碧珠",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  43,
+                                           "syncedAt":  "2026-08-15T04:28:06.523Z"
+                                       }
+                     },
+                     {
+                         "id":  "eed28b1e-b616-4c73-9858-601a4cc9a000",
+                         "createdAt":  "2026-08-15T04:28:22.046Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "劉必浩",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  51,
+                                           "syncedAt":  "2026-08-15T04:28:24.691Z"
+                                       }
+                     },
+                     {
+                         "id":  "a76f74b4-fcc7-4596-b6cb-8d7105630456",
+                         "createdAt":  "2026-08-15T04:28:32.000Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "劉佳莉",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  59,
+                                           "syncedAt":  "2026-08-15T04:28:34.077Z"
+                                       }
+                     },
+                     {
+                         "id":  "f7c18df3-55e2-43b8-b81e-0e6de2482a63",
+                         "createdAt":  "2026-08-15T04:28:42.817Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林斯薇",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  60,
+                                           "syncedAt":  "2026-08-15T04:28:44.734Z"
+                                       }
+                     },
+                     {
+                         "id":  "309d53e2-43a4-4120-b15b-161cac94aefa",
+                         "createdAt":  "2026-08-15T04:28:55.227Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "張家榛（淑梅）",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  17,
+                                           "syncedAt":  "2026-08-15T04:28:58.112Z"
+                                       }
+                     },
+                     {
+                         "id":  "e5eb7ce9-8e14-4d72-90a9-812eb43940f0",
+                         "createdAt":  "2026-08-15T04:29:03.014Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "熊英芝",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  78,
+                                           "syncedAt":  "2026-08-15T04:29:05.957Z"
+                                       }
+                     },
+                     {
+                         "id":  "df06284e-4183-4a96-9d35-0b0b05a8e6d3",
+                         "createdAt":  "2026-08-15T04:29:14.358Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "王聆音",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  150,
+                                           "syncedAt":  "2026-08-15T04:29:16.692Z"
+                                       }
+                     },
+                     {
+                         "id":  "ee31af04-301c-474d-883e-d860bc798699",
+                         "createdAt":  "2026-08-15T04:29:27.270Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "陳宜華",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  26,
+                                           "syncedAt":  "2026-08-15T04:29:30.290Z"
+                                       }
+                     },
+                     {
+                         "id":  "3c46569b-01fc-4add-97b5-f6af7f9f4bba",
+                         "createdAt":  "2026-08-15T04:29:37.457Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "范碧玉(今華)",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  137,
+                                           "syncedAt":  "2026-08-15T04:29:39.737Z"
+                                       }
+                     },
+                     {
+                         "id":  "30d2270f-d32c-4214-a09d-f7833ca0f78a",
+                         "createdAt":  "2026-08-15T04:29:40.440Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "范碧雲",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  136,
+                                           "syncedAt":  "2026-08-15T04:29:42.447Z"
+                                       }
+                     },
+                     {
+                         "id":  "0d54ef13-947b-4c3f-b22b-81f7ffe02216",
+                         "createdAt":  "2026-08-15T04:30:51.302Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "洪懿妤",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  107,
+                                           "syncedAt":  "2026-08-15T04:30:53.751Z"
+                                       }
+                     },
+                     {
+                         "id":  "2e8166b2-0aa4-4695-aad8-b888ca2bd3f5",
+                         "createdAt":  "2026-08-15T04:31:37.183Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "何自強",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  93,
+                                           "syncedAt":  "2026-08-15T04:31:39.927Z"
+                                       }
+                     },
+                     {
+                         "id":  "1706914c-1121-4d70-93be-08897b8a0d9e",
+                         "createdAt":  "2026-08-15T04:31:50.892Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "楊珮存",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  92,
+                                           "syncedAt":  "2026-08-15T04:31:53.455Z"
+                                       }
+                     },
+                     {
+                         "id":  "487db096-971c-4823-bbda-8deabc4e2b79",
+                         "createdAt":  "2026-08-15T04:32:02.493Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "藍芝虹",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  119,
+                                           "syncedAt":  "2026-08-15T04:32:04.712Z"
+                                       }
+                     },
+                     {
+                         "id":  "f4fe17e3-1450-4d70-8a85-128417bea8e3",
+                         "createdAt":  "2026-08-15T04:32:12.202Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "楊婉容",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  145,
+                                           "syncedAt":  "2026-08-15T04:32:14.961Z"
+                                       }
+                     },
+                     {
+                         "id":  "624cd94c-df52-4a0b-8956-8b4f9216de53",
+                         "createdAt":  "2026-08-15T04:32:49.849Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "許靜芬",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  101,
+                                           "syncedAt":  "2026-08-15T04:32:51.945Z"
+                                       }
+                     },
+                     {
+                         "id":  "bd57a83e-f577-43f3-96cf-5c19730c39c5",
+                         "createdAt":  "2026-08-15T04:33:10.998Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "陳映良",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  143,
+                                           "syncedAt":  "2026-08-15T04:33:13.756Z"
+                                       }
+                     },
+                     {
+                         "id":  "11ef99e0-207f-4117-a832-23d0aa509b80",
+                         "createdAt":  "2026-08-15T04:33:17.618Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "陳威印",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  144,
+                                           "syncedAt":  "2026-08-15T04:33:19.870Z"
+                                       }
+                     },
+                     {
+                         "id":  "af60eafa-9b03-42ec-9e03-23322983775f",
+                         "createdAt":  "2026-08-15T04:33:28.248Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "謝幸妃",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  37,
+                                           "syncedAt":  "2026-08-15T04:33:32.317Z"
+                                       }
+                     },
+                     {
+                         "id":  "be021bcf-789d-46ce-ae2f-04f4034b348e",
+                         "createdAt":  "2026-08-15T04:34:26.361Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "張箐珂",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  32,
+                                           "syncedAt":  "2026-08-15T04:34:28.619Z"
+                                       }
+                     },
+                     {
+                         "id":  "1e1aa842-4491-4629-b090-178752de746b",
+                         "createdAt":  "2026-08-15T04:34:46.832Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "侯雨杉",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  33,
+                                           "syncedAt":  "2026-08-15T04:34:49.961Z"
+                                       }
+                     },
+                     {
+                         "id":  "8aebd54c-9b8e-478f-855b-17de7510fd07",
+                         "createdAt":  "2026-08-15T04:35:04.134Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "蕭宏名",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  142,
+                                           "syncedAt":  "2026-08-15T04:35:06.742Z"
+                                       }
+                     },
+                     {
+                         "id":  "3e64676f-6523-4633-8ab9-a3158dd989b5",
+                         "createdAt":  "2026-08-15T04:35:24.584Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林子萱",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  63,
+                                           "syncedAt":  "2026-08-15T04:35:27.207Z"
+                                       }
+                     },
+                     {
+                         "id":  "2d81f1eb-7cfd-40b2-ac66-c89371067806",
+                         "createdAt":  "2026-08-15T04:35:47.935Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "管容",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  103,
+                                           "syncedAt":  "2026-08-15T04:35:50.562Z"
+                                       }
+                     },
+                     {
+                         "id":  "8e71b9f0-b794-4eb4-b32b-733f49488543",
+                         "createdAt":  "2026-08-15T04:35:55.493Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "江恩瑜",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  30,
+                                           "syncedAt":  "2026-08-15T04:35:57.892Z"
+                                       }
+                     },
+                     {
+                         "id":  "4295b483-16a7-44ff-a2f4-d8a67d291b35",
+                         "createdAt":  "2026-08-15T04:36:01.861Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "萬玉如",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  31,
+                                           "syncedAt":  "2026-08-15T04:36:04.422Z"
+                                       }
+                     },
+                     {
+                         "id":  "c0505087-5732-40ee-ae2a-a2e46388712d",
+                         "createdAt":  "2026-08-15T04:38:41.716Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "辛瑋庭",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  46,
+                                           "syncedAt":  "2026-08-15T04:38:44.155Z"
+                                       }
+                     },
+                     {
+                         "id":  "91f10874-3747-425a-abdf-ef0c1e16c255",
+                         "createdAt":  "2026-08-15T04:39:22.500Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "詹凱莉",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  34,
+                                           "syncedAt":  "2026-08-15T04:39:24.718Z"
+                                       }
+                     },
+                     {
+                         "id":  "a156d312-6e68-4b4c-bade-7dcde1669482",
+                         "createdAt":  "2026-08-15T04:41:40.518Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "朱正中",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  53,
+                                           "syncedAt":  "2026-08-15T04:41:43.734Z"
+                                       }
+                     },
+                     {
+                         "id":  "b93b76a4-c0e4-43fb-a0d1-15cbb8580629",
+                         "createdAt":  "2026-08-15T04:43:00.265Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林聖哲",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  95,
+                                           "syncedAt":  "2026-08-15T04:43:02.992Z"
+                                       }
+                     },
+                     {
+                         "id":  "ba282157-021f-41f1-921a-4be713de880b",
+                         "createdAt":  "2026-08-15T04:45:38.697Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林立衡",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  75,
+                                           "syncedAt":  "2026-08-15T04:45:41.776Z"
+                                       }
+                     },
+                     {
+                         "id":  "2b0c1960-923d-4696-801d-af8432e5a581",
+                         "createdAt":  "2026-08-15T04:45:58.044Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "羅采柔",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  79,
+                                           "syncedAt":  "2026-08-15T04:46:00.329Z"
+                                       }
+                     },
+                     {
+                         "id":  "9f4e681d-d297-4bee-baf3-cf65e17aad86",
+                         "createdAt":  "2026-08-15T04:46:16.018Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林采甄",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  81,
+                                           "syncedAt":  "2026-08-15T04:46:18.287Z"
+                                       }
+                     },
+                     {
+                         "id":  "88cf7500-fb7f-49a2-b967-6ecbd944a9bd",
+                         "createdAt":  "2026-08-15T04:46:35.181Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "張素卿",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  80,
+                                           "syncedAt":  "2026-08-15T04:46:37.159Z"
+                                       }
+                     },
+                     {
+                         "id":  "5a5dde50-559f-4041-9adf-3942625a1434",
+                         "createdAt":  "2026-08-15T04:47:21.019Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林楷樂",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  88,
+                                           "syncedAt":  "2026-08-15T04:47:23.419Z"
+                                       }
+                     },
+                     {
+                         "id":  "60f42903-a058-42fe-9bd8-bfc1799d1446",
+                         "createdAt":  "2026-08-15T04:47:42.177Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "羅文君",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  19,
+                                           "syncedAt":  "2026-08-15T04:47:44.205Z"
+                                       }
+                     },
+                     {
+                         "id":  "22916dcc-ac74-4896-bdb0-28b852480242",
+                         "createdAt":  "2026-08-15T04:49:15.265Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "謝孟儒",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  129,
+                                           "syncedAt":  "2026-08-15T04:49:18.269Z"
+                                       }
+                     },
+                     {
+                         "id":  "3c32d9fb-ac8b-46e7-a292-18a0d29b5037",
+                         "createdAt":  "2026-08-15T04:49:21.401Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "簡文瑛",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  84,
+                                           "syncedAt":  "2026-08-15T04:49:23.985Z"
+                                       }
+                     },
+                     {
+                         "id":  "4ee7a754-03db-428d-80ee-05405c7d13ba",
+                         "createdAt":  "2026-08-15T04:49:29.693Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "張翡珊",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  98,
+                                           "syncedAt":  "2026-08-15T04:49:32.275Z"
+                                       }
+                     },
+                     {
+                         "id":  "9d563dd7-9a29-486c-a4b0-bc7303760e1c",
+                         "createdAt":  "2026-08-15T04:51:21.751Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "莊泉",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  127,
+                                           "syncedAt":  "2026-08-15T04:51:25.465Z"
+                                       }
+                     },
+                     {
+                         "id":  "d661e8cd-a18f-42dd-a51f-f3633b3dadaa",
+                         "createdAt":  "2026-08-15T04:51:33.186Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "黃稚鈞",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  123,
+                                           "syncedAt":  "2026-08-15T04:51:35.413Z"
+                                       }
+                     },
+                     {
+                         "id":  "c7ff135c-7886-4c35-a925-821406e95991",
+                         "createdAt":  "2026-08-15T04:51:47.439Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "周品均",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  18,
+                                           "syncedAt":  "2026-08-15T04:51:50.174Z"
+                                       }
+                     },
+                     {
+                         "id":  "d509878b-5f0b-402b-aa3a-5b27df496c68",
+                         "createdAt":  "2026-08-15T04:54:26.811Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "洪瑞汝",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  62,
+                                           "syncedAt":  "2026-08-15T04:54:30.061Z"
+                                       }
+                     },
+                     {
+                         "id":  "3a29715c-cb27-419b-ad8f-3c04506ade5f",
+                         "createdAt":  "2026-08-15T04:56:05.796Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "丘豊富",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  151,
+                                           "syncedAt":  "2026-08-15T04:56:08.486Z"
+                                       }
+                     },
+                     {
+                         "id":  "4f3ddead-3e91-4da0-b1cc-206ec95f8266",
+                         "createdAt":  "2026-08-15T04:58:28.640Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "曾愛尼",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  141,
+                                           "syncedAt":  "2026-08-15T04:58:31.409Z"
+                                       }
+                     },
+                     {
+                         "id":  "e8c45e41-ab8f-4b0f-bc5b-4e20facc87f7",
+                         "createdAt":  "2026-08-15T04:59:05.030Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "洪秉毅",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  9,
+                                           "syncedAt":  "2026-08-15T04:59:07.765Z"
+                                       }
+                     },
+                     {
+                         "id":  "f59ba704-a100-45e3-b667-21a31193a30d",
+                         "createdAt":  "2026-08-15T04:59:10.959Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "莊芯慈",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  11,
+                                           "syncedAt":  "2026-08-15T04:59:13.283Z"
+                                       }
+                     },
+                     {
+                         "id":  "3894c224-708a-4563-a54f-b2efa180b1b1",
+                         "createdAt":  "2026-08-15T04:59:35.236Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "尤宣宜",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  100,
+                                           "syncedAt":  "2026-08-15T04:59:37.340Z"
+                                       }
+                     },
+                     {
+                         "id":  "90acc638-965a-4a99-b9ac-1cd19b2d131e",
+                         "createdAt":  "2026-08-15T05:00:11.822Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "王素美",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  58,
+                                           "syncedAt":  "2026-08-15T05:00:14.461Z"
+                                       }
+                     },
+                     {
+                         "id":  "9a34d3ad-c324-4df5-b90f-7c1155e19a56",
+                         "createdAt":  "2026-08-15T05:00:23.965Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林慧綾",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  90,
+                                           "syncedAt":  "2026-08-15T05:00:26.129Z"
+                                       }
+                     },
+                     {
+                         "id":  "cccb1c2b-afc9-49f1-a051-dd5da6618b6d",
+                         "createdAt":  "2026-08-15T05:00:35.877Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "曾勁竤",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  131,
+                                           "syncedAt":  "2026-08-15T05:00:37.894Z"
+                                       }
+                     },
+                     {
+                         "id":  "3f832cf9-d9e5-4997-876b-ce09bf967cc0",
+                         "createdAt":  "2026-08-15T05:01:22.767Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "潘莉化",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  82,
+                                           "syncedAt":  "2026-08-15T05:01:25.752Z"
+                                       }
+                     },
+                     {
+                         "id":  "612bfb12-bf68-447e-8b54-f2386b4c942b",
+                         "createdAt":  "2026-08-15T05:03:29.840Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "尤綜瑋",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  97,
+                                           "syncedAt":  "2026-08-15T05:03:32.722Z"
+                                       }
+                     },
+                     {
+                         "id":  "923b6a1b-c077-4632-b1a0-7d6170fe71c0",
+                         "createdAt":  "2026-08-15T05:03:39.660Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "高士琪",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  99,
+                                           "syncedAt":  "2026-08-15T05:03:42.213Z"
+                                       }
+                     },
+                     {
+                         "id":  "89c3ce09-c0d1-44f1-8522-2f1b94b49d5b",
+                         "createdAt":  "2026-08-15T05:05:58.016Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林洋逸",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  25,
+                                           "syncedAt":  "2026-08-15T05:06:01.186Z"
+                                       }
+                     },
+                     {
+                         "id":  "2bc42658-91ee-4d7f-81f6-421e96adde29",
+                         "createdAt":  "2026-08-15T05:05:59.355Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "游育駖",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  27,
+                                           "syncedAt":  "2026-08-15T05:06:02.460Z"
+                                       }
+                     },
+                     {
+                         "id":  "614b1295-da61-408d-9e20-c2975ca194f5",
+                         "createdAt":  "2026-08-15T05:06:22.167Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "薛寶國",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  13,
+                                           "syncedAt":  "2026-08-15T05:06:24.444Z"
+                                       }
+                     },
+                     {
+                         "id":  "3e4e7e6d-2375-4a59-b781-865a42e6a268",
+                         "createdAt":  "2026-08-15T05:07:38.673Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "陳宥珍",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  120,
+                                           "syncedAt":  "2026-08-15T05:07:42.038Z"
+                                       }
+                     },
+                     {
+                         "id":  "d9f9f99e-566a-45c4-a85b-3528dd2d36e4",
+                         "createdAt":  "2026-08-15T05:07:53.602Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "黃雅琴",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  118,
+                                           "syncedAt":  "2026-08-15T05:07:56.749Z"
+                                       }
+                     },
+                     {
+                         "id":  "4e6de84f-0a61-46c2-abb7-690457c2b579",
+                         "createdAt":  "2026-08-15T05:08:58.750Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "李郁恩",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  72,
+                                           "syncedAt":  "2026-08-15T05:09:02.707Z"
+                                       }
+                     },
+                     {
+                         "id":  "f0cd6df1-1387-4941-815a-b197b8746a99",
+                         "createdAt":  "2026-08-15T05:09:23.621Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "曾珮妍",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  21,
+                                           "syncedAt":  "2026-08-15T05:09:26.174Z"
+                                       }
+                     },
+                     {
+                         "id":  "b2d11a09-9dce-41a4-8229-546651df9645",
+                         "createdAt":  "2026-08-15T05:13:31.937Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "郭美伶",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  2,
+                                           "syncedAt":  "2026-08-15T05:13:34.156Z"
+                                       }
+                     },
+                     {
+                         "id":  "354e7865-8c79-48d4-a87d-000071b586c0",
+                         "createdAt":  "2026-08-15T05:13:39.625Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "曾素美",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  52,
+                                           "syncedAt":  "2026-08-15T05:13:41.911Z"
+                                       }
+                     },
+                     {
+                         "id":  "fe2411ce-c54e-47b0-8698-e36dbe6a2c6f",
+                         "createdAt":  "2026-08-15T05:13:52.537Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "劉秀珠",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  124,
+                                           "syncedAt":  "2026-08-15T05:13:55.114Z"
+                                       }
+                     },
+                     {
+                         "id":  "32decde8-18b7-4088-934a-96bfe412089a",
+                         "createdAt":  "2026-08-15T05:14:19.460Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "沈育燕",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  22,
+                                           "syncedAt":  "2026-08-15T05:14:21.845Z"
+                                       }
+                     },
+                     {
+                         "id":  "3a68f244-3487-4ccb-9152-e1405b223bd2",
+                         "createdAt":  "2026-08-15T05:14:28.464Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "王瓊玉",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  20,
+                                           "syncedAt":  "2026-08-15T05:14:30.475Z"
+                                       }
+                     },
+                     {
+                         "id":  "a93e0435-d2e0-478c-83c6-2851278758bc",
+                         "createdAt":  "2026-08-15T05:14:41.973Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "江若盈",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  47,
+                                           "syncedAt":  "2026-08-15T05:14:44.172Z"
+                                       }
+                     },
+                     {
+                         "id":  "454b5c52-ab1b-427d-98cb-d537afae78b8",
+                         "createdAt":  "2026-08-15T05:14:57.960Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "謝昀融",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  8,
+                                           "syncedAt":  "2026-08-15T05:15:00.449Z"
+                                       }
+                     },
+                     {
+                         "id":  "820e7d0c-a802-40f5-9404-e375cc35b231",
+                         "createdAt":  "2026-08-15T05:15:59.930Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "廖容靚",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  10,
+                                           "syncedAt":  "2026-08-15T05:16:01.981Z"
+                                       }
+                     },
+                     {
+                         "id":  "1de68d89-eef1-4467-99ca-a6198220875f",
+                         "createdAt":  "2026-08-15T05:16:41.702Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "蕭楨寧",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  86,
+                                           "syncedAt":  "2026-08-15T05:16:44.361Z"
+                                       }
+                     },
+                     {
+                         "id":  "4f961c56-b9dd-4be4-b281-ba062c6d070f",
+                         "createdAt":  "2026-08-15T05:18:06.177Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "吳言熙",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  153,
+                                           "syncedAt":  "2026-08-15T05:18:08.395Z"
+                                       }
+                     },
+                     {
+                         "id":  "32dcc693-919f-4615-891e-1e5209aaa407",
+                         "createdAt":  "2026-08-15T05:18:25.735Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "陳欣汝",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  117,
+                                           "syncedAt":  "2026-08-15T05:18:27.983Z"
+                                       }
+                     },
+                     {
+                         "id":  "f654c08e-13e5-474a-b63e-a1d186770452",
+                         "createdAt":  "2026-08-15T05:23:09.818Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "陳義明",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  112,
+                                           "syncedAt":  "2026-08-15T05:23:12.198Z"
+                                       }
+                     },
+                     {
+                         "id":  "a487d664-8a75-4c42-9568-24224867fe97",
+                         "createdAt":  "2026-08-15T05:25:03.148Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "賴之菲",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  12,
+                                           "syncedAt":  "2026-08-15T05:25:05.507Z"
+                                       }
+                     },
+                     {
+                         "id":  "c0b189fd-ed7a-4795-a8a4-0a78a3d5e58e",
+                         "createdAt":  "2026-08-15T05:25:30.094Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "賴芊曄",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  39,
+                                           "syncedAt":  "2026-08-15T05:25:32.282Z"
+                                       }
+                     },
+                     {
+                         "id":  "1e32b409-9ee8-4a95-b0ae-d84bf425c555",
+                         "createdAt":  "2026-08-15T05:25:46.765Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "黃麗卿",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  122,
+                                           "syncedAt":  "2026-08-15T05:25:49.480Z"
+                                       }
+                     },
+                     {
+                         "id":  "8a4c3ec9-054e-40c3-8f00-ed6c3a1ac671",
+                         "createdAt":  "2026-08-15T05:26:02.438Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "林靜滿",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  138,
+                                           "syncedAt":  "2026-08-15T05:26:04.611Z"
+                                       }
+                     },
+                     {
+                         "id":  "7c53d6f6-ba8a-4619-bcc7-6dec4e738e9b",
+                         "createdAt":  "2026-08-15T05:27:50.161Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "張斐珊",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  105,
+                                           "syncedAt":  "2026-08-15T05:27:53.246Z"
+                                       }
+                     },
+                     {
+                         "id":  "fd23a922-0f5a-489e-beea-0bd176dbc8d1",
+                         "createdAt":  "2026-08-15T05:28:10.011Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "吳碧鴻",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  106,
+                                           "syncedAt":  "2026-08-15T05:28:12.060Z"
+                                       }
+                     },
+                     {
+                         "id":  "ba11576d-6397-4337-a97c-124576726d97",
+                         "createdAt":  "2026-08-15T05:28:55.009Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "潘紫瀅",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  139,
+                                           "syncedAt":  "2026-08-15T05:28:57.557Z"
+                                       }
+                     },
+                     {
+                         "id":  "83e81141-cfab-456f-87e3-bd3669db7b95",
+                         "createdAt":  "2026-08-15T05:29:20.180Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "鈕知馨",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  169,
+                                           "syncedAt":  "2026-08-15T05:29:24.126Z"
+                                       }
+                     },
+                     {
+                         "id":  "fb2c021f-160a-4aed-9f87-99f818397e90",
+                         "createdAt":  "2026-08-15T05:30:30.831Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "巫文成",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  158,
+                                           "syncedAt":  "2026-08-15T05:30:33.123Z"
+                                       }
+                     },
+                     {
+                         "id":  "84fbc049-2123-4a80-986f-1e40c200638d",
+                         "createdAt":  "2026-08-15T05:31:40.897Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "吳碧燕",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  76,
+                                           "syncedAt":  "2026-08-15T05:31:43.503Z"
+                                       }
+                     },
+                     {
+                         "id":  "75cf1c01-e14a-4ca3-9999-a96ae5799802",
+                         "createdAt":  "2026-08-15T05:31:49.894Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "劉素娟",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  77,
+                                           "syncedAt":  "2026-08-15T05:31:52.028Z"
+                                       }
+                     },
+                     {
+                         "id":  "657a4a7b-5c5c-40a8-9017-e8128215aede",
+                         "createdAt":  "2026-08-15T05:33:14.278Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "王暄涵",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  104,
+                                           "syncedAt":  "2026-08-15T05:33:16.811Z"
+                                       }
+                     },
+                     {
+                         "id":  "0291cd1c-0814-4428-9b2c-ede501adb1de",
+                         "createdAt":  "2026-08-15T05:34:16.128Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "郭富宗",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  35,
+                                           "syncedAt":  "2026-08-15T05:34:18.427Z"
+                                       }
+                     },
+                     {
+                         "id":  "f431f360-002d-40f0-a9b3-998d1e4c3076",
+                         "createdAt":  "2026-08-15T05:34:45.599Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "黃琡媜",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  50,
+                                           "syncedAt":  "2026-08-15T05:34:47.644Z"
+                                       }
+                     },
+                     {
+                         "id":  "85134a74-e0e9-4fc7-972f-94739dba0a1e",
+                         "createdAt":  "2026-08-15T05:36:27.281Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "楊松圃",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  56,
+                                           "syncedAt":  "2026-08-15T05:36:30.494Z"
+                                       }
+                     },
+                     {
+                         "id":  "d490caf2-b14e-41d4-b7e0-b5a5f68a04d8",
+                         "createdAt":  "2026-08-15T05:47:20.301Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "陳美昀",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  5,
+                                           "syncedAt":  "2026-08-15T05:47:23.874Z"
+                                       }
+                     },
+                     {
+                         "id":  "6c963483-aa31-430d-b84c-921f66aeb90f",
+                         "createdAt":  "2026-08-15T05:47:24.597Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "許憲忠",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  55,
+                                           "syncedAt":  "2026-08-15T05:47:27.091Z"
+                                       }
+                     },
+                     {
+                         "id":  "fd56d208-3c0d-45b1-96fe-7876e0b9c8e8",
+                         "createdAt":  "2026-08-15T06:07:00.169Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "盧嘉綺",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  128,
+                                           "syncedAt":  "2026-08-15T06:07:02.920Z"
+                                       }
+                     },
+                     {
+                         "id":  "93fe5188-63d7-47eb-84a5-d35d2d2284c6",
+                         "createdAt":  "2026-08-15T06:17:04.935Z",
+                         "status":  "checked-in",
+                         "session":  "8/15 台中場",
+                         "name":  "張景棠",
+                         "lineId":  "",
+                         "note":  "",
+                         "sheetSync":  {
+                                           "success":  true,
+                                           "sheet":  "台中場",
+                                           "row":  87,
+                                           "syncedAt":  "2026-08-15T06:17:08.474Z"
+                                       }
                      }
                  ],
     "cancellations":  [
@@ -7515,6 +9038,27 @@
                               "session":  "8/13 台北場",
                               "name":  "黃璟茗",
                               "reason":  ""
+                          },
+                          {
+                              "id":  "e014b611-ee1f-4fc3-9f4c-15e907af08f0",
+                              "createdAt":  "2026-08-14T08:59:34.350Z",
+                              "session":  "8/15 台中場",
+                              "name":  "莊孟羚",
+                              "reason":  "家裡臨時有事"
+                          },
+                          {
+                              "id":  "3be4f9a4-3ea8-480a-99e1-75aab468990e",
+                              "createdAt":  "2026-08-14T09:09:30.872Z",
+                              "session":  "8/15 台中場",
+                              "name":  "廖羿竤",
+                              "reason":  ""
+                          },
+                          {
+                              "id":  "c102a01b-37b9-474a-bb88-cb2e48df373c",
+                              "createdAt":  "2026-08-15T03:43:16.861Z",
+                              "session":  "8/15 台中場",
+                              "name":  "許佳芬",
+                              "reason":  "流感冒"
                           }
                       ],
     "counts":  {
@@ -7535,21 +9079,21 @@
                                     "checkedIn":  76
                                 },
                    "8/13 台北場":  {
-                                    "registered":  110,
+                                    "registered":  111,
                                     "capacity":  130,
-                                    "remaining":  20,
+                                    "remaining":  19,
                                     "full":  false,
                                     "cancelled":  5,
-                                    "checkedIn":  69
+                                    "checkedIn":  70
                                 },
                    "8/15 台中場":  {
                                     "registered":  160,
                                     "capacity":  160,
                                     "remaining":  0,
                                     "full":  true,
-                                    "cancelled":  2,
-                                    "checkedIn":  0
+                                    "cancelled":  5,
+                                    "checkedIn":  97
                                 }
                },
-    "updatedAt":  "2026-08-13T07:51:19.335Z"
+    "updatedAt":  "2026-08-15T09:19:02.680Z"
 }
