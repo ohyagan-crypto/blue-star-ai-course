@@ -8,6 +8,7 @@ const sessionCapacities = {
   "9/17 台北場": 110,
   "9/19 台中場": 160
 };
+const closedRegistrationSessions = new Set();
 const sessionInfo = {
   "9/14 台南場": { title: "9/14（一）台南場", address: "地址待定", transit: "13:00-17:00" },
   "9/15 高雄場": { title: "9/15（二）高雄場", address: "高雄市前鎮區中山二路2號13樓之3", transit: "捷運：獅甲站3出口｜13:00-17:00" },
@@ -95,9 +96,19 @@ function fillSessionSelects() {
     select.innerHTML = options;
   });
 
+  const registerSessionSelect = document.querySelector('#registerForm select[name="session"]');
+  if (registerSessionSelect) {
+    for (const option of registerSessionSelect.options) {
+      if (!closedRegistrationSessions.has(option.value)) continue;
+      option.disabled = true;
+      option.textContent = `${option.value}（報名截止）`;
+    }
+  }
+
   document.getElementById("sessionList").innerHTML = sessions.map((session) => {
     const info = sessionInfo[session];
-    return `<div><strong>${info.title}</strong><span>${info.address}</span><small>${info.transit}</small></div>`;
+    const address = info.address ? `<span>${info.address}</span>` : "";
+    return `<div><strong>${info.title}</strong>${address}<small>${info.transit}</small></div>`;
   }).join("");
 }
 
