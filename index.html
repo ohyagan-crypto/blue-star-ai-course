@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>藍星 AI 自媒體課程（八月）｜報名簽到系統</title>
-  <meta name="description" content="藍星 AI 自媒體課程八月場次報名、取消報名、學員簽到與名單統計系統。">
-  <link rel="stylesheet" href="./styles.css?v=20260711002000">
+  <title>藍星 AI 課程（九月）｜報名簽到系統</title>
+  <meta name="description" content="藍星 AI 課程九月場次報名、取消報名、學員簽到與名單統計系統。">
+  <link rel="stylesheet" href="./styles.css?v=20260823000100">
 </head>
 <body>
   <main class="app">
     <section class="hero">
       <p class="eyebrow">Blue Star AI Course</p>
-      <h1>藍星 AI 自媒體課程（八月）</h1>
-      <p>AI 課程大升級，最強 AI 智能體「藍星龍蝦」震撼登場。</p>
+      <h1>藍星 AI 課程（九月）</h1>
+      <p>四個小時全 AI 內容｜藍星 AI Line龍蝦首次公開。</p>
     </section>
 
     <nav class="tabs" aria-label="功能選單">
@@ -26,19 +26,20 @@
       <div class="grid">
         <article class="panel course">
           <p class="eyebrow">課程資訊</p>
-          <h2>AI 課程大升級｜藍星龍蝦震撼登場</h2>
+          <h2>藍星 AI Line龍蝦實戰｜四個小時全 AI 內容</h2>
           <ul class="benefits">
-            <li>運用自媒體做個人 IP，建立人設品牌，打造個人 IP 大軍。</li>
-            <li>打造私人 AI 代理人成為你的 AI 員工，協助自媒體、報表、PPT、剪輯，提升工作效率。</li>
-            <li>AI 輔助賣產品與行銷，學會用 AI 規劃產品賣點，提升成交率。</li>
-            <li>智能體快速製作網站後台，快速建立個人品牌頁、產品頁、電商平台。</li>
-            <li>智能體操作即夢製作 AI 網紅，自動打造 AI 網紅形象，幫你上鏡帶貨賣產品。</li>
+            <li>首次公開「藍星 AI Line龍蝦」：自動幫你做圖、做影片、做簡報，課程當天免費體驗一天。</li>
+            <li>即夢 AI 網紅八大提示詞心法：表情、運鏡、機位、預防擋人臉、換場景與分鏡圖。</li>
+            <li>AI 數字人深度教學：從克隆形象與聲音，到剪映數字人、藍星數字人代替本人上鏡。</li>
+            <li>AI 龍蝦（AI 代理人）：讓 Codex、OpenClaw 成為專屬助理，制定工作流為你工作。</li>
+            <li>ChatGPT 實戰：基礎對話、提示詞技巧、文案與製圖操作。</li>
           </ul>
           <div class="course-meta">
             <div><strong>主講老師</strong><span>庫里老師、小豪老師</span></div>
-            <div><strong>課程時間</strong><span>13:00-17:00</span></div>
+            <div><strong>課程時間</strong><span>13:00-17:00（四個小時）</span></div>
             <div><strong>課程費用</strong><span>新人限時 1,000 台幣；複訓 100 台幣場地費</span></div>
-            <div><strong>課程福利</strong><span>「新人參與」或「邀請 3 位新人」，即贈藍星 AI 聚合平台 15 日（內含付費版 ChatGPT、Gemini、Claude、Seedance 等 AI 工具），福利價值超過 5,000 台幣。</span></div>
+            <div><strong>課程福利</strong><span>新人首次參與，或老同學邀請 3 位新人，即贈「藍星 AI Line龍蝦」兩週體驗。</span></div>
+            <div><strong>課前準備</strong><span>請先下載 ChatGPT、中國版抖音、剪映、即夢；下載方式請查看藍星社群記事本教學。</span></div>
           </div>
           <div class="session-list" id="sessionList"></div>
         </article>
@@ -54,8 +55,11 @@
             </select>
           </label>
           <label>姓名<input name="name" required autocomplete="name" placeholder="請輸入真實姓名"></label>
+          <label>LINE 帳號<input name="lineId" required autocomplete="username" placeholder="請填 LINE 設定中的帳號 ID"></label>
+          <p class="form-hint">LINE 帳號只用來連結藍星科技學習卡，不是暱稱或顯示名稱。</p>
           <label id="introducerLabel">介紹人<input name="introducer" placeholder="新人必填，複訓選填"></label>
           <button type="submit">送出報名</button>
+          <a class="form-link" href="https://line.me/R/oaMessage/%40379duufl/?%E7%B6%81%E5%AE%9A%E8%97%8D%E6%98%9F%E5%AD%B8%E7%BF%92%E5%8D%A1">已經報名？前往蝦咩綁定學習卡</a>
           <p class="message" id="registerMessage" aria-live="polite"></p>
         </form>
       </div>
@@ -146,6 +150,6 @@
       </section>
     </div>
   </main>
-  <script src="./script.js?v=20260711002000"></script>
+  <script src="./script.js?v=20260823000100"></script>
 </body>
 </html>

@@ -1,20 +1,21 @@
-const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://c7c9652b3fea7abc-203-217-101-116.serveousercontent.com";
+const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://acceptable-cuts-compared-representative.trycloudflare.com";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
-const sessions = ["8/10 台南場","8/11 高雄場","8/13 台北場","8/15 台中場"];
+const sessions = ["9/14 台南場","9/15 高雄場","9/17 台北場","9/19 台中場"];
 const sessionCapacities = {
-  "8/10 台南場": 70,
-  "8/11 高雄場": 140,
-  "8/13 台北場": 140,
-  "8/15 台中場": 150
+  "9/14 台南場": 70,
+  "9/15 高雄場": 115,
+  "9/17 台北場": 110,
+  "9/19 台中場": 160
 };
 const sessionInfo = {
-  "8/10 台南場": { title: "8/10（一）台南場", address: "待定", transit: "13:00-17:00" },
-  "8/11 高雄場": { title: "8/11（二）高雄場", address: "待定", transit: "捷運待定｜13:00-17:00" },
-  "8/13 台北場": { title: "8/13（四）台北場", address: "待定", transit: "捷運待定｜13:00-17:00" },
-  "8/15 台中場": { title: "8/15（六）台中場", address: "台中市南屯區大墩六街208號", transit: "捷運南屯站｜13:00-17:00" }
+  "9/14 台南場": { title: "9/14（一）台南場", address: "地址待定", transit: "13:00-17:00" },
+  "9/15 高雄場": { title: "9/15（二）高雄場", address: "高雄市前鎮區中山二路2號13樓之3", transit: "捷運：獅甲站3出口｜13:00-17:00" },
+  "9/17 台北場": { title: "9/17（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
+  "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260711002000";
+const SCRIPT_VERSION = "20260823000100";
+const LINE_OFFICIAL_ACCOUNT_ID = "@379duufl";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -108,6 +109,23 @@ function setView(id) {
 
 function formData(form) {
   return Object.fromEntries(new FormData(form).entries());
+}
+
+function normalizedLineAccount(value) {
+  return String(value || "").trim().replace(/^@+/, "");
+}
+
+function validLineAccount(value) {
+  return /^[A-Za-z0-9._-]{4,30}$/.test(normalizedLineAccount(value));
+}
+
+function learningCardLineUrl(name = "", lineId = "") {
+  const cleanName = String(name || "").trim().replace(/[｜|\r\n]/g, " ").slice(0, 60);
+  const cleanLineId = normalizedLineAccount(lineId).replace(/[｜|\r\n]/g, "").slice(0, 30);
+  const command = cleanName
+    ? `綁定藍星學習卡｜${cleanName}${cleanLineId ? `｜${cleanLineId}` : ""}`
+    : "綁定藍星學習卡";
+  return `https://line.me/R/oaMessage/${encodeURIComponent(LINE_OFFICIAL_ACCOUNT_ID)}/?${encodeURIComponent(command)}`;
 }
 
 function updateIntroducerRequirement(form = document.getElementById("registerForm")) {
@@ -471,6 +489,12 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   const btn = form.querySelector("button");
   const msg = document.getElementById("registerMessage");
   const payload = formData(form);
+  payload.lineId = normalizedLineAccount(payload.lineId);
+  if (!validLineAccount(payload.lineId)) {
+    setMessage(msg, false, "請填寫正確的 LINE 帳號 ID（4–30 個英文字母、數字、句點、底線或連字號）。");
+    form.elements.lineId.focus();
+    return;
+  }
   if (payload.participantType === "新人" && !String(payload.introducer || "").trim()) {
     setMessage(msg, false, "新人報名請填寫介紹人；複訓可選填。");
     form.elements.introducer.focus();
@@ -483,7 +507,8 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
     setMessage(msg, true, `${data.name} 已完成 ${data.session} 報名`);
     showModal({
       title: "已報名成功",
-      message: `${data.name} 已完成 ${data.session} 報名。`
+      message: `${data.name} 已完成 ${data.session} 報名。`,
+      body: `<a class="learning-card-link" href="${escapeHtml(learningCardLineUrl(payload.name, payload.lineId))}">連結蝦咩學習卡</a>`
     });
     form.reset();
     updateIntroducerRequirement(form);
@@ -666,5 +691,7 @@ document.getElementById("stats").addEventListener("keydown", (event) => {
 
 fillSessionSelects();
 updateIntroducerRequirement();
+const prefilledLineId = normalizedLineAccount(new URLSearchParams(location.search).get("lineId"));
+if (validLineAccount(prefilledLineId)) document.getElementById("registerForm").elements.lineId.value = prefilledLineId;
 loadRoster();
 

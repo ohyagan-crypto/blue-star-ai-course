@@ -395,6 +395,33 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   margin-top: 16px;
   min-width: 132px;
 }
+.form-link,
+.learning-card-link {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  color: var(--blue);
+  background: #f4f8ff;
+  font-weight: 900;
+  text-align: center;
+  text-decoration: none;
+}
+.form-link:hover,
+.learning-card-link:hover {
+  background: #e8f1ff;
+}
+.learning-card-link {
+  margin: 8px 0 4px;
+  color: white;
+  background: linear-gradient(135deg, #06c755, #079844);
+  border-color: #079844;
+}
+.learning-card-link:hover {
+  background: linear-gradient(135deg, #05b94e, #087f3d);
+}
 .staff-app {
   max-width: 920px;
 }
