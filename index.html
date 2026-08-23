@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>藍星 AI 課程（九月）｜報名簽到系統</title>
   <meta name="description" content="藍星 AI 課程九月場次報名、取消報名、學員簽到與名單統計系統。">
-  <link rel="stylesheet" href="./styles.css?v=20260823000100">
+  <link rel="stylesheet" href="./styles.css?v=20260823021000">
 </head>
 <body>
   <main class="app">
     <section class="hero">
       <p class="eyebrow">Blue Star AI Course</p>
       <h1>藍星 AI 課程（九月）</h1>
-      <p>四個小時全 AI 內容｜藍星 AI Line龍蝦首次公開。</p>
+      <p>四個小時全 AI 內容｜藍星 AI Line 龍蝦首次公開，當天免費體驗一天。</p>
     </section>
 
     <nav class="tabs" aria-label="功能選單">
@@ -26,14 +26,17 @@
       <div class="grid">
         <article class="panel course">
           <p class="eyebrow">課程資訊</p>
-          <h2>藍星 AI Line龍蝦實戰｜四個小時全 AI 內容</h2>
+          <h2>藍星 AI Line 龍蝦實戰</h2>
+          <p class="course-lead">四個小時，全 AI 內容一次掌握：做圖、做影片、做簡報與 AI 代理人工作流。</p>
+          <h3 class="section-label">課程主題</h3>
           <ul class="benefits">
-            <li>首次公開「藍星 AI Line龍蝦」：自動幫你做圖、做影片、做簡報，課程當天免費體驗一天。</li>
-            <li>即夢 AI 網紅八大提示詞心法：表情、運鏡、機位、預防擋人臉、換場景與分鏡圖。</li>
-            <li>AI 數字人深度教學：從克隆形象與聲音，到剪映數字人、藍星數字人代替本人上鏡。</li>
-            <li>AI 龍蝦（AI 代理人）：讓 Codex、OpenClaw 成為專屬助理，制定工作流為你工作。</li>
-            <li>ChatGPT 實戰：基礎對話、提示詞技巧、文案與製圖操作。</li>
+            <li><strong>藍星 AI Line 龍蝦</strong><span>首次公開自動做圖、做影片、做簡報，課程當天免費體驗一天。</span></li>
+            <li><strong>即夢 AI 網紅</strong><span>八大提示詞心法：表情、運鏡、機位、預防擋人臉、換場景與分鏡圖。</span></li>
+            <li><strong>AI 數字人深度教學</strong><span>從克隆形象與聲音，到剪映數字人、藍星數字人代替本人上鏡。</span></li>
+            <li><strong>AI 龍蝦（AI 代理人）</strong><span>讓 Codex、OpenClaw 成為專屬助理，制定工作流為你工作。</span></li>
+            <li><strong>ChatGPT 實戰</strong><span>基礎對話、提示詞技巧、文案與製圖操作。</span></li>
           </ul>
+          <h3 class="section-label">講師、費用與課前準備</h3>
           <div class="course-meta">
             <div><strong>主講老師</strong><span>庫里老師、小豪老師</span></div>
             <div><strong>課程時間</strong><span>13:00-17:00（四個小時）</span></div>
@@ -41,11 +44,13 @@
             <div><strong>課程福利</strong><span>新人首次參與，或老同學邀請 3 位新人，即贈「藍星 AI Line龍蝦」兩週體驗。</span></div>
             <div><strong>課前準備</strong><span>請先下載 ChatGPT、中國版抖音、剪映、即夢；下載方式請查看藍星社群記事本教學。</span></div>
           </div>
+          <h3 class="section-label session-heading">四地場次</h3>
           <div class="session-list" id="sessionList"></div>
         </article>
 
-        <form class="panel form" id="registerForm">
-          <h2>課程報名表</h2>
+        <form class="panel form register-form" id="registerForm">
+          <h2>九月場報名</h2>
+          <p class="form-intro">選擇場次、報名身分與姓名即可送出；LINE ID 可填可不填。</p>
           <label>場次<select name="session" required></select></label>
           <label>報名身分
             <select name="participantType" required>
@@ -55,8 +60,8 @@
             </select>
           </label>
           <label>姓名<input name="name" required autocomplete="name" placeholder="請輸入真實姓名"></label>
-          <label>LINE 帳號<input name="lineId" required autocomplete="username" placeholder="請填 LINE 設定中的帳號 ID"></label>
-          <p class="form-hint">LINE 帳號只用來連結藍星科技學習卡，不是暱稱或顯示名稱。</p>
+          <label>LINE ID（選填）<input name="lineId" autocomplete="username" placeholder="選填；可於報名後綁定學習卡"></label>
+          <p class="form-hint">不填也可以完成報名；填寫時請使用 LINE 設定中的帳號 ID。</p>
           <label id="introducerLabel">介紹人<input name="introducer" placeholder="新人必填，複訓選填"></label>
           <button type="submit">送出報名</button>
           <a class="form-link" href="https://line.me/R/oaMessage/%40379duufl/?%E7%B6%81%E5%AE%9A%E8%97%8D%E6%98%9F%E5%AD%B8%E7%BF%92%E5%8D%A1">已經報名？前往蝦咩綁定學習卡</a>
@@ -117,7 +122,10 @@
     <section class="view" id="roster">
       <div class="panel">
         <div class="roster-head">
-          <h2>報名與簽到名單</h2>
+          <div>
+            <h2>九月報名與簽到名單</h2>
+            <p class="sheet-note">九月名單使用獨立 Google Sheet，與八月資料分開保存。</p>
+          </div>
           <div class="roster-actions">
             <a class="sheet-link" id="sheetLink" href="#" target="_blank" rel="noopener">開啟 Google Sheet</a>
             <button type="button" id="refreshRoster">更新</button>
@@ -150,6 +158,6 @@
       </section>
     </div>
   </main>
-  <script src="./script.js?v=20260823000100"></script>
+  <script src="./script.js?v=20260823021000"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@ const sessionInfo = {
   "9/17 台北場": { title: "9/17（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260823000100";
+const SCRIPT_VERSION = "20260823021000";
 const LINE_OFFICIAL_ACCOUNT_ID = "@379duufl";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
@@ -501,7 +501,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   const msg = document.getElementById("registerMessage");
   const payload = formData(form);
   payload.lineId = normalizedLineAccount(payload.lineId);
-  if (!validLineAccount(payload.lineId)) {
+  if (payload.lineId && !validLineAccount(payload.lineId)) {
     setMessage(msg, false, "請填寫正確的 LINE 帳號 ID（4–30 個英文字母、數字、句點、底線或連字號）。");
     form.elements.lineId.focus();
     return;
