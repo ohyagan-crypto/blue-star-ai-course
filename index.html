@@ -50,7 +50,7 @@
 
         <form class="panel form register-form" id="registerForm">
           <h2>九月場報名</h2>
-          <p class="form-intro">選擇場次、報名身分與姓名即可送出；LINE ID 可填可不填。</p>
+          <p class="form-intro">選擇場次、報名身分與姓名即可送出。</p>
           <label>場次<select name="session" required></select></label>
           <label>報名身分
             <select name="participantType" required>
@@ -60,11 +60,8 @@
             </select>
           </label>
           <label>姓名<input name="name" required autocomplete="name" placeholder="請輸入真實姓名"></label>
-          <label>LINE ID（選填）<input name="lineId" autocomplete="username" placeholder="選填；可於報名後綁定學習卡"></label>
-          <p class="form-hint">不填也可以完成報名；填寫時請使用 LINE 設定中的帳號 ID。</p>
           <label id="introducerLabel">介紹人<input name="introducer" placeholder="新人必填，複訓選填"></label>
           <button type="submit">送出報名</button>
-          <a class="form-link" href="https://line.me/R/oaMessage/%40379duufl/?%E7%B6%81%E5%AE%9A%E8%97%8D%E6%98%9F%E5%AD%B8%E7%BF%92%E5%8D%A1">已經報名？前往蝦咩綁定學習卡</a>
           <p class="message" id="registerMessage" aria-live="polite"></p>
         </form>
       </div>

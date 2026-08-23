@@ -16,7 +16,6 @@ const sessionInfo = {
   "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
 const SCRIPT_VERSION = "20260823021000";
-const LINE_OFFICIAL_ACCOUNT_ID = "@379duufl";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -120,23 +119,6 @@ function setView(id) {
 
 function formData(form) {
   return Object.fromEntries(new FormData(form).entries());
-}
-
-function normalizedLineAccount(value) {
-  return String(value || "").trim().replace(/^@+/, "");
-}
-
-function validLineAccount(value) {
-  return /^[A-Za-z0-9._-]{4,30}$/.test(normalizedLineAccount(value));
-}
-
-function learningCardLineUrl(name = "", lineId = "") {
-  const cleanName = String(name || "").trim().replace(/[｜|\r\n]/g, " ").slice(0, 60);
-  const cleanLineId = normalizedLineAccount(lineId).replace(/[｜|\r\n]/g, "").slice(0, 30);
-  const command = cleanName
-    ? `綁定藍星學習卡｜${cleanName}${cleanLineId ? `｜${cleanLineId}` : ""}`
-    : "綁定藍星學習卡";
-  return `https://line.me/R/oaMessage/${encodeURIComponent(LINE_OFFICIAL_ACCOUNT_ID)}/?${encodeURIComponent(command)}`;
 }
 
 function updateIntroducerRequirement(form = document.getElementById("registerForm")) {
@@ -500,12 +482,6 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   const btn = form.querySelector("button");
   const msg = document.getElementById("registerMessage");
   const payload = formData(form);
-  payload.lineId = normalizedLineAccount(payload.lineId);
-  if (payload.lineId && !validLineAccount(payload.lineId)) {
-    setMessage(msg, false, "請填寫正確的 LINE 帳號 ID（4–30 個英文字母、數字、句點、底線或連字號）。");
-    form.elements.lineId.focus();
-    return;
-  }
   if (payload.participantType === "新人" && !String(payload.introducer || "").trim()) {
     setMessage(msg, false, "新人報名請填寫介紹人；複訓可選填。");
     form.elements.introducer.focus();
@@ -518,8 +494,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
     setMessage(msg, true, `${data.name} 已完成 ${data.session} 報名`);
     showModal({
       title: "已報名成功",
-      message: `${data.name} 已完成 ${data.session} 報名。`,
-      body: `<a class="learning-card-link" href="${escapeHtml(learningCardLineUrl(payload.name, payload.lineId))}">連結蝦咩學習卡</a>`
+      message: `${data.name} 已完成 ${data.session} 報名。`
     });
     form.reset();
     updateIntroducerRequirement(form);
@@ -702,7 +677,5 @@ document.getElementById("stats").addEventListener("keydown", (event) => {
 
 fillSessionSelects();
 updateIntroducerRequirement();
-const prefilledLineId = normalizedLineAccount(new URLSearchParams(location.search).get("lineId"));
-if (validLineAccount(prefilledLineId)) document.getElementById("registerForm").elements.lineId.value = prefilledLineId;
 loadRoster();
 
