@@ -148,6 +148,39 @@ button.danger { background: linear-gradient(135deg, #b42318, #7a271a); }
 .form { display: grid; gap: 13px; }
 .register-form { position: sticky; top: 18px; }
 .form-intro { margin: -4px 0 4px; font-size: 14px; }
+.line-binding-panel { margin-top: 16px; }
+.line-binding-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.line-binding-head h2 { margin-bottom: 6px; }
+.line-binding-head p { margin-bottom: 0; }
+.line-status-badge {
+  flex: 0 0 auto;
+  border: 1px solid #f0c36a;
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #8a5a00;
+  background: #fff8e8;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.line-status-badge.connected {
+  border-color: #9adbc8;
+  color: #08745f;
+  background: #edfff8;
+}
+.binding-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+}
+.binding-form button { min-height: 49px; }
 .narrow { max-width: 520px; margin: 0 auto; }
 label { display: grid; gap: 7px; font-weight: 900; font-size: 14px; }
 input, select {
@@ -571,6 +604,9 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   .session-list { grid-template-columns: 1fr; }
   .course-meta > div:last-child { grid-column: auto; }
   .register-form { position: static; }
+  .line-binding-head { display: block; }
+  .line-status-badge { display: inline-block; margin-top: 10px; }
+  .binding-form { grid-template-columns: 1fr; }
   .city-checkin-grid { grid-template-columns: 1fr; }
   .toggle-checkin-stats { width: 100%; }
   .panel, .hero { padding: 18px; }

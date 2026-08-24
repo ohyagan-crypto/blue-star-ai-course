@@ -15,7 +15,7 @@ const sessionInfo = {
   "9/17 台北場": { title: "9/17（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260823151300";
+const SCRIPT_VERSION = "20260824203000";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -24,6 +24,33 @@ let voiceUnlocked = false;
 let rosterData = { registrations: [], checkins: [] };
 let lastCheckin = null;
 let checkinStatsExpanded = loadCheckinStatsExpanded();
+const lineIdFromUrl = String(new URLSearchParams(location.search).get("lineId") || "").normalize("NFKC").trim().slice(0, 64);
+
+function validLineId(value) {
+  return /^[A-Za-z0-9._-]{4,64}$/.test(String(value || ""));
+}
+
+function lineBindingStatus(text, connected = false) {
+  const status = document.getElementById("lineBindingStatus");
+  const badge = document.getElementById("lineStatusBadge");
+  if (status) status.textContent = text;
+  if (badge) {
+    badge.textContent = connected ? "LINE 已連結" : "尚未連結";
+    badge.classList.toggle("connected", connected);
+  }
+}
+
+function initLineBinding() {
+  const wrap = document.getElementById("lineBindingFormWrap");
+  if (!wrap) return;
+  if (!validLineId(lineIdFromUrl)) {
+    lineBindingStatus("請從 LINEBOT1 的「藍星課程報名」按鈕開啟本頁，才能取得目前 LINE 身分。", false);
+    wrap.hidden = true;
+    return;
+  }
+  lineBindingStatus("已取得目前 LINE 身分；請選擇場次並輸入報名姓名完成綁定。", true);
+  wrap.hidden = false;
+}
 
 function normalizeApiBase(value) {
   return String(value || "").trim().replace(/\/+$/, "");
@@ -482,6 +509,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   const btn = form.querySelector("button");
   const msg = document.getElementById("registerMessage");
   const payload = formData(form);
+  if (validLineId(lineIdFromUrl)) payload.lineId = lineIdFromUrl;
   if (payload.participantType === "新人" && !String(payload.introducer || "").trim()) {
     setMessage(msg, false, "新人報名請填寫介紹人；複訓可選填。");
     form.elements.introducer.focus();
@@ -492,6 +520,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   try {
     const data = await postJson("/api/register", payload);
     setMessage(msg, true, `${data.name} 已完成 ${data.session} 報名`);
+    if (validLineId(lineIdFromUrl)) lineBindingStatus("這筆報名已與目前 LINE 學習卡綁定。", true);
     showModal({
       title: "已報名成功",
       message: `${data.name} 已完成 ${data.session} 報名。`
@@ -504,6 +533,30 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   } finally {
     btn.disabled = false;
     btn.textContent = "送出報名";
+  }
+});
+
+document.getElementById("bindLearningCardForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const btn = form.querySelector("button");
+  const msg = document.getElementById("bindingMessage");
+  if (!validLineId(lineIdFromUrl)) {
+    setMessage(msg, false, "請從 LINEBOT1 的課程報名按鈕重新開啟。" );
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = "綁定中...";
+  try {
+    const data = await postJson("/api/learning-card/bind", { ...formData(form), lineId: lineIdFromUrl });
+    setMessage(msg, true, `${data.name} 的學習卡已完成綁定。`);
+    lineBindingStatus(`已綁定 ${data.name} 的課程學習紀錄。`, true);
+    showModal({ title: "學習卡綁定成功", message: `${data.name} 的藍星學習卡已完成綁定。` });
+  } catch (err) {
+    setMessage(msg, false, err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "綁定我的學習卡";
   }
 });
 
@@ -676,6 +729,7 @@ document.getElementById("stats").addEventListener("keydown", (event) => {
 });
 
 fillSessionSelects();
+initLineBinding();
 updateIntroducerRequirement();
 loadRoster();
 

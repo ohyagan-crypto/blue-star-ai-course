@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>藍星 AI 課程（九月）｜報名簽到系統</title>
   <meta name="description" content="藍星 AI 課程九月場次報名、取消報名、學員簽到與名單統計系統。">
-  <link rel="stylesheet" href="./styles.css?v=20260823151300">
+  <link rel="stylesheet" href="./styles.css?v=20260824203000">
 </head>
 <body>
   <main class="app">
@@ -65,6 +65,25 @@
           <p class="message" id="registerMessage" aria-live="polite"></p>
         </form>
       </div>
+
+      <section class="panel line-binding-panel" id="lineBindingPanel" aria-labelledby="lineBindingTitle">
+        <div class="line-binding-head">
+          <div>
+            <p class="eyebrow">LINE 學習卡</p>
+            <h2 id="lineBindingTitle">用 LINE 綁定藍星學習卡</h2>
+            <p id="lineBindingStatus" class="form-hint">請從 LINEBOT1 的「藍星課程報名」按鈕開啟本頁，才能取得目前 LINE 身分。</p>
+          </div>
+          <span class="line-status-badge" id="lineStatusBadge">尚未連結</span>
+        </div>
+        <div id="lineBindingFormWrap" hidden>
+          <form class="binding-form" id="bindLearningCardForm">
+            <label>已報名場次<select name="session" required></select></label>
+            <label>報名姓名<input name="name" required autocomplete="name" placeholder="請輸入報名時使用的姓名"></label>
+            <button type="submit">綁定我的學習卡</button>
+            <p class="message" id="bindingMessage" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
     </section>
 
     <section class="view" id="cancel">
@@ -155,6 +174,6 @@
       </section>
     </div>
   </main>
-  <script src="./script.js?v=20260823151300"></script>
+  <script src="./script.js?v=20260824203000"></script>
 </body>
 </html>
