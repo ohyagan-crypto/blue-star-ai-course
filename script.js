@@ -1,6 +1,8 @@
-const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://carroll-wan-player-delhi.trycloudflare.com";
+const DEFAULT_API_BASE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || location.hostname.endsWith("loca.lt") ? location.origin : "";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
+let expectedDatasetId = "";
+let minimumRegistrationRecords = 0;
 const sessions = ["9/14 台南場","9/15 高雄場","9/17 台北場","9/19 台中場"];
 const sessionCapacities = {
   "9/14 台南場": 70,
@@ -62,6 +64,8 @@ async function loadApiConfig() {
     const res = await fetch(`./api-config.json?v=${Date.now()}`, { cache: "no-store" });
     if (!res.ok) throw new Error("api config unavailable");
     const config = await res.json();
+    expectedDatasetId = String(config.datasetId || "").trim();
+    minimumRegistrationRecords = Number(config.minimumRegistrationRecords || 0);
     const candidates = [
       config.publicBase,
       ...(Array.isArray(config.publicBases) ? config.publicBases : []),
@@ -70,8 +74,8 @@ async function loadApiConfig() {
     apiBases = [...new Set(candidates)];
     activeApiBase = apiBases[0] || DEFAULT_API_BASE;
   } catch {
-    apiBases = [DEFAULT_API_BASE];
-    activeApiBase = DEFAULT_API_BASE;
+    apiBases = DEFAULT_API_BASE ? [DEFAULT_API_BASE] : [];
+    activeApiBase = apiBases[0] || "";
   }
 }
 
@@ -397,20 +401,35 @@ function renderRosterData(data, fromFallback = false) {
   renderQuickCheckin();
 }
 
+function validateRosterData(data) {
+  if (!data || !Array.isArray(data.registrations) || !Array.isArray(data.checkins) || !Array.isArray(data.cancellations)) {
+    throw new Error("名單資料格式不完整");
+  }
+  if (expectedDatasetId && data.datasetId !== expectedDatasetId) {
+    throw new Error("課程名單版本不一致，已保留目前資料");
+  }
+  if (minimumRegistrationRecords && Number(data.recordCount || data.registrations.length) < minimumRegistrationRecords) {
+    throw new Error("課程名單筆數異常，已保留目前資料");
+  }
+  if (rosterData.registrations?.length && data.registrations.length < rosterData.registrations.length) {
+    throw new Error("課程名單筆數突然減少，已保留目前資料");
+  }
+  return data;
+}
+
 async function loadRoster() {
   try {
     const res = await fetchWithApiFallback("/api/roster", { cache: "no-store" });
     if (!res.ok) throw new Error("API unavailable");
-    renderRosterData(await res.json());
-  } catch {
-    try {
-      const fallbackRes = await fetch("./roster-fallback.json", { cache: "no-store" });
-      if (!fallbackRes.ok) throw new Error("Fallback unavailable");
-      renderRosterData(await fallbackRes.json(), true);
-    } catch {
-      document.getElementById("stats").innerHTML = `<div class="stat wide"><strong>名單暫時無法讀取</strong><span>請稍後重新整理頁面。</span></div>`;
-      document.getElementById("rosterList").innerHTML = `<p class="message err">名單讀取失敗，請稍後再試。</p>`;
+    renderRosterData(validateRosterData(await res.json()));
+  } catch (error) {
+    if (rosterData.registrations?.length) {
+      const roster = document.getElementById("rosterList");
+      roster.insertAdjacentHTML("afterbegin", `<p class="message err">名單服務暫時異常，畫面保留最後一次正常資料；請稍後再按更新。</p>`);
+      return;
     }
+    document.getElementById("stats").innerHTML = `<div class="stat wide"><strong>名單暫時無法讀取</strong><span>報名功能會在服務恢復後繼續，不會以空白名單覆蓋資料。</span></div>`;
+    document.getElementById("rosterList").innerHTML = `<p class="message err">名單讀取失敗，請稍後再試。</p>`;
   }
 }
 
