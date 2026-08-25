@@ -51,12 +51,13 @@
         <form class="panel form register-form" id="registerForm">
           <h2>九月場報名</h2>
           <p class="form-intro">選擇場次、報名身分與姓名即可送出。</p>
+          <p class="form-hint">複訓／舊學員可直接報名；建議從 LINEBOT1 的「藍星課程報名」開啟本頁，完成後可同步綁定藍星學習卡。</p>
           <label>場次<select name="session" required></select></label>
           <label>報名身分
             <select name="participantType" required>
               <option value="">請選擇</option>
               <option value="新人">新人</option>
-              <option value="複訓">複訓</option>
+              <option value="複訓">複訓／舊學員</option>
             </select>
           </label>
           <label>姓名<input name="name" required autocomplete="name" placeholder="請輸入真實姓名"></label>
@@ -71,7 +72,7 @@
           <div>
             <p class="eyebrow">LINE 學習卡</p>
             <h2 id="lineBindingTitle">用 LINE 綁定藍星學習卡</h2>
-            <p id="lineBindingStatus" class="form-hint">請從 LINEBOT1 的「藍星課程報名」按鈕開啟本頁，才能取得目前 LINE 身分。</p>
+            <p id="lineBindingStatus" class="form-hint">複訓／舊學員完成報名後，可從 LINEBOT1 的「藍星課程報名」按鈕開啟本頁，再綁定學習卡。</p>
           </div>
           <span class="line-status-badge" id="lineStatusBadge">尚未連結</span>
         </div>
@@ -174,6 +175,6 @@
       </section>
     </div>
   </main>
-  <script src="./script.js?v=20260824220400"></script>
+  <script src="./script.js?v=20260825150000"></script>
 </body>
 </html>

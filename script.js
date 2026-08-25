@@ -15,7 +15,7 @@ const sessionInfo = {
   "9/17 台北場": { title: "9/17（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260824220400";
+const SCRIPT_VERSION = "20260825150000";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -44,11 +44,11 @@ function initLineBinding() {
   const wrap = document.getElementById("lineBindingFormWrap");
   if (!wrap) return;
   if (!validLineId(lineIdFromUrl)) {
-    lineBindingStatus("請從 LINEBOT1 的「藍星課程報名」按鈕開啟本頁，才能取得目前 LINE 身分。", false);
+    lineBindingStatus("複訓／舊學員可先完成報名；之後從 LINEBOT1 開啟本頁即可綁定學習卡。", false);
     wrap.hidden = true;
     return;
   }
-  lineBindingStatus("已取得目前 LINE 身分；請選擇場次並輸入報名姓名完成綁定。", true);
+  lineBindingStatus("已取得目前 LINE 身分；完成報名後可同步綁定學習卡。", true);
   wrap.hidden = false;
 }
 
@@ -155,8 +155,8 @@ function updateIntroducerRequirement(form = document.getElementById("registerFor
   if (!input || !label) return;
   const required = type === "新人";
   input.required = required;
-  input.placeholder = required ? "新人必填，請填寫介紹人" : "複訓選填";
-  label.firstChild.textContent = required ? "介紹人（新人必填）" : "介紹人（複訓選填）";
+  input.placeholder = required ? "新人必填，請填寫介紹人" : "複訓可選填";
+  label.firstChild.textContent = required ? "介紹人（新人必填）" : "介紹人（複訓可選填）";
 }
 
 function setMessage(el, ok, text) {
@@ -519,11 +519,12 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   btn.textContent = "送出中...";
   try {
     const data = await postJson("/api/register", payload);
-    setMessage(msg, true, `${data.name} 已完成 ${data.session} 報名`);
-    if (validLineId(lineIdFromUrl)) lineBindingStatus("這筆報名已與目前 LINE 學習卡綁定。", true);
+    const boundText = validLineId(lineIdFromUrl) ? "，學習卡已綁定" : "；可從 LINEBOT1 開啟本頁綁定學習卡";
+    setMessage(msg, true, `${data.name} 已完成 ${data.session} 報名${boundText}`);
+    if (validLineId(lineIdFromUrl)) lineBindingStatus("複訓報名與藍星學習卡已完成綁定。", true);
     showModal({
       title: "已報名成功",
-      message: `${data.name} 已完成 ${data.session} 報名。`
+      message: `${data.name} 已完成 ${data.session} 報名${validLineId(lineIdFromUrl) ? "，藍星學習卡已完成綁定。" : "。完成後可從 LINEBOT1 開啟本頁綁定學習卡。"}`
     });
     form.reset();
     updateIntroducerRequirement(form);
