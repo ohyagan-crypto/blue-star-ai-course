@@ -17,7 +17,7 @@ const sessionInfo = {
   "9/17 台北場": { title: "9/17（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260825163000";
+const SCRIPT_VERSION = "20260826234000";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -204,13 +204,13 @@ function renderRegistrationList(session) {
     <div class="modal-list">
       ${regs.map((reg, index) => {
         const name = escapeHtml(reg.name);
-        const type = escapeHtml(reg.participantType || reg.type || "未填身分");
+        const participantDetails = escapeHtml(formatParticipantDetails(reg));
         const status = checked.has(reg.name) ? "已報到" : "未報到";
         const note = escapeHtml(reg.createdAt || reg.note || "");
         return `
           <article class="modal-person">
             <strong>${index + 1}. ${name}</strong>
-            <span>${type} · ${status}</span>
+            <span>${participantDetails} · ${status}</span>
             ${note ? `<small>${note}</small>` : ""}
           </article>
         `;
@@ -278,6 +278,23 @@ function normalizeParticipantType(reg) {
   if (type.includes("新人")) return "新人";
   if (type.includes("複訓") || type.includes("復訓")) return "複訓";
   return "未填";
+}
+
+function formatParticipantDetails(reg) {
+  const type = normalizeParticipantType(reg);
+  if (type !== "新人") return type === "未填" ? "未填身分" : type;
+  const introducer = String(reg?.introducer || "").trim();
+  return introducer ? `新人｜推薦人：${introducer}` : "新人";
+}
+
+function getRegistrationBreakdown(regs) {
+  return regs.reduce((summary, reg) => {
+    const type = normalizeParticipantType(reg);
+    if (type === "新人") summary.newbie += 1;
+    else if (type === "複訓") summary.returning += 1;
+    else summary.unknown += 1;
+    return summary;
+  }, { newbie: 0, returning: 0, unknown: 0 });
 }
 
 function getCheckedInBreakdown(data, session, regs) {
@@ -373,6 +390,10 @@ function renderRosterData(data, fromFallback = false) {
   });
   const totalRegistered = sessionSummaries.reduce((sum, item) => sum + item.registered, 0);
   const totalCapacity = sessionSummaries.reduce((sum, item) => sum + item.capacity, 0);
+  const activeRegistrations = sessions.flatMap((session) => (
+    (data.registrations || []).filter((item) => item.session === session && !isCanceled(item))
+  ));
+  const registrationBreakdown = getRegistrationBreakdown(activeRegistrations);
   const totalBreakdown = sessionSummaries.reduce((sum, item) => {
     sum.total += item.breakdown.total;
     sum.newbie += item.breakdown.newbie;
@@ -383,7 +404,7 @@ function renderRosterData(data, fromFallback = false) {
   const totalSeatText = totalCapacity ? `${totalRegistered} / ${totalCapacity}` : `${totalRegistered} 人`;
   const remainingText = totalCapacity ? `｜剩餘 ${Math.max(0, totalCapacity - totalRegistered)} 位` : "";
   const totalToggleText = checkinStatsExpanded ? "點一下收合明細" : "點一下展開明細";
-  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total stat-total-toggle" id="toggleCheckinStats" role="button" tabindex="0" aria-controls="stats" aria-expanded="${String(checkinStatsExpanded)}" aria-label="${totalToggleText}" title="${totalToggleText}"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small class="checkin-breakdown">${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small><span class="stat-total-action">${totalToggleText}</span></div>`;
+  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-type-total stat-newbie-total"><strong>${registrationBreakdown.newbie} 人</strong><span>新人報名總數</span></div><div class="stat stat-type-total stat-returning-total"><strong>${registrationBreakdown.returning} 人</strong><span>複訓報名總數</span></div><div class="stat stat-total stat-total-toggle" id="toggleCheckinStats" role="button" tabindex="0" aria-controls="stats" aria-expanded="${String(checkinStatsExpanded)}" aria-label="${totalToggleText}" title="${totalToggleText}"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small class="checkin-breakdown">${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small><span class="stat-total-action">${totalToggleText}</span></div>`;
   syncCheckinStatsToggle();
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
@@ -392,9 +413,10 @@ function renderRosterData(data, fromFallback = false) {
     const people = regs.map((reg, index) => {
       const checked = checks.some((item) => item.name === reg.name);
       const status = checked ? "已報到" : "未報到";
-      const type = reg.participantType || reg.type || "未填身份";
-      const note = reg.note || reg.createdAt || "";
-      return `<div class="person"><strong>${index + 1}. ${reg.name}</strong><span>${status}</span><em>${type}</em><small>${note}</small></div>`;
+      const name = escapeHtml(reg.name);
+      const participantDetails = escapeHtml(formatParticipantDetails(reg));
+      const note = escapeHtml(reg.note || reg.createdAt || "");
+      return `<div class="person"><strong>${index + 1}. ${name}</strong><span>${status}</span><em>${participantDetails}</em><small>${note}</small></div>`;
     }).join("") || `<div class="person empty">尚無資料</div>`;
     return `<section class="roster-card"><h3>${session}</h3>${people}</section>`;
   }).join("")}`;
@@ -501,12 +523,12 @@ function renderQuickCheckin() {
   list.innerHTML = regs.map((reg, index) => {
     const done = checked.has(reg.name);
     const name = escapeHtml(reg.name);
-    const type = escapeHtml(reg.participantType || reg.type || "未填身分");
+    const participantDetails = escapeHtml(formatParticipantDetails(reg));
     return `
       <article class="staff-row ${done ? "done" : ""}">
         <div>
           <strong>${index + 1}. ${name}</strong>
-          <span>${type}${done ? " · 已報到" : " · 未報到"}</span>
+          <span>${participantDetails}${done ? " · 已報到" : " · 未報到"}</span>
         </div>
         <button type="button" data-name="${name}" ${done ? "disabled" : ""}>${done ? "已報到" : "報到"}</button>
       </article>

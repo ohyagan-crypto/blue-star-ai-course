@@ -75,6 +75,14 @@ function escapeHtml(value) {
   }[char]));
 }
 
+function participantDetails(reg) {
+  const rawType = String(reg?.participantType || reg?.type || "").trim();
+  const type = rawType.includes("新人") ? "新人" : /複訓|復訓/.test(rawType) ? "複訓" : "未填身分";
+  if (type !== "新人") return type;
+  const introducer = clean(reg?.introducer);
+  return introducer ? `新人｜推薦人：${introducer}` : "新人";
+}
+
 function currentSession() {
   return document.getElementById("staffSession").value;
 }
@@ -130,13 +138,13 @@ function renderList() {
 
   document.getElementById("staffList").innerHTML = regs.map((reg, index) => {
     const done = checked.has(reg.name);
-    const type = reg.participantType || reg.type || "";
+    const details = escapeHtml(participantDetails(reg));
     const name = escapeHtml(reg.name);
     return `
       <article class="staff-row ${done ? "done" : ""}">
         <div>
           <strong>${index + 1}. ${name}</strong>
-          <span>${escapeHtml(type || "未填身分")}${done ? " · 已報到" : " · 未報到"}</span>
+          <span>${details}${done ? " · 已報到" : " · 未報到"}</span>
         </div>
         <button type="button" data-name="${name}" ${done ? "disabled" : ""}>${done ? "已報到" : "報到"}</button>
       </article>
