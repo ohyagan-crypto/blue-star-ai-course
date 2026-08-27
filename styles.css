@@ -322,16 +322,6 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   box-shadow: 0 10px 24px rgba(0,0,0,.12);
   outline: none;
 }
-.stat-type-total {
-  background: #fffaf0;
-  border-color: rgba(172, 120, 20, .32);
-}
-.stat-type-total strong { color: var(--gold); }
-.stat-returning-total {
-  background: #eef7ff;
-  border-color: rgba(11, 59, 117, .22);
-}
-.stat-returning-total strong { color: var(--blue); }
 .stat-total {
   grid-column: 1 / -1;
   background: linear-gradient(135deg, rgba(0,143,122,.12), rgba(11,59,117,.08));

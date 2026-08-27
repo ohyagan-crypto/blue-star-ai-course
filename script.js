@@ -17,7 +17,7 @@ const sessionInfo = {
   "9/17 台北場": { title: "9/17（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260826234000";
+const SCRIPT_VERSION = "20260827010000";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -372,12 +372,13 @@ function renderRosterData(data, fromFallback = false) {
 
   const sessionStats = sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
+    const registrationBreakdown = getRegistrationBreakdown(regs);
     const capacity = getSessionCapacity(session);
     const remaining = getRemainingSeats(session, regs);
     const seatText = capacity ? `${regs.length} / ${capacity}` : `${regs.length} 人`;
     const hintText = remaining === 0 ? "已額滿" : remaining === null ? "點開看名單" : `剩餘 ${remaining} 位`;
     const breakdown = getCheckedInBreakdown(data, session, regs);
-    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${seatText}</strong><span>${session} 有效報名</span><small>${hintText}<span class="checkin-breakdown">｜${formatCheckinBreakdown(breakdown)}</span></small></button>`;
+    return `<button class="stat stat-button" type="button" data-session="${escapeHtml(session)}" aria-label="查看 ${escapeHtml(session)} 已報名名單"><strong>${seatText}</strong><span>${session} 有效報名</span><small>${hintText}｜新人 ${registrationBreakdown.newbie} 人｜複訓 ${registrationBreakdown.returning} 人</small><small class="checkin-breakdown">${formatCheckinBreakdown(breakdown)}</small></button>`;
   });
   const sessionSummaries = sessions.map((session) => {
     const regs = (data.registrations || []).filter((item) => item.session === session && !isCanceled(item));
@@ -390,10 +391,6 @@ function renderRosterData(data, fromFallback = false) {
   });
   const totalRegistered = sessionSummaries.reduce((sum, item) => sum + item.registered, 0);
   const totalCapacity = sessionSummaries.reduce((sum, item) => sum + item.capacity, 0);
-  const activeRegistrations = sessions.flatMap((session) => (
-    (data.registrations || []).filter((item) => item.session === session && !isCanceled(item))
-  ));
-  const registrationBreakdown = getRegistrationBreakdown(activeRegistrations);
   const totalBreakdown = sessionSummaries.reduce((sum, item) => {
     sum.total += item.breakdown.total;
     sum.newbie += item.breakdown.newbie;
@@ -404,7 +401,7 @@ function renderRosterData(data, fromFallback = false) {
   const totalSeatText = totalCapacity ? `${totalRegistered} / ${totalCapacity}` : `${totalRegistered} 人`;
   const remainingText = totalCapacity ? `｜剩餘 ${Math.max(0, totalCapacity - totalRegistered)} 位` : "";
   const totalToggleText = checkinStatsExpanded ? "點一下收合明細" : "點一下展開明細";
-  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-type-total stat-newbie-total"><strong>${registrationBreakdown.newbie} 人</strong><span>新人報名總數</span></div><div class="stat stat-type-total stat-returning-total"><strong>${registrationBreakdown.returning} 人</strong><span>複訓報名總數</span></div><div class="stat stat-total stat-total-toggle" id="toggleCheckinStats" role="button" tabindex="0" aria-controls="stats" aria-expanded="${String(checkinStatsExpanded)}" aria-label="${totalToggleText}" title="${totalToggleText}"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small class="checkin-breakdown">${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small><span class="stat-total-action">${totalToggleText}</span></div>`;
+  stats.innerHTML = `${sessionStats.join("")}<div class="stat stat-total stat-total-toggle" id="toggleCheckinStats" role="button" tabindex="0" aria-controls="stats" aria-expanded="${String(checkinStatsExpanded)}" aria-label="${totalToggleText}" title="${totalToggleText}"><strong>${totalBreakdown.total} 人</strong><span>全部場次簽到總計</span><small class="checkin-breakdown">${formatCheckinBreakdown(totalBreakdown)}</small>${formatCityCheckinBreakdowns(sessionSummaries)}<small>有效報名 ${totalSeatText}${remainingText}</small><span class="stat-total-action">${totalToggleText}</span></div>`;
   syncCheckinStatsToggle();
 
   roster.innerHTML = `${fromFallback ? `<p class="message ok">目前顯示備援名單，報名與簽到資料恢復連線後會自動更新。</p>` : ""}${sessions.map((session) => {
