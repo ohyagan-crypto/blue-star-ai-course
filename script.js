@@ -12,12 +12,12 @@ const sessionCapacities = {
 };
 const closedRegistrationSessions = new Set();
 const sessionInfo = {
-  "9/14 台南場": { title: "9/14（一）台南場", address: "地址待定", transit: "13:00-17:00" },
+  "9/14 台南場": { title: "9/14（一）台南場", address: "台南市東區中華東路三段139號6樓（601室）", transit: "13:00-17:00" },
   "9/15 高雄場": { title: "9/15（二）高雄場", address: "高雄市前鎮區中山二路2號13樓之3", transit: "捷運：獅甲站3出口｜13:00-17:00" },
   "9/17 台北場": { title: "9/17（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260827010000";
+const SCRIPT_VERSION = "20260904010000";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
