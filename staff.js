@@ -1,8 +1,5 @@
 const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://carroll-wan-player-delhi.trycloudflare.com";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
-const CHECKIN_CONFIRM_DELAY_MS = 350;
-const CHECKIN_CONFIRM_TIMEOUT_MS = 8000;
-const CHECKIN_CONFIRM_INTERVAL_MS = 250;
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
 const sessions = ["9/14 台南場","9/15 高雄場","9/17 台北場","9/19 台中場"];
@@ -165,10 +162,6 @@ async function loadRoster() {
   setMessage(true, "名單已更新。");
 }
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 function checkinNameKey(value) {
   return String(value || "").normalize("NFKC").replace(/\s+/g, "");
 }
@@ -188,56 +181,14 @@ function applyConfirmedCheckin(entry) {
   renderList();
 }
 
-async function waitForPersistedCheckin(payload, knownIds, requestState) {
-  await delay(CHECKIN_CONFIRM_DELAY_MS);
-  const deadline = Date.now() + CHECKIN_CONFIRM_TIMEOUT_MS;
-
-  while (!requestState.settled && Date.now() < deadline) {
-    try {
-      const res = await fetchWithApiFallback("/api/roster", { cache: "no-store" });
-      if (res.ok) {
-        const data = await res.json();
-        const entry = [...(data.checkins || [])].reverse().find((item) => (
-          item.id && !knownIds.has(String(item.id)) && isMatchingActiveCheckin(item, payload)
-        ));
-        if (entry) {
-          rosterData = data;
-          renderStats();
-          renderList();
-          return { success: true, ...entry };
-        }
-      }
-    } catch {
-      // The original POST remains authoritative if a polling request fails.
-    }
-    await delay(CHECKIN_CONFIRM_INTERVAL_MS);
-  }
-  return null;
-}
-
 async function postCheckin(payload) {
-  const knownIds = new Set((rosterData.checkins || []).map((item) => String(item.id || "")).filter(Boolean));
-  const requestState = { settled: false };
-  const request = (async () => {
-    const res = await fetchWithApiFallback("/api/checkin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    const body = await res.json().catch(() => ({}));
-    if (!res.ok || !body.success) throw new Error(body.message || "簽到失敗，請稍後再試。");
-    return body;
-  })();
-  request.then(
-    () => { requestState.settled = true; },
-    () => { requestState.settled = true; }
-  );
-
-  const persisted = waitForPersistedCheckin(payload, knownIds, requestState);
-  const result = await Promise.race([
-    request,
-    persisted.then((entry) => entry || request)
-  ]);
+  const res = await fetchWithApiFallback("/api/checkin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const result = await res.json().catch(() => ({}));
+  if (!res.ok || !result.success) throw new Error(result.message || "簽到失敗，請稍後再試。");
   applyConfirmedCheckin(result);
   return result;
 }

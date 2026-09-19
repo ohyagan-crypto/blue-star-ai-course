@@ -17,12 +17,9 @@ const sessionInfo = {
   "9/17 台北場": { title: "9/17（四）台北場", address: "台北市重慶南路一段10號6樓", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "9/19 台中場": { title: "9/19（六）台中場", address: "台中市北區進化北路238號8樓之1", transit: "捷運：文心崇德站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260919130000";
+const SCRIPT_VERSION = "20260919131000";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
-const CHECKIN_CONFIRM_DELAY_MS = 350;
-const CHECKIN_CONFIRM_TIMEOUT_MS = 8000;
-const CHECKIN_CONFIRM_INTERVAL_MS = 250;
 
 let lastVoice = "";
 let voiceUnlocked = false;
@@ -239,10 +236,6 @@ async function postJson(path, data) {
   return body;
 }
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 function checkinNameKey(value) {
   return String(value || "").normalize("NFKC").replace(/\s+/g, "");
 }
@@ -259,45 +252,8 @@ function applyConfirmedCheckin(entry) {
   renderRosterData({ ...rosterData, checkins: [...checkins, entry] });
 }
 
-async function waitForPersistedCheckin(payload, knownIds, requestState) {
-  await delay(CHECKIN_CONFIRM_DELAY_MS);
-  const deadline = Date.now() + CHECKIN_CONFIRM_TIMEOUT_MS;
-
-  while (!requestState.settled && Date.now() < deadline) {
-    try {
-      const res = await fetchWithApiFallback("/api/roster", { cache: "no-store" });
-      if (res.ok) {
-        const data = validateRosterData(await res.json());
-        const entry = [...data.checkins].reverse().find((item) => (
-          item.id && !knownIds.has(String(item.id)) && isMatchingActiveCheckin(item, payload)
-        ));
-        if (entry) {
-          renderRosterData(data);
-          return { success: true, ...entry };
-        }
-      }
-    } catch {
-      // The original POST remains authoritative if a polling request fails.
-    }
-    await delay(CHECKIN_CONFIRM_INTERVAL_MS);
-  }
-  return null;
-}
-
 async function postCheckin(payload) {
-  const knownIds = new Set((rosterData.checkins || []).map((item) => String(item.id || "")).filter(Boolean));
-  const requestState = { settled: false };
-  const request = postJson("/api/checkin", payload);
-  request.then(
-    () => { requestState.settled = true; },
-    () => { requestState.settled = true; }
-  );
-
-  const persisted = waitForPersistedCheckin(payload, knownIds, requestState);
-  const result = await Promise.race([
-    request,
-    persisted.then((entry) => entry || request)
-  ]);
+  const result = await postJson("/api/checkin", payload);
   applyConfirmedCheckin(result);
   return result;
 }
