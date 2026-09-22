@@ -17,7 +17,8 @@ const sessionInfo = {
   "10/15 台北場": { title: "10/15（四）台北場", address: "台北市重慶南路一段10號6樓（612室）", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "10/17 台中場": { title: "10/17（六）台中場", address: "場地待定", transit: "捷運：待定｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260920160000";
+const SCRIPT_VERSION = "20260922190000";
+const FALLBACK_ROSTER_URL = "./roster-fallback.json";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
 
@@ -463,14 +464,23 @@ async function loadRoster() {
     const res = await fetchWithApiFallback("/api/roster", { cache: "no-store" });
     if (!res.ok) throw new Error("API unavailable");
     renderRosterData(validateRosterData(await res.json()));
-  } catch (error) {
-    if (rosterData.registrations?.length) {
-      const roster = document.getElementById("rosterList");
-      roster.insertAdjacentHTML("afterbegin", `<p class="message err">名單服務暫時異常，畫面保留最後一次正常資料；請稍後再按更新。</p>`);
+  } catch (apiError) {
+    console.warn("名單 API 無法使用，嘗試讀取備援名單。", apiError);
+    try {
+      const fallbackRes = await fetch(`${FALLBACK_ROSTER_URL}?v=${encodeURIComponent(SCRIPT_VERSION)}`, { cache: "no-store" });
+      if (!fallbackRes.ok) throw new Error(`備援名單 HTTP ${fallbackRes.status}`);
+      renderRosterData(validateRosterData(await fallbackRes.json()), true);
       return;
+    } catch (fallbackError) {
+      console.warn("備援名單也無法使用。", fallbackError);
+      if (rosterData.registrations?.length) {
+        const roster = document.getElementById("rosterList");
+        roster.insertAdjacentHTML("afterbegin", `<p class="message err">名單服務暫時異常，畫面保留最後一次正常資料；請稍後再按更新。</p>`);
+        return;
+      }
+      document.getElementById("stats").innerHTML = `<div class="stat wide"><strong>名單暫時無法讀取</strong><span>報名功能會在服務恢復後繼續，不會以空白名單覆蓋資料。</span></div>`;
+      document.getElementById("rosterList").innerHTML = `<p class="message err">名單讀取失敗，請稍後再試。</p>`;
     }
-    document.getElementById("stats").innerHTML = `<div class="stat wide"><strong>名單暫時無法讀取</strong><span>報名功能會在服務恢復後繼續，不會以空白名單覆蓋資料。</span></div>`;
-    document.getElementById("rosterList").innerHTML = `<p class="message err">名單讀取失敗，請稍後再試。</p>`;
   }
 }
 
