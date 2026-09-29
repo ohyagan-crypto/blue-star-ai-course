@@ -5,10 +5,10 @@ let expectedDatasetId = "";
 let minimumRegistrationRecords = 0;
 const sessions = ["10/12 台南場","10/13 高雄場","10/15 台北場","10/17 台中場"];
 const sessionCapacities = {
-  "10/12 台南場": 70,
-  "10/13 高雄場": 115,
+  "10/12 台南場": 45,
+  "10/13 高雄場": 100,
   "10/15 台北場": 110,
-  "10/17 台中場": 160
+  "10/17 台中場": 110
 };
 const closedRegistrationSessions = new Set();
 const sessionInfo = {
@@ -17,7 +17,7 @@ const sessionInfo = {
   "10/15 台北場": { title: "10/15（四）台北場", address: "台北市重慶南路一段10號6樓（612室）", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "10/17 台中場": { title: "10/17（六）台中場", address: "場地待定", transit: "捷運：待定｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260922190000";
+const SCRIPT_VERSION = "20260929120000";
 const FALLBACK_ROSTER_URL = "./roster-fallback.json";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";

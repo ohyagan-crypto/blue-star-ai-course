@@ -6,10 +6,10 @@
     "10/17 台中場"
   ],
   "capacityBySession": {
-    "10/12 台南場": 70,
-    "10/13 高雄場": 115,
+    "10/12 台南場": 45,
+    "10/13 高雄場": 100,
     "10/15 台北場": 110,
-    "10/17 台中場": 160
+    "10/17 台中場": 110
   },
   "googleSheetUrl": "https://docs.google.com/spreadsheets/d/11Yck95XRcDy02OaYcMNfJXz57HGfMObtoqwzhWU0HkM/edit?usp=drivesdk",
   "registrations": [
