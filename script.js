@@ -15,9 +15,9 @@ const sessionInfo = {
   "10/12 台南場": { title: "10/12（一）台南場", address: "台南市東區中華東路三段139號6樓（601室）", transit: "13:00-17:00" },
   "10/13 高雄場": { title: "10/13（二）高雄場", address: "高雄市前鎮區中山二路2號12樓之7", transit: "捷運：獅甲站3出口｜13:00-17:00" },
   "10/15 台北場": { title: "10/15（四）台北場", address: "台北市重慶南路一段10號6樓（612室）", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
-  "10/17 台中場": { title: "10/17（六）台中場", address: "場地待定", transit: "捷運：待定｜13:00-17:00" }
+  "10/17 台中場": { title: "10/17（六）台中場", address: "台中市市政北七路186號3樓之3", transit: "捷運：市政府站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20260929120000";
+const SCRIPT_VERSION = "20261006160000";
 const FALLBACK_ROSTER_URL = "./roster-fallback.json";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
