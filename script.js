@@ -1,4 +1,5 @@
-const DEFAULT_API_BASE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || location.hostname.endsWith("loca.lt") ? location.origin : "";
+const DEFAULT_API_BASE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || location.hostname.endsWith("loca.lt") ? location.origin : "https://course-api.lanxingapi.com";
+const API_REQUEST_TIMEOUT_MS = 12000;
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
 let expectedDatasetId = "";
@@ -17,7 +18,7 @@ const sessionInfo = {
   "10/15 台北場": { title: "10/15（四）台北場", address: "台北市重慶南路一段10號6樓（612室）", transit: "捷運：台北車站Z10出口｜13:00-17:00" },
   "10/17 台中場": { title: "10/17（六）台中場", address: "台中市市政北七路186號3樓之3", transit: "捷運：市政府站｜13:00-17:00" }
 };
-const SCRIPT_VERSION = "20261006160000";
+const SCRIPT_VERSION = "20261014214500";
 const FALLBACK_ROSTER_URL = "./roster-fallback.json";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
@@ -90,13 +91,17 @@ async function fetchWithApiFallback(path, options = {}) {
   await apiConfigReady;
   let lastError = null;
   for (const base of apiBases) {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), API_REQUEST_TIMEOUT_MS);
     try {
-      const res = await fetch(api(path, base), options);
+      const res = await fetch(api(path, base), { ...options, signal: controller.signal });
       activeApiBase = base;
       if (res.ok || (res.status >= 400 && res.status < 500)) return res;
       lastError = new Error(`API ${res.status}`);
     } catch (err) {
       lastError = err;
+    } finally {
+      window.clearTimeout(timeoutId);
     }
   }
   throw lastError || new Error("API unavailable");
