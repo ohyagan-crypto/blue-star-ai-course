@@ -22,24 +22,20 @@ const SCRIPT_VERSION = "20261020211739";
 const FALLBACK_ROSTER_URL = "./roster-fallback.json";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
+const TELEGRAM_BOT_USERNAME = "bsmftek9319_bot";
 
 let lastVoice = "";
 let voiceUnlocked = false;
 let rosterData = { registrations: [], checkins: [] };
 let lastCheckin = null;
 let checkinStatsExpanded = loadCheckinStatsExpanded();
-const lineIdFromUrl = String(new URLSearchParams(location.search).get("lineId") || "").normalize("NFKC").trim().slice(0, 64);
-
-function validLineId(value) {
-  return /^[A-Za-z0-9._-]{4,64}$/.test(String(value || ""));
-}
 
 function lineBindingStatus(text, connected = false) {
   const status = document.getElementById("lineBindingStatus");
   const badge = document.getElementById("lineStatusBadge");
   if (status) status.textContent = text;
   if (badge) {
-    badge.textContent = connected ? "LINE 已連結" : "尚未連結";
+    badge.textContent = connected ? "連結已產生" : "尚未產生連結";
     badge.classList.toggle("connected", connected);
   }
 }
@@ -47,13 +43,19 @@ function lineBindingStatus(text, connected = false) {
 function initLineBinding() {
   const wrap = document.getElementById("lineBindingFormWrap");
   if (!wrap) return;
-  if (!validLineId(lineIdFromUrl)) {
-    lineBindingStatus("複訓／舊學員可先完成報名；之後從 LINEBOT1 開啟本頁即可綁定學習卡。", false);
-    wrap.hidden = true;
-    return;
-  }
-  lineBindingStatus("已取得目前 LINE 身分；完成報名後可同步綁定學習卡。", true);
+  lineBindingStatus("輸入報名姓名後，按下按鈕取得 Telegram 一鍵綁定連結。", false);
   wrap.hidden = false;
+}
+
+function encodeBase64Url(value) {
+  const bytes = new TextEncoder().encode(String(value || ""));
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+function telegramBindLinkForName(name) {
+  return `https://t.me/${TELEGRAM_BOT_USERNAME}?start=bind_${encodeBase64Url(name)}`;
 }
 
 function normalizeApiBase(value) {
@@ -584,7 +586,6 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   const btn = form.querySelector("button");
   const msg = document.getElementById("registerMessage");
   const payload = formData(form);
-  if (validLineId(lineIdFromUrl)) payload.lineId = lineIdFromUrl;
   if (payload.participantType === "新人" && !String(payload.introducer || "").trim()) {
     setMessage(msg, false, "新人報名請填寫介紹人；複訓可選填。");
     form.elements.introducer.focus();
@@ -594,12 +595,11 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
   btn.textContent = "送出中...";
   try {
     const data = await postJson("/api/register", payload);
-    const boundText = validLineId(lineIdFromUrl) ? "，學習卡已綁定" : "；可從 LINEBOT1 開啟本頁綁定學習卡";
+    const boundText = "；可在下方產生 Telegram 綁定連結";
     setMessage(msg, true, `${data.name} 已完成 ${data.session} 報名${boundText}`);
-    if (validLineId(lineIdFromUrl)) lineBindingStatus("複訓報名與藍星學習卡已完成綁定。", true);
     showModal({
       title: "已報名成功",
-      message: `${data.name} 已完成 ${data.session} 報名${validLineId(lineIdFromUrl) ? "，藍星學習卡已完成綁定。" : "。完成後可從 LINEBOT1 開啟本頁綁定學習卡。"}`
+      message: `${data.name} 已完成 ${data.session} 報名。請在下方輸入相同姓名，產生 Telegram 綁定連結。`
     });
     form.reset();
     updateIntroducerRequirement(form);
@@ -617,22 +617,26 @@ document.getElementById("bindLearningCardForm").addEventListener("submit", async
   const form = event.currentTarget;
   const btn = form.querySelector("button");
   const msg = document.getElementById("bindingMessage");
-  if (!validLineId(lineIdFromUrl)) {
-    setMessage(msg, false, "請從 LINEBOT1 的課程報名按鈕重新開啟。" );
+  const name = String(new FormData(form).get("name") || "").normalize("NFKC").trim();
+  if (!name) {
+    setMessage(msg, false, "請輸入報名時使用的真實姓名。");
     return;
   }
   btn.disabled = true;
-  btn.textContent = "綁定中...";
+  btn.textContent = "產生中...";
   try {
-    const data = await postJson("/api/learning-card/bind", { ...formData(form), lineId: lineIdFromUrl });
-    setMessage(msg, true, `${data.name} 的學習卡已完成綁定。`);
-    lineBindingStatus(`已綁定 ${data.name} 的課程學習紀錄。`, true);
-    showModal({ title: "學習卡綁定成功", message: `${data.name} 的藍星學習卡已完成綁定。` });
+    const link = telegramBindLinkForName(name);
+    const linkWrap = document.getElementById("telegramBindLinkWrap");
+    const anchor = document.getElementById("telegramBindLink");
+    anchor.href = link;
+    linkWrap.hidden = false;
+    setMessage(msg, true, `${name} 的 Telegram 綁定連結已產生。`);
+    lineBindingStatus(`已為 ${name} 產生 Telegram 綁定連結。`, true);
   } catch (err) {
-    setMessage(msg, false, err.message);
+    setMessage(msg, false, err?.message || "Telegram 綁定連結產生失敗。");
   } finally {
     btn.disabled = false;
-    btn.textContent = "綁定我的學習卡";
+    btn.textContent = "產生 Telegram 綁定連結";
   }
 });
 

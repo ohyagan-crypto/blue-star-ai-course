@@ -48,7 +48,7 @@
         <form class="panel form register-form" id="registerForm">
           <h2>11月場報名</h2>
           <p class="form-intro">選擇場次、報名身分與姓名即可送出。</p>
-          <p class="form-hint">複訓／舊學員可直接報名；建議從 LINEBOT1 的「藍星課程報名」開啟本頁，完成後可同步綁定藍星學習卡。</p>
+          <p class="form-hint">複訓／舊學員可直接報名；完成後可在下方產生 Telegram 綁定連結，領取藍星學習卡。</p>
           <label>場次<select name="session" required></select></label>
           <label>報名身分
             <select name="participantType" required>
@@ -68,18 +68,20 @@
       <section class="panel line-binding-panel" id="lineBindingPanel" aria-labelledby="lineBindingTitle">
         <div class="line-binding-head">
           <div>
-            <p class="eyebrow">LINE 學習卡</p>
-            <h2 id="lineBindingTitle">用 LINE 綁定藍星學習卡</h2>
-            <p id="lineBindingStatus" class="form-hint">複訓／舊學員完成報名後，可從 LINEBOT1 的「藍星課程報名」按鈕開啟本頁，再綁定學習卡。</p>
+            <p class="eyebrow">Telegram 學習卡</p>
+            <h2 id="lineBindingTitle">🔗 綁定 Telegram 領取藍星學習卡</h2>
+            <p id="lineBindingStatus" class="form-hint">輸入報名時使用的真實姓名，產生 Telegram 一鍵綁定連結。</p>
           </div>
-          <span class="line-status-badge" id="lineStatusBadge">尚未連結</span>
+          <span class="line-status-badge" id="lineStatusBadge">尚未產生連結</span>
         </div>
-        <div id="lineBindingFormWrap" hidden>
+        <div id="lineBindingFormWrap">
           <form class="binding-form" id="bindLearningCardForm">
-            <label>已報名場次<select name="session" required></select></label>
-            <label>報名姓名<input name="name" required autocomplete="name" placeholder="請輸入報名時使用的姓名"></label>
-            <button type="submit">綁定我的學習卡</button>
+            <label>報名姓名<input name="name" required autocomplete="name" placeholder="請輸入報名時使用的真實姓名"></label>
+            <button type="submit">產生 Telegram 綁定連結</button>
             <p class="message" id="bindingMessage" aria-live="polite"></p>
+            <p class="form-hint" id="telegramBindLinkWrap" hidden>
+              <a id="telegramBindLink" href="#" target="_blank" rel="noopener">開啟 Telegram 完成綁定</a>
+            </p>
           </form>
         </div>
       </section>
