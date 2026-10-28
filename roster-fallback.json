@@ -9,7 +9,7 @@
                               "11/16 台南場":  45,
                               "11/17 高雄場":  90,
                               "11/19 台北場":  110,
-                              "11/21 台中場":  110
+                              "11/21 台中場":  120
                           },
     "googleSheetUrl":  "https://docs.google.com/spreadsheets/d/11Yck95XRcDy02OaYcMNfJXz57HGfMObtoqwzhWU0HkM/edit?usp=drivesdk",
     "registrations":  [
@@ -23,5 +23,5 @@
                       ],
     "datasetId":  "november-20261020",
     "recordCount":  0,
-    "updatedAt":  "2026-10-20T12:36:13.1950226Z"
+    "updatedAt":  "2026-10-28T09:54:03.000Z"
 }
