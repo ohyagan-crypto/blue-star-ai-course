@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>藍星科技 11月實戰班｜工作人員快速簽到</title>
+  <title>藍星科技 11月實戰班｜名額管理與簽到</title>
   <meta name="description" content="藍星科技超級自媒體 × AI變現實戰班 11月場次工作人員快速簽到頁。">
-  <link rel="stylesheet" href="./styles.css?v=20260826234000">
+  <link rel="stylesheet" href="./styles.css?v=20261101223000">
 </head>
 <body>
   <main class="app staff-app">
     <section class="hero staff-hero">
-      <h1>工作人員快速簽到</h1>
-      <p>第一次成功輸入 PIN 後，這台裝置會自動記住，之後選場次、搜尋姓名後可直接報到。</p>
+      <h1>名額管理與簽到</h1>
+      <p>調整人數：先輸入管理員密碼，再到下方對應場次操作。簽到時請選擇場次並搜尋姓名。</p>
       <a class="sheet-link" href="./index.html">回一般簽到頁</a>
     </section>
 
     <section class="panel staff-toolbar">
-      <label>場次
+      <label>簽到場次
         <select id="staffSession">
           <option value="11/16 台南場">11/16（一）台南場</option>
           <option value="11/17 高雄場">11/17（二）高雄場</option>
@@ -24,8 +24,8 @@
           <option value="11/21 台中場">11/21（六）台中場</option>
         </select>
       </label>
-      <label>PIN
-        <input id="staffPin" type="password" inputmode="numeric" maxlength="4" placeholder="第一次請輸入 PIN">
+      <label>管理員密碼（PIN）
+        <input id="staffPin" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="請輸入管理員密碼">
       </label>
       <label>搜尋姓名
         <input id="staffSearch" autocomplete="off" placeholder="輸入姓名關鍵字">
@@ -38,29 +38,12 @@
         <div>
           <p class="eyebrow">Admin Capacity</p>
           <h2 id="capacityTitle">管理員調整名額</h2>
-          <p>輸入管理員 PIN 後，可隨時調整各場最高人數；下限會保留目前有效報名人數。</p>
+          <p>找到下方要調整的場次，按 −／＋ 立即減少或增加 1 人；也可直接輸入最高人數，再按該列「儲存」。每次調整都會驗證上方管理員密碼。</p>
         </div>
       </div>
-      <form class="capacity-form" id="capacityForm">
-        <label>調整場次
-          <select id="capacitySession">
-            <option value="11/16 台南場">11/16（一）台南場</option>
-            <option value="11/17 高雄場">11/17（二）高雄場</option>
-            <option value="11/19 台北場">11/19（四）台北場</option>
-            <option value="11/21 台中場">11/21（六）台中場</option>
-          </select>
-        </label>
-        <div class="capacity-stepper">
-          <button id="capacityMinus" type="button" aria-label="減少 1 位" title="減少 1 位">−</button>
-          <label>最高人數
-            <input id="capacityValue" type="number" min="1" max="999" step="1" required>
-          </label>
-          <button id="capacityPlus" type="button" aria-label="增加 1 位" title="增加 1 位">＋</button>
-        </div>
-        <button id="capacitySave" type="submit">儲存名額</button>
-      </form>
+      <div class="capacity-rows" id="capacityRows"><p>正在讀取四場名額…</p></div>
       <p class="message" id="capacityMessage" aria-live="polite"></p>
-      <p class="form-hint capacity-hint" id="capacityHint"></p>
+      <p class="form-hint capacity-hint">每列獨立儲存；最低不能低於該場目前有效報名人數，最高可調整到 999 人。</p>
     </section>
 
     <section class="stats staff-stats" id="staffStats"></section>
@@ -68,6 +51,6 @@
     <section class="panel staff-list" id="staffList"></section>
   </main>
 
-  <script src="./staff.js?v=20261101120000"></script>
+  <script src="./staff.js?v=20261101223000"></script>
 </body>
 </html>

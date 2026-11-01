@@ -510,30 +510,63 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
 .capacity-head p:last-child {
   margin-bottom: 0;
 }
-.capacity-form {
+.capacity-rows {
   display: grid;
-  grid-template-columns: minmax(180px, .8fr) minmax(240px, 1fr) auto;
-  align-items: end;
-  gap: 12px;
+  gap: 10px;
   margin-top: 14px;
 }
-.capacity-stepper {
+.capacity-row {
   display: grid;
-  grid-template-columns: 48px minmax(120px, 1fr) 48px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+}
+.capacity-row.busy {
+  opacity: .72;
+}
+.capacity-row-info strong,
+.capacity-row-info span,
+.capacity-row-info small {
+  display: block;
+}
+.capacity-row-info span {
+  margin-top: 4px;
+  color: var(--muted);
+}
+.capacity-row-info small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.capacity-row-controls {
+  display: grid;
+  grid-template-columns: 44px 132px 44px auto;
   align-items: end;
   gap: 8px;
 }
-.capacity-stepper > button {
-  min-height: 48px;
+.capacity-row-controls > button {
+  min-height: 46px;
   padding: 8px;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
 }
-.capacity-stepper input {
+.capacity-row-controls label span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.capacity-row-controls input {
+  width: 100%;
   text-align: center;
 }
-.capacity-form > button {
-  min-height: 48px;
+.capacity-row-controls .capacity-save {
+  padding-inline: 14px;
+  font-size: 15px;
 }
 .capacity-hint {
   margin: 10px 0 0;
@@ -658,12 +691,12 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   .roster-head, .bottom-stats-head { align-items: flex-start; flex-direction: column; }
   .staff-hero,
   .staff-toolbar,
-  .capacity-form,
+  .capacity-row,
   .staff-row {
     grid-template-columns: 1fr;
   }
-  .capacity-stepper {
-    grid-template-columns: 48px minmax(0, 1fr) 48px;
+  .capacity-row-controls {
+    grid-template-columns: 44px minmax(0, 1fr) 44px auto;
   }
   .staff-row button {
     width: 100%;
