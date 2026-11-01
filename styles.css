@@ -500,6 +500,44 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   gap: 12px;
   margin: 16px 0;
 }
+.capacity-panel {
+  margin: 16px 0;
+}
+.capacity-head h2,
+.capacity-head p {
+  margin-bottom: 6px;
+}
+.capacity-head p:last-child {
+  margin-bottom: 0;
+}
+.capacity-form {
+  display: grid;
+  grid-template-columns: minmax(180px, .8fr) minmax(240px, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+  margin-top: 14px;
+}
+.capacity-stepper {
+  display: grid;
+  grid-template-columns: 48px minmax(120px, 1fr) 48px;
+  align-items: end;
+  gap: 8px;
+}
+.capacity-stepper > button {
+  min-height: 48px;
+  padding: 8px;
+  font-size: 24px;
+  line-height: 1;
+}
+.capacity-stepper input {
+  text-align: center;
+}
+.capacity-form > button {
+  min-height: 48px;
+}
+.capacity-hint {
+  margin: 10px 0 0;
+}
 .staff-stats {
   margin-bottom: 12px;
 }
@@ -620,8 +658,12 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
   .roster-head, .bottom-stats-head { align-items: flex-start; flex-direction: column; }
   .staff-hero,
   .staff-toolbar,
+  .capacity-form,
   .staff-row {
     grid-template-columns: 1fr;
+  }
+  .capacity-stepper {
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
   }
   .staff-row button {
     width: 100%;

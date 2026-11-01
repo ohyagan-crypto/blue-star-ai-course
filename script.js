@@ -8,7 +8,7 @@ const sessions = ["11/16 台南場","11/17 高雄場","11/19 台北場","11/21 �
 const sessionCapacities = {
   "11/16 台南場": 45,
   "11/17 高雄場": 90,
-  "11/19 台北場": 110,
+  "11/19 台北場": 120,
   "11/21 台中場": 120
 };
 const closedRegistrationSessions = new Set();
@@ -18,7 +18,7 @@ const sessionInfo = {
   "11/19 台北場": { title: "11/19（四）台北場", address: "台北市南京東路三段9號5樓", transit: "捷運：松江南京站6出口｜13:00－17:00" },
   "11/21 台中場": { title: "11/21（六）台中場", address: "台中市南屯區大墩六街208號B1", transit: "捷運：文心林森公園站｜13:00－17:00" }
 };
-const SCRIPT_VERSION = "20261028175403";
+const SCRIPT_VERSION = "20261101120000";
 const FALLBACK_ROSTER_URL = "./roster-fallback.json";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";

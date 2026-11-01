@@ -4,8 +4,10 @@ const PIN_STORAGE_KEY = "blueCourseStaffPin";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
 const sessions = ["11/16 台南場","11/17 高雄場","11/19 台北場","11/21 台中場"];
+const MAX_CAPACITY = 999;
 
 let rosterData = { registrations: [], checkins: [] };
+let capacityBusy = false;
 
 function normalizeApiBase(value) {
   return String(value || "").trim().replace(/\/+$/, "");
@@ -133,6 +135,77 @@ function renderStats() {
   }).join("");
 }
 
+function activeRegistrationCount(session) {
+  return (rosterData.registrations || []).filter((item) => item.session === session && !isCanceled(item)).length;
+}
+
+function capacityFor(session) {
+  return Number(rosterData.capacityBySession?.[session] || 0);
+}
+
+function setCapacityMessage(ok, text) {
+  const el = document.getElementById("capacityMessage");
+  if (!el) return;
+  el.className = `message ${ok ? "ok" : "err"}`;
+  el.textContent = text;
+}
+
+function renderCapacityPanel() {
+  const sessionSelect = document.getElementById("capacitySession");
+  const input = document.getElementById("capacityValue");
+  const minus = document.getElementById("capacityMinus");
+  const plus = document.getElementById("capacityPlus");
+  const hint = document.getElementById("capacityHint");
+  if (!sessionSelect || !input || !minus || !plus || !hint) return;
+  const session = sessionSelect.value || sessions[0];
+  const capacity = capacityFor(session);
+  const activeCount = activeRegistrationCount(session);
+  const minimum = Math.max(1, activeCount);
+  input.value = String(capacity || minimum);
+  input.min = String(minimum);
+  input.max = String(MAX_CAPACITY);
+  minus.disabled = capacityBusy || capacity <= minimum;
+  plus.disabled = capacityBusy || capacity >= MAX_CAPACITY;
+  hint.textContent = `目前有效報名 ${activeCount} 人；可調整範圍 ${minimum}－${MAX_CAPACITY} 人。`;
+}
+
+async function postCapacity(payload) {
+  const res = await fetchWithApiFallback("/api/admin/capacity", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const result = await res.json().catch(() => ({}));
+  if (!res.ok || !result.success) throw new Error(result.message || "名額調整失敗，請稍後再試。");
+  return result;
+}
+
+async function changeCapacity(payload) {
+  const pin = getPin();
+  if (!pin) {
+    setCapacityMessage(false, "請先輸入管理員 PIN。");
+    document.getElementById("staffPin").focus();
+    return;
+  }
+  capacityBusy = true;
+  renderCapacityPanel();
+  try {
+    const result = await postCapacity({
+      ...payload,
+      pin,
+      session: document.getElementById("capacitySession").value
+    });
+    await loadRoster();
+    rememberPin(pin);
+    setCapacityMessage(true, `${result.session} 最高人數已調整為 ${result.capacity} 人。`);
+  } catch (err) {
+    setCapacityMessage(false, err.message);
+  } finally {
+    capacityBusy = false;
+    renderCapacityPanel();
+  }
+}
+
 function renderList() {
   const session = currentSession();
   const keyword = clean(document.getElementById("staffSearch").value).toLowerCase();
@@ -164,6 +237,7 @@ async function loadRoster() {
   rosterData = await res.json();
   renderStats();
   renderList();
+  renderCapacityPanel();
   setMessage(true, "名單已更新。");
 }
 
@@ -224,6 +298,18 @@ restoreSavedPin();
 document.getElementById("staffSession").addEventListener("change", renderList);
 document.getElementById("staffSearch").addEventListener("input", renderList);
 document.getElementById("staffRefresh").addEventListener("click", () => loadRoster().catch((err) => setMessage(false, err.message)));
+document.getElementById("capacitySession").addEventListener("change", renderCapacityPanel);
+document.getElementById("capacityMinus").addEventListener("click", () => changeCapacity({ delta: -1 }));
+document.getElementById("capacityPlus").addEventListener("click", () => changeCapacity({ delta: 1 }));
+document.getElementById("capacityForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const value = Number(document.getElementById("capacityValue").value);
+  if (!Number.isInteger(value)) {
+    setCapacityMessage(false, "最高人數必須是整數。");
+    return;
+  }
+  changeCapacity({ capacity: value });
+});
 document.getElementById("staffList").addEventListener("click", (event) => {
   const button = event.target.closest("button[data-name]");
   if (!button) return;

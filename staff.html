@@ -33,11 +33,41 @@
       <button id="staffRefresh" type="button">重新整理</button>
     </section>
 
+    <section class="panel capacity-panel" aria-labelledby="capacityTitle">
+      <div class="capacity-head">
+        <div>
+          <p class="eyebrow">Admin Capacity</p>
+          <h2 id="capacityTitle">管理員調整名額</h2>
+          <p>輸入管理員 PIN 後，可隨時調整各場最高人數；下限會保留目前有效報名人數。</p>
+        </div>
+      </div>
+      <form class="capacity-form" id="capacityForm">
+        <label>調整場次
+          <select id="capacitySession">
+            <option value="11/16 台南場">11/16（一）台南場</option>
+            <option value="11/17 高雄場">11/17（二）高雄場</option>
+            <option value="11/19 台北場">11/19（四）台北場</option>
+            <option value="11/21 台中場">11/21（六）台中場</option>
+          </select>
+        </label>
+        <div class="capacity-stepper">
+          <button id="capacityMinus" type="button" aria-label="減少 1 位" title="減少 1 位">−</button>
+          <label>最高人數
+            <input id="capacityValue" type="number" min="1" max="999" step="1" required>
+          </label>
+          <button id="capacityPlus" type="button" aria-label="增加 1 位" title="增加 1 位">＋</button>
+        </div>
+        <button id="capacitySave" type="submit">儲存名額</button>
+      </form>
+      <p class="message" id="capacityMessage" aria-live="polite"></p>
+      <p class="form-hint capacity-hint" id="capacityHint"></p>
+    </section>
+
     <section class="stats staff-stats" id="staffStats"></section>
     <p class="message" id="staffMessage" aria-live="polite"></p>
     <section class="panel staff-list" id="staffList"></section>
   </main>
 
-  <script src="./staff.js?v=20261020211739"></script>
+  <script src="./staff.js?v=20261101120000"></script>
 </body>
 </html>
