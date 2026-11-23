@@ -4,21 +4,21 @@ let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
 let expectedDatasetId = "";
 let minimumRegistrationRecords = 0;
-const sessions = ["11/16 台南場","11/17 高雄場","11/19 台北場","11/21 台中場"];
+const sessions = ["12/14 台南場","12/15 高雄場","12/17 台北場","12/19 台中場"];
 const sessionCapacities = {
-  "11/16 台南場": 45,
-  "11/17 高雄場": 90,
-  "11/19 台北場": 120,
-  "11/21 台中場": 120
+  "12/14 台南場": 40,
+  "12/15 高雄場": 90,
+  "12/17 台北場": 130,
+  "12/19 台中場": 130
 };
 const closedRegistrationSessions = new Set();
 const sessionInfo = {
-  "11/16 台南場": { title: "11/16（一）台南場", address: "台南市中華東路三段139號6樓（601室）", transit: "13:00－17:00" },
-  "11/17 高雄場": { title: "11/17（二）高雄場", address: "高雄市中山二路2號13樓之2", transit: "捷運：獅甲站3出口｜13:00－17:00" },
-  "11/19 台北場": { title: "11/19（四）台北場", address: "台北市南京東路三段9號5樓", transit: "捷運：松江南京站6出口｜13:00－17:00" },
-  "11/21 台中場": { title: "11/21（六）台中場", address: "台中市南屯區大墩六街208號B1", transit: "捷運：文心林森公園站｜13:00－17:00" }
+  "12/14 台南場": { title: "12/14（一）台南場", address: "台南市中華東路三段139號6樓（601室）", transit: "" },
+  "12/15 高雄場": { title: "12/15（二）高雄場", address: "高雄市中山二路2號13樓之2", transit: "捷運獅甲站 3 號出口" },
+  "12/17 台北場": { title: "12/17（四）台北場", address: "台北市中正區重慶南路一段10號6樓612室", transit: "捷運台北車站" },
+  "12/19 台中場": { title: "12/19（六）台中場", address: "台中市西屯區市政北七路186號3樓之3", transit: "捷運市政府站" }
 };
-const SCRIPT_VERSION = "20261101120000";
+const SCRIPT_VERSION = "2026112301";
 const FALLBACK_ROSTER_URL = "./roster-fallback.json";
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 const CHECKIN_STATS_COLLAPSED_KEY = "blueCourseCheckinStatsCollapsed";
@@ -394,6 +394,7 @@ function toggleCheckinStats() {
 }
 
 function renderRosterData(data, fromFallback = false) {
+  data = { ...data, checkins: data.checkins.filter(item => item.status !== "undone") };
   rosterData = data;
   const stats = document.getElementById("stats");
   const roster = document.getElementById("rosterList");

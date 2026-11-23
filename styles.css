@@ -722,3 +722,6 @@ input:focus, select:focus { outline: none; border-color: var(--blue); }
     flex-direction: column;
   }
 }
+.course-poster { margin-top: 1rem; }
+.course-poster summary { cursor: pointer; color: var(--blue); }
+.course-poster img { display: block; width: 100%; max-width: 32rem; height: auto; margin-top: .75rem; }

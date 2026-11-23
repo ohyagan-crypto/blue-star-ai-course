@@ -1,17 +1,17 @@
 {
     "sessions":  [
-                     "11/16 台南場",
-                     "11/17 高雄場",
-                     "11/19 台北場",
-                     "11/21 台中場"
+                     "12/14 台南場",
+                     "12/15 高雄場",
+                     "12/17 台北場",
+                     "12/19 台中場"
                  ],
     "capacityBySession":  {
-                              "11/16 台南場":  45,
-                              "11/17 高雄場":  90,
-                              "11/19 台北場":  120,
-                              "11/21 台中場":  120
+                              "12/14 台南場":  40,
+                              "12/15 高雄場":  90,
+                              "12/17 台北場":  130,
+                              "12/19 台中場":  130
                           },
-    "googleSheetUrl":  "https://docs.google.com/spreadsheets/d/11Yck95XRcDy02OaYcMNfJXz57HGfMObtoqwzhWU0HkM/edit?usp=drivesdk",
+    "googleSheetUrl":  "https://docs.google.com/spreadsheets/d/11x2y7IidqYBtn1dF10plsvgpqoM7WmcSwEyHh1bufYE/edit?usp=drivesdk",
     "registrations":  [
 
                       ],
@@ -21,7 +21,8 @@
     "cancellations":  [
 
                       ],
-    "datasetId":  "november-20261020",
+    "datasetId":  "december-20261123",
     "recordCount":  0,
-    "updatedAt":  "2026-10-28T09:54:03.000Z"
+    "updatedAt":  "2026-11-23T01:53:57.8084439Z",
+    "revision":  0
 }

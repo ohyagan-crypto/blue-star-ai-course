@@ -1,14 +1,14 @@
-const DEFAULT_API_BASE = location.hostname.endsWith("loca.lt") ? location.origin : "https://course-api.lanxingapi.com";
+const DEFAULT_API_BASE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || location.hostname.endsWith("loca.lt") ? location.origin : "https://course-api.lanxingapi.com";
 const API_REQUEST_TIMEOUT_MS = 12000;
 const PIN_STORAGE_KEY = "blueCourseStaffPin";
 let activeApiBase = DEFAULT_API_BASE;
 let apiBases = [DEFAULT_API_BASE];
-const sessions = ["11/16 台南場","11/17 高雄場","11/19 台北場","11/21 台中場"];
+const sessions = ["12/14 台南場","12/15 高雄場","12/17 台北場","12/19 台中場"];
 const sessionLabels = {
-  "11/16 台南場": "11/16（一）台南場",
-  "11/17 高雄場": "11/17（二）高雄場",
-  "11/19 台北場": "11/19（四）台北場",
-  "11/21 台中場": "11/21（六）台中場"
+  "12/14 台南場": "12/14（一）台南場",
+  "12/15 高雄場": "12/15（二）高雄場",
+  "12/17 台北場": "12/17（四）台北場",
+  "12/19 台中場": "12/19（六）台中場"
 };
 const MAX_CAPACITY = 999;
 
@@ -259,7 +259,9 @@ async function loadRoster() {
   setMessage(true, "讀取名單中...");
   const res = await fetchWithApiFallback("/api/roster", { cache: "no-store" });
   if (!res.ok) throw new Error("名單讀取失敗，請稍後再試。");
-  rosterData = await res.json();
+  const data = await res.json();
+  if (data.datasetId !== "december-20261123") throw new Error("12 月名單尚未連線，請稍後再試。");
+  rosterData = { ...data, checkins: data.checkins.filter(item => item.status !== "undone") };
   renderStats();
   renderList();
   renderCapacityPanel();
